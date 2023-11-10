@@ -5,7 +5,7 @@ html {
 }
 
 body {
-    width: fit-content;
+    max-width: 1040px;
     margin: 0 auto;
     margin: 0 auto;
     background: white;
@@ -135,16 +135,15 @@ input[type=submit] {
 }
 
 .gallery {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 0.5em;
+    column-width: 324px;
 }
 
 .imagebox {
+    display: inline-block;
     border: solid #000000aa 1px;
     padding: 0.2em;
-    max-width: 320px;
-
+    max-width: 324px;
+    margin-bottom: 0.5em;
 }
 
 .imagebox img {
