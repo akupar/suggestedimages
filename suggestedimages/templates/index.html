@@ -24,7 +24,7 @@
     No results.
     {% endif %}
     {% for image, wd in images %}
-    <div class="imagebox" title="{{ wd.text }}">
+    <div class="imagebox {{ wd.color_class }}" title="{{ wd.text }}">
       <div>
         <a href="{{ wd.url }}">{{ wd.id }}</a>
       </div>

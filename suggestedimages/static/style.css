@@ -155,4 +155,53 @@ input[type=submit] {
 .imagebox code {
     display: block;
     word-wrap: anywhere;
+    background-color: #fffc;
+}
+
+.color-1 {
+    background-color: #f3b1cd;
+}
+
+.color-2 {
+    background-color: #b0abcb;
+}
+
+.color-3 {
+    background-color: #bad5f0;
+}
+
+.color-4 {
+    background-color: #c2d5a8;
+}
+
+.color-5 {
+    background-color: #f8efe6;
+}
+
+.color-6 {
+    background-color: #a5d5d5;
+}
+
+.color-7 {
+    background-color: #f0d5ba;
+}
+
+.color-8 {
+    background-color: #e3a7c0;
+}
+
+.color-9 {
+    background-color: #f8d7e8;
+}
+
+.color-10 {
+    background-color: #d6eff6;
+}
+
+.color-11 {
+    background-color: #f2e9cc;
+}
+
+.color-12 {
+    background-color: #a5d5d5;
 }

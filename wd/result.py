@@ -11,6 +11,7 @@ class WDEntry:
     description: str
     text: str
     full_url: str
+    color_class: str
 
     @property
     def url(self):
@@ -31,11 +32,11 @@ NoImage = Image('No Images', None, config.NO_IMAGE_THUMB, None)
 if __name__ == "__main__":
 
 
-    img = Image("NGO Nishi Nagono 2-chome 20230208-01.jpg", "", "", None)
+    img = Image("NGO Nishi Nagono 2-chome 20230208-01.jpg", "", "", "", "")
     print(img.thumb)
 
-    img = Image("ジブチ大使館は一軒家.jpg", "", "", None)
+    img = Image("ジブチ大使館は一軒家.jpg", "", "", "", "")
     print(img.thumb)
 
-    img = Image("SVG icon (letters).svg", "", "", None)
+    img = Image("SVG icon (letters).svg", "", "", "", "")
     print(img.thumb)

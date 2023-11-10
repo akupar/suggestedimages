@@ -1,10 +1,12 @@
 import re
+import random
 
 import pywikibot
 from pywikibot import pagegenerators
 
 from .result import Image, WDEntry, NoImage
 from .util import uppercase_first, pretty_print
+import config
 
 
 IMAGE_PROPS = [
@@ -47,8 +49,9 @@ LIMIT 10
 
 
 def generate_image_pages(generator, search_string, language):
+    num_start = random.randint(0, config.NUM_COLORS)
 
-    for entry in generator:
+    for index, entry in enumerate(generator):
         print("===", entry.id, "===")
         pretty_print(entry.labels)
         label = entry.labels[language] \
@@ -78,6 +81,7 @@ def generate_image_pages(generator, search_string, language):
             description,
             tooltip,
             entry.full_url(),
+            'color-' + str((index + num_start) % config.NUM_COLORS + 1)
         )
 
         found = False
