@@ -1,0 +1,42 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+  <form method="get">
+    {% for message in get_flashed_messages() %}
+    <div class="flash">{{ message }}</div>
+    {% endfor %}
+    <label for="title">Wiktionary</label>
+    <select name="wikt" id="wikt" required>
+      <option value="" {{ "selected" if request.args.get('wikt') == '*' }}>(any)</option>
+      <option value="fi" {{ "selected" if request.args.get('wikt') == 'fi' }}>suomi</option>
+      <option value="en" {{ "selected" if request.args.get('wikt') == 'en' }}>English</option>
+      <option value="es" {{ "selected" if request.args.get('wikt') == 'es' }}>español</option>
+      <option value="sv" {{ "selected" if request.args.get('wikt') == 'sv' }}>svenska</option>
+    </select>
+    <label for="title">Title</label>
+    <input name="title" id="title" value="{{ request.args.get('title') or "" }}" required autofocus>
+    <input type="submit" value="Search">
+  </form>
+  <hr/>
+
+  <div class="gallery">
+    {% if images|length == 0 %}
+    No results.
+    {% endif %}
+    {% for image, wd in images %}
+    <div class="imagebox" title="{{ wd.text }}">
+      <div>
+        <a href="{{ wd.url }}">{{ wd.id }}</a>
+      </div>
+      {% if image.url %}
+      <a href="{{ image.url or '' }}">
+        <img src="{{ image.thumb }}">
+      </a>
+      <code>[[Tiedosto:{{ image.name }}|pienoiskuva|{{ image.caption }}]]</code>
+      {% else %}
+        <img src="{{ image.thumb }}">
+      {% endif %}
+    </div>
+  {% endfor %}
+  </div>
+{% endblock %}

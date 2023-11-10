@@ -1,0 +1,11 @@
+[project]
+name = "Suggested Images"
+version = "1.0.0"
+description = "Article image proposing utility for wiktionaries"
+dependencies = [
+    "suggestedimages",
+]
+
+[build-system]
+requires = ["flit_core<4"]
+build-backend = "flit_core.buildapi"
