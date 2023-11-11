@@ -77,9 +77,7 @@ def build_tooltip(label, aliases, translation, description):
 
 
 def generate_image_pages(generator, searched: StrInLanguage, output_language: str):
-    num_start = random.randint(0, config.NUM_COLORS)
-
-    for index, entry in enumerate(generator):
+    for color_num, entry in enumerate(generator, start=random.randint(0, config.NUM_COLORS)):
         print("===", entry.id, "===")
         pretty_print(entry.labels)
         label = get_str_in_language(entry.labels, [searched.language])
@@ -111,7 +109,7 @@ def generate_image_pages(generator, searched: StrInLanguage, output_language: st
             description,
             tooltip,
             entry.full_url(),
-            'color-' + str((index + num_start) % config.NUM_COLORS + 1)
+            'color-' + str(color_num % config.NUM_COLORS + 1)
         )
 
         found = False
