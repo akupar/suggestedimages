@@ -6,12 +6,20 @@
     <div class="flash">{{ message }}</div>
     {% endfor %}
     <label for="title">Wiktionary</label>
-    <select name="wikt" id="wikt" required>
-      <option value="" {{ "selected" if request.args.get('wikt') == '*' }}>(any)</option>
+    <select name="wikt" id="wikt">
+      <option value="none" {{ "selected" if request.args.get('wikt') == '' }}>default (English)</option>
       <option value="fi" {{ "selected" if request.args.get('wikt') == 'fi' }}>suomi</option>
       <option value="en" {{ "selected" if request.args.get('wikt') == 'en' }}>English</option>
       <option value="es" {{ "selected" if request.args.get('wikt') == 'es' }}>español</option>
       <option value="sv" {{ "selected" if request.args.get('wikt') == 'sv' }}>svenska</option>
+    </select>
+    <label for="title">Language</label>
+    <select name="lang" id="lang">
+      <option value="" {{ "selected" if request.args.get('lang') == '' }}>(sama)</option>
+      <option value="fi" {{ "selected" if request.args.get('lang') == 'fi' }}>suomi</option>
+      <option value="en" {{ "selected" if request.args.get('lang') == 'en' }}>englanti</option>
+      <option value="es" {{ "selected" if request.args.get('lang') == 'es' }}>espanja</option>
+      <option value="sv" {{ "selected" if request.args.get('lang') == 'sv' }}>ruotsi</option>
     </select>
     <label for="title">Title</label>
     <input name="title" id="title" value="{{ request.args.get('title') or "" }}" required autofocus>

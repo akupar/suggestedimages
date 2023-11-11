@@ -11,6 +11,7 @@ bp = Blueprint('main', __name__)
 def index():
     title = request.args.get('title')
     wikt = request.args.get('wikt')
+    lang = request.args.get('lang') or wikt
 
     return render_template('index.html',
-                           images=wd.get_images_for_search(title, wikt) if title else [])
+                           format=formatters.get_formatter(wikt))

@@ -28,17 +28,21 @@ site = pywikibot.Site("wikidata", "wikidata")
 repo = site.data_repository()
 
 
-def generate_label_or_alias_results(search, language):
+def generate_label_or_alias_results(search, search_language):
     if search.find('''"""''') != -1:
         raise Exception(f"Invalid search string: {search}")
 
-    if not re.match(r'^[a-z-]+$', language):
-        raise Exception(f"Invalid language code: {language}")
+    if not re.match(r'^[a-z-]+$', search_language):
+        raise Exception(f"Invalid language code: {search_language}")
 
     QUERY = '''
 SELECT distinct ?item ?itemLabel ?itemDescription WHERE{
-  VALUES ?prefLabel { """''' + search + '''"""@''' + language + ''' """''' + uppercase_first(search) + '''"""@''' + language + ''' }
-        ?item rdfs:label|skos:altLabel ?prefLabel
+  VALUES ?prefLabel {
+    """''' + search + '''"""@''' + search_language + '''
+   """''' + uppercase_first(search) + '''"""@''' + search_language + '''
+  }
+
+  ?item rdfs:label|skos:altLabel ?prefLabel
 }
 
 LIMIT 10
@@ -48,32 +52,52 @@ LIMIT 10
     return pagegenerators.WikidataSPARQLPageGenerator(QUERY, site=repo)
 
 
-def generate_image_pages(generator, search_string, language):
+def spaced(*args):
+    return " ".join(arg for arg in args if arg != None)
+
+def generate_image_pages(generator, search_string, search_language, output_language):
     num_start = random.randint(0, config.NUM_COLORS)
 
     for index, entry in enumerate(generator):
         print("===", entry.id, "===")
         pretty_print(entry.labels)
-        label = entry.labels[language] \
-            if language in entry.labels \
-            else entry.labels['en'] \
-                 if 'en' in entry.labels \
-                 else ''
+        label = entry.labels[search_language] \
+            if search_language in entry.labels \
+               else None
+        print("got label", label)
 
-        aliases = entry.aliases[language] \
-            if language in entry.aliases \
-            else []
+        aliases = entry.aliases[search_language] \
+            if search_language in entry.aliases \
+               else []
 
-        description = entry.descriptions[language] \
-            if language in entry.descriptions \
+        pretty_print(entry.aliases)
+        print("got aliases", aliases)
+
+        translation = None
+        if search_language != output_language:
+            translation = entry.labels[output_language] \
+                if output_language in entry.labels \
+                   else entry.labels['en'] \
+                        if 'en' in entry.labels else None
+
+        print("got tranlation", translation)
+        pretty_print(entry.descriptions)
+        description = entry.descriptions[output_language] \
+            if output_language in entry.descriptions \
             else entry.descriptions['en'] \
                  if 'en' in entry.descriptions \
-                 else ''
+                 else entry.descriptions[search_language] \
+                      if search_language in entry.descriptions \
+                         else None
 
+        print("got descr", description)
         assert label, "No label"
-        tooltip = label + ((" (" + ", ".join(aliases) + ")") \
-                        if len(aliases) > 0 else '') \
-                           + ": " + description
+        tooltip = spaced((label if label else None),
+                         (("(" + ", ".join(aliases) + ")") if aliases else None),
+                         (("[= " + translation + "]") if translation else None)) \
+            + ((": " + description) if description else "")
+
+        print("TOOLTIP:", tooltip)
 
         entry_info = WDEntry(
             entry.id,
@@ -105,11 +129,11 @@ def generate_image_pages(generator, search_string, language):
             yield NoImage, entry_info
 
 
-def get_images_for_search(search_string, language):
+def get_images_for_search(search_string, search_language, output_language):
     items = []
 
-    entries_generator = generate_label_or_alias_results(search_string, language)
-    for result, referrer in generate_image_pages(entries_generator, search_string, language):
+    entries_generator = generate_label_or_alias_results(search_string, search_language)
+    for result, referrer in generate_image_pages(entries_generator, search_string, search_language, output_language):
         items.append((result, referrer))
 
     return items
