@@ -5,7 +5,7 @@ import pywikibot
 from pywikibot import pagegenerators
 
 from .result import Image, WDEntry, NoImage
-from .util import uppercase_first, pretty_print
+from .util import pretty_print, StrInLanguage
 import config
 
 
@@ -28,18 +28,18 @@ site = pywikibot.Site("wikidata", "wikidata")
 repo = site.data_repository()
 
 
-def generate_label_or_alias_results(search, search_language):
-    if search.find('''"""''') != -1:
-        raise Exception(f"Invalid search string: {search}")
+def generate_label_or_alias_results(searched):
+    if searched.text.find('''"""''') != -1:
+        raise Exception(f"Invalid search string: {searched}")
 
-    if not re.match(r'^[a-z-]+$', search_language):
-        raise Exception(f"Invalid language code: {search_language}")
+    if not re.match(r'^[a-z-]+$', searched.language):
+        raise Exception(f"Invalid language code: {searched.language}")
 
     QUERY = '''
 SELECT distinct ?item ?itemLabel ?itemDescription WHERE{
   VALUES ?prefLabel {
-    """''' + search + '''"""@''' + search_language + '''
-   """''' + uppercase_first(search) + '''"""@''' + search_language + '''
+    """''' + searched.text + '''"""@''' + searched.language + '''
+   """''' + searched.text.capitalize() + '''"""@''' + searched.language + '''
   }
 
   ?item rdfs:label|skos:altLabel ?prefLabel
@@ -53,49 +53,55 @@ LIMIT 10
 
 
 def spaced(*args):
-    return " ".join(arg for arg in args if arg != None)
+    return " ".join(str(arg) for arg in args if arg != None)
 
-def generate_image_pages(generator, search_string, search_language, output_language):
+
+def get_str_in_language(dictionary, languages, default=None):
+    for language in languages:
+        if language in dictionary:
+            return StrInLanguage(dictionary[language], lang=language)
+    return default
+
+def get_str_list_in_language(dictionary, languages, default=None):
+    for language in languages:
+        if language in dictionary:
+            return [ StrInLanguage(item, lang=language) for item in dictionary[language] ]
+    return default
+
+
+def build_tooltip(label, aliases, translation, description):
+    return spaced((label if label else None),
+                  ((f"({', '.join([str(alias) for alias in aliases])})") if aliases else None),
+                  ((f"[= {translation}]") if translation else None)) \
+                  + ((f": {description}") if description else None)
+
+
+def generate_image_pages(generator, searched: StrInLanguage, output_language: str):
     num_start = random.randint(0, config.NUM_COLORS)
 
     for index, entry in enumerate(generator):
         print("===", entry.id, "===")
         pretty_print(entry.labels)
-        label = entry.labels[search_language] \
-            if search_language in entry.labels \
-               else None
-        print("got label", label)
-
-        aliases = entry.aliases[search_language] \
-            if search_language in entry.aliases \
-               else []
+        label = get_str_in_language(entry.labels, [searched.language])
+        print("LABEL", label)
 
         pretty_print(entry.aliases)
-        print("got aliases", aliases)
+        aliases = get_str_list_in_language(entry.aliases, [searched.language], [])
+        print("ALIASES", aliases)
 
         translation = None
-        if search_language != output_language:
-            translation = entry.labels[output_language] \
-                if output_language in entry.labels \
-                   else entry.labels['en'] \
-                        if 'en' in entry.labels else None
+        if output_language != searched.language:
+            translation = get_str_in_language(entry.labels, [output_language])
+            if not translation and searched.language != 'en':
+                translation = get_str_in_language(entry.labels, ['en'])
 
-        print("got tranlation", translation)
+        print("TRANSLATION", translation)
         pretty_print(entry.descriptions)
-        description = entry.descriptions[output_language] \
-            if output_language in entry.descriptions \
-            else entry.descriptions['en'] \
-                 if 'en' in entry.descriptions \
-                 else entry.descriptions[search_language] \
-                      if search_language in entry.descriptions \
-                         else None
+        description = get_str_in_language(entry.descriptions, [output_language, 'en', searched.language])
 
-        print("got descr", description)
+        print("DESCRIPTION", description)
         assert label, "No label"
-        tooltip = spaced((label if label else None),
-                         (("(" + ", ".join(aliases) + ")") if aliases else None),
-                         (("[= " + translation + "]") if translation else None)) \
-            + ((": " + description) if description else "")
+        tooltip = build_tooltip(label, aliases, translation, description)
 
         print("TOOLTIP:", tooltip)
 
@@ -121,7 +127,7 @@ def generate_image_pages(generator, search_string, search_language, output_langu
                     name = commons_media.title(),
                     url = commons_media.full_url(),
                     thumb = commons_media.get_file_url(url_width=320),
-                    caption = uppercase_first(search_string),
+                    caption = searched.text.capitalize(),
                 ), entry_info
                 found = True
 
@@ -129,11 +135,11 @@ def generate_image_pages(generator, search_string, search_language, output_langu
             yield NoImage, entry_info
 
 
-def get_images_for_search(search_string, search_language, output_language):
+def get_images_for_search(searched: StrInLanguage, output_language: str):
     items = []
 
-    entries_generator = generate_label_or_alias_results(search_string, search_language)
-    for result, referrer in generate_image_pages(entries_generator, search_string, search_language, output_language):
+    entries_generator = generate_label_or_alias_results(searched)
+    for result, referrer in generate_image_pages(entries_generator, searched, output_language):
         items.append((result, referrer))
 
     return items
@@ -141,4 +147,4 @@ def get_images_for_search(search_string, search_language, output_language):
 
 
 if __name__ == "__main__":
-    print(get_images_for_search('rautatiesilta', 'fi'))
+    print(get_images_for_search(StrWithLanguage('rautatiesilta', lang='fi'), 'fi'))
