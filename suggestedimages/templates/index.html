@@ -7,7 +7,7 @@
     {% endfor %}
     <label for="title">Wiktionary</label>
     <select name="wikt" id="wikt">
-      <option value="none" {{ "selected" if request.args.get('wikt') == '' }}>default (English)</option>
+      <option value="" {{ "selected" if request.args.get('wikt') == '' }}>default (English)</option>
       <option value="fi" {{ "selected" if request.args.get('wikt') == 'fi' }}>suomi</option>
       <option value="en" {{ "selected" if request.args.get('wikt') == 'en' }}>English</option>
       <option value="es" {{ "selected" if request.args.get('wikt') == 'es' }}>español</option>
@@ -23,13 +23,13 @@
     </select>
     <label for="title">Title</label>
     <input name="title" id="title" value="{{ request.args.get('title') or "" }}" required autofocus>
-    <input type="submit" value="Search">
+    <input type="submit" value="{{ locale['Search'] }}">
   </form>
   <hr/>
 
   <div class="gallery">
     {% if images|length == 0 %}
-    No results.
+    {{ locale['No results.'] }}
     {% endif %}
     {% for image, wd in images %}
     <div class="imagebox {{ wd.color_class }}" title="{{ wd.text }}">
@@ -40,7 +40,7 @@
       <a href="{{ image.url or '' }}">
         <img src="{{ image.thumb }}">
       </a>
-      <code>[[Tiedosto:{{ image.name }}|pienoiskuva|{{ image.caption }}]]</code>
+      <code>{{ locale.format_image(image.name, image.caption) }}</code>
       {% else %}
         <img src="{{ image.thumb }}">
       {% endif %}

@@ -6,6 +6,7 @@ from pywikibot import pagegenerators
 
 from .result import Image, WDEntry, NoImage
 from .util import pretty_print, StrInLanguage
+from .locales import Locale
 import config
 
 
@@ -45,7 +46,7 @@ SELECT distinct ?item ?itemLabel ?itemDescription WHERE{
   ?item rdfs:label|skos:altLabel ?prefLabel
 }
 
-LIMIT 10
+LIMIT 50
 '''
 
     #generator = pagegenerators.PreloadingEntityGenerator(pagegenerators.WikidataSPARQLPageGenerator(QUERY,site=repo))
@@ -73,32 +74,31 @@ def build_tooltip(label, aliases, translation, description):
     return spaced((label if label else None),
                   ((f"({', '.join([str(alias) for alias in aliases])})") if aliases else None),
                   ((f"[= {translation}]") if translation else None)) \
-                  + ((f": {description}") if description else None)
+                  + ((f": {description}") if description else "")
 
 
-def generate_image_pages(generator, searched: StrInLanguage, output_language: str):
+def generate_image_pages(generator, searched: StrInLanguage, locale: Locale):
     for color_num, entry in enumerate(generator, start=random.randint(0, config.NUM_COLORS)):
         print("===", entry.id, "===")
         pretty_print(entry.labels)
-        label = get_str_in_language(entry.labels, [searched.language])
+        label = get_str_in_language(entry.labels, [searched.language]) or locale.text["[no label]"]
         print("LABEL", label)
 
         pretty_print(entry.aliases)
-        aliases = get_str_list_in_language(entry.aliases, [searched.language], [])
+        aliases = get_str_list_in_language(entry.aliases, [searched.language])
         print("ALIASES", aliases)
 
         translation = None
-        if output_language != searched.language:
-            translation = get_str_in_language(entry.labels, [output_language])
+        if locale.language != searched.language:
+            translation = get_str_in_language(entry.labels, [locale.language])
             if not translation and searched.language != 'en':
                 translation = get_str_in_language(entry.labels, ['en'])
 
         print("TRANSLATION", translation)
         pretty_print(entry.descriptions)
-        description = get_str_in_language(entry.descriptions, [output_language, 'en', searched.language])
+        description = get_str_in_language(entry.descriptions, [locale.language, 'en', searched.language])
 
         print("DESCRIPTION", description)
-        assert label, "No label"
         tooltip = build_tooltip(label, aliases, translation, description)
 
         print("TOOLTIP:", tooltip)
@@ -133,11 +133,11 @@ def generate_image_pages(generator, searched: StrInLanguage, output_language: st
             yield NoImage, entry_info
 
 
-def get_images_for_search(searched: StrInLanguage, output_language: str):
+def get_images_for_search(searched: StrInLanguage, locale: Locale):
     items = []
 
     entries_generator = generate_label_or_alias_results(searched)
-    for result, referrer in generate_image_pages(entries_generator, searched, output_language):
+    for result, referrer in generate_image_pages(entries_generator, searched, locale):
         items.append((result, referrer))
 
     return items
@@ -145,4 +145,4 @@ def get_images_for_search(searched: StrInLanguage, output_language: str):
 
 
 if __name__ == "__main__":
-    print(get_images_for_search(StrWithLanguage('rautatiesilta', lang='fi'), 'fi'))
+    print(get_images_for_search(StrInLanguage('rautatiesilta', lang='fi'), 'fi'))
