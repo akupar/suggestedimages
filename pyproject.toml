@@ -1,9 +1,9 @@
 [project]
-name = "Suggested Images"
+name = "suggestedimages"
 version = "1.0.0"
 description = "Article image proposing utility for wiktionaries"
 dependencies = [
-    "suggestedimages",
+    "flask",
 ]
 
 [build-system]
