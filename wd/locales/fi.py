@@ -3,11 +3,12 @@ texts = {
     '(same)': '(sama)',
     'File': 'Tiedosto',
     'thumb': 'pienoiskuva',
-    'No results.': 'Ei tuloksia.',
     'Search': 'Hae',
     'Wiktionary': 'Wikisanakirja',
     'Language': 'Kieli',
     'Title': 'Artikkeli',
+    'Loading...': 'Ladataan...',
+    'No results.': 'Ei tuloksia.',
 }
 
 
