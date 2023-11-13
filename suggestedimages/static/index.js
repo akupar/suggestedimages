@@ -4,3 +4,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
         document.getElementById('title').select();
     }
 });
+
+document.querySelector('#wikt').addEventListener("change", (event) => {
+    console.log("changed");
+    document.querySelector('form').submit();
+});
