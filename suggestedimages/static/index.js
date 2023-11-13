@@ -6,5 +6,17 @@ document.addEventListener("DOMContentLoaded", (event) => {
 });
 
 document.querySelector('#wikt').addEventListener("change", (event) => {
-    document.querySelector('form').submit();
+    document.forms[0].submit();
+});
+
+
+document.forms[0].addEventListener("submit", (event) => {
+    // Disable empty inputs, so it is not submitted as a parametre and clutter the url.
+    if ( document.forms[0].lang.value === "" ) {
+        document.forms[0].lang.setAttribute("disabled", true);
+    }
+
+    if ( document.forms[0].title.value === "" ) {
+        document.forms[0].title.setAttribute("disabled", true);
+    }
 });
