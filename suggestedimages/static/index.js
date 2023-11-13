@@ -19,4 +19,7 @@ document.forms[0].addEventListener("submit", (event) => {
     if ( document.forms[0].title.value === "" ) {
         document.forms[0].title.setAttribute("disabled", true);
     }
+
+    document.querySelector('.gallery').style.display = 'none';
+    document.querySelector('.loading-message').style.display = 'block';
 });

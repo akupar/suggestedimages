@@ -26,6 +26,9 @@
     <input type="submit" value="{{ locale['Search'] }}">
   </form>
   <hr/>
+  <div class="loading-message" style="display: none;">
+    {{ locale['Loading...'] }}
+  </div>
   <div class="gallery">
     {% if images|length == 0 %}
     {{ locale['No results.'] }}
