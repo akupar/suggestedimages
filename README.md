@@ -17,7 +17,7 @@ Add this bookmarklet to your browsers bookmark bar, and click it on a wiktionary
 ```javascript
 javascript:(function () {
       if ( !window.location.hostname.endsWith(".wiktionary.org") ) {
-          alert("This bookmarklet only works in a wiktionary.");
+          alert("This bookmarklet only works on a wiktionary page.");
           return;
       }
        window.open("https://imgs-for-wikt.toolforge.org/?" + $.param({
