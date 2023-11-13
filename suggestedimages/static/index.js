@@ -6,6 +6,5 @@ document.addEventListener("DOMContentLoaded", (event) => {
 });
 
 document.querySelector('#wikt').addEventListener("change", (event) => {
-    console.log("changed");
     document.querySelector('form').submit();
 });

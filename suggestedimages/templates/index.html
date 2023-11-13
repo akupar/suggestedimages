@@ -5,7 +5,7 @@
     {% for message in get_flashed_messages() %}
     <div class="flash">{{ message }}</div>
     {% endfor %}
-    <label for="title">Wiktionary</label>
+    <label for="title">{{ locale['Wiktionary'] }}</label>
     <select name="wikt" id="wikt">
       <option value="" {{ "selected" if request.args.get('wikt') == '' }}>default (English)</option>
       <option value="fi" {{ "selected" if request.args.get('wikt') == 'fi' }}>suomi</option>
@@ -13,15 +13,15 @@
       <option value="es" {{ "selected" if request.args.get('wikt') == 'es' }}>español</option>
       <option value="sv" {{ "selected" if request.args.get('wikt') == 'sv' }}>svenska</option>
     </select>
-    <label for="title">Language</label>
+    <label for="title">{{ locale['Language'] }}</label>
     <select name="lang" id="lang">
-      <option value="" {{ "selected" if request.args.get('lang') == '' }}>(sama)</option>
+      <option value="" {{ "selected" if request.args.get('lang') == '' }}>{{ locale['(same)'] }}</option>
       <option value="fi" {{ "selected" if request.args.get('lang') == 'fi' }}>{{ locale.languages['fi'] }}</option>
       <option value="en" {{ "selected" if request.args.get('lang') == 'en' }}>{{ locale.languages['en'] }}</option>
       <option value="es" {{ "selected" if request.args.get('lang') == 'es' }}>{{ locale.languages['es'] }}</option>
       <option value="sv" {{ "selected" if request.args.get('lang') == 'sv' }}>{{ locale.languages['sv'] }}</option>
     </select>
-    <label for="title">Title</label>
+    <label for="title">{{ locale['Title'] }}</label>
     <input name="title" id="title" value="{{ request.args.get('title') or "" }}" required autofocus>
     <input type="submit" value="{{ locale['Search'] }}">
   </form>
@@ -45,6 +45,6 @@
         <img src="{{ image.thumb }}">
       {% endif %}
     </div>
-  {% endfor %}
+    {% endfor %}
   </div>
 {% endblock %}
