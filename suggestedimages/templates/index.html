@@ -16,10 +16,10 @@
     <label for="title">Language</label>
     <select name="lang" id="lang">
       <option value="" {{ "selected" if request.args.get('lang') == '' }}>(sama)</option>
-      <option value="fi" {{ "selected" if request.args.get('lang') == 'fi' }}>suomi</option>
-      <option value="en" {{ "selected" if request.args.get('lang') == 'en' }}>englanti</option>
-      <option value="es" {{ "selected" if request.args.get('lang') == 'es' }}>espanja</option>
-      <option value="sv" {{ "selected" if request.args.get('lang') == 'sv' }}>ruotsi</option>
+      <option value="fi" {{ "selected" if request.args.get('lang') == 'fi' }}>{{ locale.languages['fi'] }}</option>
+      <option value="en" {{ "selected" if request.args.get('lang') == 'en' }}>{{ locale.languages['en'] }}</option>
+      <option value="es" {{ "selected" if request.args.get('lang') == 'es' }}>{{ locale.languages['es'] }}</option>
+      <option value="sv" {{ "selected" if request.args.get('lang') == 'sv' }}>{{ locale.languages['sv'] }}</option>
     </select>
     <label for="title">Title</label>
     <input name="title" id="title" value="{{ request.args.get('title') or "" }}" required autofocus>

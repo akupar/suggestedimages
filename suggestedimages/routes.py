@@ -12,7 +12,7 @@ bp = Blueprint('main', __name__)
 def index():
     title = request.args.get('title')
     if not title:
-        return render_template('index.html')
+        return render_template('index.html', images=[], locale=DEFAULT_LOCALE)
 
     wikt = request.args.get('wikt')
     locale = Locale(wikt) if wikt else DEFAULT_LOCALE

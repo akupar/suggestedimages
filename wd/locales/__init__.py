@@ -1,4 +1,6 @@
 import importlib
+import langcodes
+
 
 # Source: https://meta.wikimedia.org/wiki/Wiktionary, retrieved 2023-11-12
 language_of_wiktionary = {
@@ -172,6 +174,10 @@ language_of_wiktionary = {
     'tn': 'tn', # Tswana
 }
 
+class DefaultLanguages:
+    def __getitem__(self, key):
+        return langcodes.Language.get(key).display_name()
+
 
 class Locale:
     def __init__(self, wikt):
@@ -200,6 +206,11 @@ class Locale:
             name = name[len('File:'):]
         return f"[[{self['File']}:{name}|{self['thumb']}|{caption}]]"
 
+    @property
+    def languages(self):
+        if not self.module or not self.module.languages:
+            return DefaultLanguages()
+        return self.module.languages
 
 
 DEFAULT_LOCALE = Locale('en')
