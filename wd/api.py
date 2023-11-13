@@ -1,11 +1,12 @@
 import re
 import random
+from typing import *
 
 import pywikibot
 from pywikibot import pagegenerators
 
 from .result import Image, WDEntry, NoImage
-from .util import pretty_print, StrInLanguage
+from .util import StrInLanguage
 from .locales import Locale
 import config
 
@@ -77,16 +78,12 @@ def build_tooltip(label, aliases, translation, description):
                   + ((f": {description}") if description else "")
 
 
-def generate_image_pages(generator, searched: StrInLanguage, locale: Locale):
-    for color_num, entry in enumerate(generator, start=random.randint(0, config.NUM_COLORS)):
-        print("===", entry.id, "===")
-        pretty_print(entry.labels)
-        label = get_str_in_language(entry.labels, [searched.language]) or locale["[no label]"]
-        print("LABEL", label)
+def generate_image_pages(generator, searched: StrInLanguage, locale: Locale) -> Iterator[tuple[Image, WDEntry]]:
 
-        pretty_print(entry.aliases)
+    for color_num, entry in enumerate(generator, start=random.randint(0, config.NUM_COLORS)):
+
+        label = get_str_in_language(entry.labels, [searched.language]) or locale["[no label]"]
         aliases = get_str_list_in_language(entry.aliases, [searched.language])
-        print("ALIASES", aliases)
 
         translation = None
         if locale.language != searched.language:
@@ -94,14 +91,9 @@ def generate_image_pages(generator, searched: StrInLanguage, locale: Locale):
             if not translation and searched.language != 'en':
                 translation = get_str_in_language(entry.labels, ['en'])
 
-        print("TRANSLATION", translation)
-        pretty_print(entry.descriptions)
         description = get_str_in_language(entry.descriptions, [locale.language, 'en', searched.language])
 
-        print("DESCRIPTION", description)
         tooltip = build_tooltip(label, aliases, translation, description)
-
-        print("TOOLTIP:", tooltip)
 
         entry_info = WDEntry(
             entry.id,
@@ -118,8 +110,6 @@ def generate_image_pages(generator, searched: StrInLanguage, locale: Locale):
                 continue
 
             for image_entry in entry.claims[prop]:
-                print(type(image_entry), dir(image_entry))
-                pretty_print(vars(image_entry))
                 commons_media = image_entry.target
                 yield Image(
                     name = commons_media.title(),
@@ -133,14 +123,11 @@ def generate_image_pages(generator, searched: StrInLanguage, locale: Locale):
             yield NoImage, entry_info
 
 
-def get_images_for_search(searched: StrInLanguage, locale: Locale):
-    items = []
-
+def get_images_for_search(searched: StrInLanguage, locale: Locale) -> list[tuple[Image, WDEntry]]:
     entries_generator = generate_label_or_alias_results(searched)
-    for result, referrer in generate_image_pages(entries_generator, searched, locale):
-        items.append((result, referrer))
 
-    return items
+    return list(generate_image_pages(entries_generator, searched, locale))
+
 
 
 
