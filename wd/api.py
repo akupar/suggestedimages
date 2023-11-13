@@ -81,7 +81,7 @@ def generate_image_pages(generator, searched: StrInLanguage, locale: Locale):
     for color_num, entry in enumerate(generator, start=random.randint(0, config.NUM_COLORS)):
         print("===", entry.id, "===")
         pretty_print(entry.labels)
-        label = get_str_in_language(entry.labels, [searched.language]) or locale.text["[no label]"]
+        label = get_str_in_language(entry.labels, [searched.language]) or locale["[no label]"]
         print("LABEL", label)
 
         pretty_print(entry.aliases)
