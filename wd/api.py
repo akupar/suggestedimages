@@ -59,22 +59,12 @@ def generate_image_descriptions(entry: WDEntry, caption: str) -> Iterator[ImageR
                     caption = caption,
                     facet = name
                 )
-            else:
-                print(entry, type(commons_media), commons_media)
 
 
 def generate_image_pages(generator, searched: StrInLanguage, locale: Locale) -> Iterator[tuple[ImageResult, WDEntry]]:
 
     for color_num, entry in enumerate(generator, start=random.randint(0, config.NUM_COLORS)):
         entry_info = get_entry_description(entry, color_num, searched, locale)
-
-        prop = entry.claims.get('P373')
-        if prop and len(prop) > 0:
-            yield CommonsResult('Category:' + prop[0].getTarget()), entry_info
-
-        prop = entry.claims.get('P935')
-        if prop and len(prop) > 0:
-            yield CommonsResult(prop[0].getTarget()), entry_info
 
         count = 0
         for image_info in generate_image_descriptions(entry, searched.text.capitalize()):
@@ -83,6 +73,14 @@ def generate_image_pages(generator, searched: StrInLanguage, locale: Locale) -> 
 
         if count == 0:
             yield NoImage, entry_info
+
+        prop = entry.claims.get('P373')
+        if prop and len(prop) > 0:
+            yield CommonsResult('Category:' + prop[0].getTarget()), entry_info
+
+        prop = entry.claims.get('P935')
+        if prop and len(prop) > 0:
+            yield CommonsResult(prop[0].getTarget()), entry_info
 
 
 def get_images_for_search(searched: StrInLanguage, locale: Locale) -> list[tuple[ImageResult, WDEntry]]:
