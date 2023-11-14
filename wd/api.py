@@ -6,9 +6,10 @@ import pywikibot
 from pywikibot import pagegenerators
 
 from .result import Image, WDEntry, NoImage
-from .util import build_tooltip, StrInLanguage, StrInLanguages, bind_sparql_query, Identifier
+from .util import build_tooltip, StrInLanguage, StrInLanguages
 from .locales import Locale
 import config
+from . import queries
 
 
 IMAGE_PROPS = [
@@ -29,28 +30,10 @@ IMAGE_PROPS = [
 site = pywikibot.Site("wikidata", "wikidata")
 
 def generate_label_or_alias_results(searched):
-    query = bind_sparql_query(
-        '''
-SELECT distinct ?item ?itemLabel ?itemDescription WHERE{
-  VALUES ?prefLabel {
-    {{searched_text}}@{{searched_language}}
-    {{searched_text_capitalized}}@{{searched_language}}
-  }
-
-  ?item rdfs:label|skos:altLabel ?prefLabel
-}
-
-LIMIT {{limit}}
-''',
-        searched_text = searched.text,
-        searched_text_capitalized = searched.text.capitalize(),
-        searched_language = Identifier(searched.language),
-        limit = 50
+    return pagegenerators.WikidataSPARQLPageGenerator(
+        queries.label_or_alias_capitalized_or_not(searched.text, searched.language),
+        site=site.data_repository()
     )
-
-    return pagegenerators.WikidataSPARQLPageGenerator(query, site=site.data_repository())
-
-
 
 
 def generate_image_pages(generator, searched: StrInLanguage, locale: Locale) -> Iterator[tuple[Image, WDEntry]]:
