@@ -6,6 +6,7 @@ from wd.util import pretty_print
 site = pywikibot.Site("wikidata", "wikidata")
 repo = site.data_repository()
 
+# P1659 = related property
 query = '''
 SELECT ?value ?valueLabel
 WHERE
