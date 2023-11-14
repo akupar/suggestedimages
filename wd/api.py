@@ -5,7 +5,7 @@ from typing import *
 import pywikibot
 from pywikibot import pagegenerators
 
-from .result import ImageResult, WDEntry, NoImage
+from .result import CommonsResult, ImageResult, WDEntry, NoImage
 from .util import build_tooltip, StrInLanguage, StrInLanguages
 from .locales import Locale
 from . import queries
@@ -64,6 +64,14 @@ def generate_image_pages(generator, searched: StrInLanguage, locale: Locale) -> 
     for color_num, entry in enumerate(generator, start=random.randint(0, config.NUM_COLORS)):
         entry_info = get_entry_description(entry, color_num, searched, locale)
 
+        prop = entry.claims.get('P373')
+        if prop and len(prop) > 0:
+            yield CommonsResult('Category:' + prop[0].getTarget()), entry_info
+
+        prop = entry.claims.get('P935')
+        if prop and len(prop) > 0:
+            yield CommonsResult(prop[0].getTarget()), entry_info
+
         count = 0
         for image_info in generate_image_descriptions(entry, searched.text.capitalize()):
             yield image_info, entry_info
@@ -76,7 +84,9 @@ def generate_image_pages(generator, searched: StrInLanguage, locale: Locale) -> 
 def get_images_for_search(searched: StrInLanguage, locale: Locale) -> list[tuple[ImageResult, WDEntry]]:
     entries_generator = generate_label_or_alias_results(searched)
 
-    return list(generate_image_pages(entries_generator, searched, locale))
+    lst = list(generate_image_pages(entries_generator, searched, locale))
+    return lst
+
 
 
 
