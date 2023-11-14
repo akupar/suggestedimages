@@ -6,7 +6,7 @@ import pywikibot
 from pywikibot import pagegenerators
 
 from .result import Image, WDEntry, NoImage
-from .util import build_tooltip, StrInLanguage
+from .util import build_tooltip, StrInLanguage, StrInLanguages
 from .locales import Locale
 import config
 
@@ -55,35 +55,20 @@ LIMIT 50
 
 
 
-def get_str_in_language(dictionary, languages, default=None):
-    for language in languages:
-        if language in dictionary:
-            return StrInLanguage(dictionary[language], lang=language)
-    return default
-
-def get_str_list_in_language(dictionary, languages, default=None):
-    for language in languages:
-        if language in dictionary:
-            return [ StrInLanguage(item, lang=language) for item in dictionary[language] ]
-    return default
-
-
-
-
 def generate_image_pages(generator, searched: StrInLanguage, locale: Locale) -> Iterator[tuple[Image, WDEntry]]:
 
     for color_num, entry in enumerate(generator, start=random.randint(0, config.NUM_COLORS)):
 
-        label = get_str_in_language(entry.labels, [searched.language]) or locale["[no label]"]
-        aliases = get_str_list_in_language(entry.aliases, [searched.language])
+        label = StrInLanguages(entry.labels).get(searched.language) or locale["[no label]"]
+        aliases = StrInLanguages(entry.aliases).get(searched.language)
 
         translation = None
         if locale.language != searched.language:
-            translation = get_str_in_language(entry.labels, [locale.language])
+            translation = StrInLanguages(entry.labels).get(locale.language)
             if not translation and searched.language != 'en':
-                translation = get_str_in_language(entry.labels, ['en'])
+                translation = StrInLanguages(entry.labels).get('en')
 
-        description = get_str_in_language(entry.descriptions, [locale.language, 'en', searched.language])
+        description = StrInLanguages(entry.descriptions).get(locale.language, 'en', searched.language)
 
         tooltip = build_tooltip(label, aliases, translation, description)
 
