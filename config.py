@@ -4,7 +4,9 @@ NO_IMAGE_THUMB = '/static/Noimages.svg'
 NUM_COLORS = 12
 
 # The props that are looked for images
+# https://www.wikidata.org/wiki/Property:P18 related property (P1659)
 IMAGE_PROPS = [
+    ("P18", None),
     ("P14", "traffic sign"),
     ("P41", "flag image"),
     ("P94", "coat of arms image"),
@@ -13,7 +15,7 @@ IMAGE_PROPS = [
     ("P158", "seal image"),
     ("P242", "locator map image"),
     ("P367", "astronomic symbol image"),
-    ("P407", "language of work or name"),
+    #("P407", "language of work or name"),
     ("P948", "page banner"),
     ("P996", "document file on Wikimedia Commons"),
     ("P1442", "image of grave"),
