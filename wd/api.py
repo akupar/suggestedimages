@@ -6,7 +6,7 @@ import pywikibot
 from pywikibot import pagegenerators
 
 from .result import Image, WDEntry, NoImage
-from .util import StrInLanguage
+from .util import build_tooltip, StrInLanguage
 from .locales import Locale
 import config
 
@@ -54,9 +54,6 @@ LIMIT 50
     return pagegenerators.WikidataSPARQLPageGenerator(QUERY, site=repo)
 
 
-def spaced(*args):
-    return " ".join(str(arg) for arg in args if arg != None)
-
 
 def get_str_in_language(dictionary, languages, default=None):
     for language in languages:
@@ -71,11 +68,6 @@ def get_str_list_in_language(dictionary, languages, default=None):
     return default
 
 
-def build_tooltip(label, aliases, translation, description):
-    return spaced((label if label else None),
-                  ((f"({', '.join([str(alias) for alias in aliases])})") if aliases else None),
-                  ((f"[= {translation}]") if translation else None)) \
-                  + ((f": {description}") if description else "")
 
 
 def generate_image_pages(generator, searched: StrInLanguage, locale: Locale) -> Iterator[tuple[Image, WDEntry]]:
