@@ -14,6 +14,7 @@ IMAGE_PROPS = [
     'P367', # astronomic symbol image
     'P1943',
     'P2716', # collage image
+    'P3451', # nighttime view
     'P5775', # image of interior
     'P8592', # aerial view
     'P8972', # icon
