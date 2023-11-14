@@ -8,24 +8,9 @@ from pywikibot import pagegenerators
 from .result import Image, WDEntry, NoImage
 from .util import build_tooltip, StrInLanguage, StrInLanguages
 from .locales import Locale
-import config
 from . import queries
+import config
 
-
-IMAGE_PROPS = [
-    'P18', # image
-    'P14', # traffic sign
-    'P41',
-    'P94',
-    'P158', # seal image
-    'P242',
-    'P367', # astronomic symbol image
-    'P1943',
-    'P2716', # collage image
-    'P5775', # image of interior
-    'P8592', # aerial view
-    'P8972', # icon
-]
 
 site = pywikibot.Site("wikidata", "wikidata")
 
@@ -63,7 +48,7 @@ def generate_image_pages(generator, searched: StrInLanguage, locale: Locale) -> 
         )
 
         found = False
-        for prop in IMAGE_PROPS:
+        for prop in config.IMAGE_PROPS:
             if prop not in entry.claims:
                 continue
 
