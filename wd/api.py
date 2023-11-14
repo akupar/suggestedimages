@@ -6,7 +6,7 @@ import pywikibot
 from pywikibot import pagegenerators
 
 from .result import Image, WDEntry, NoImage
-from .util import build_tooltip, StrInLanguage, StrInLanguages
+from .util import build_tooltip, StrInLanguage, StrInLanguages, bind_sparql_query, Identifier
 from .locales import Locale
 import config
 
@@ -27,31 +27,29 @@ IMAGE_PROPS = [
 ]
 
 site = pywikibot.Site("wikidata", "wikidata")
-repo = site.data_repository()
-
 
 def generate_label_or_alias_results(searched):
-    if searched.text.find('''"""''') != -1:
-        raise Exception(f"Invalid search string: {searched}")
-
-    if not re.match(r'^[a-z-]+$', searched.language):
-        raise Exception(f"Invalid language code: {searched.language}")
-
-    QUERY = '''
+    query = bind_sparql_query(
+        '''
 SELECT distinct ?item ?itemLabel ?itemDescription WHERE{
   VALUES ?prefLabel {
-    """''' + searched.text + '''"""@''' + searched.language + '''
-   """''' + searched.text.capitalize() + '''"""@''' + searched.language + '''
+    {{searched_text}}@{{searched_language}}
+    {{searched_text_capitalized}}@{{searched_language}}
   }
 
   ?item rdfs:label|skos:altLabel ?prefLabel
 }
 
-LIMIT 50
-'''
+LIMIT {{limit}}
+''',
+        searched_text = searched.text,
+        searched_text_capitalized = searched.text.capitalize(),
+        searched_language = Identifier(searched.language),
+        limit = 50
+    )
 
-    #generator = pagegenerators.PreloadingEntityGenerator(pagegenerators.WikidataSPARQLPageGenerator(QUERY,site=repo))
-    return pagegenerators.WikidataSPARQLPageGenerator(QUERY, site=repo)
+    return pagegenerators.WikidataSPARQLPageGenerator(query, site=site.data_repository())
+
 
 
 
