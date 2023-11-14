@@ -19,7 +19,6 @@ def index():
     lang = request.args.get('lang') or locale.language
     lang_str = StrInLanguage(title, lang=lang)
 
-    print("locale:", locale)
     return render_template('index.html',
                            images=wd.get_images_for_search(lang_str, locale),
                            locale=locale)
