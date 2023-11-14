@@ -20,7 +20,7 @@ def generate_label_or_alias_results(searched):
         site=site.data_repository()
     )
 
-def get_entry_description(entry, color_num, searched, locale):
+def get_entry_description(entry, color_num: int, searched: StrInLanguage, locale: Locale) -> WDEntry:
     label = StrInLanguages(entry.labels).get(searched.language) or locale["[no label]"]
     aliases = StrInLanguages(entry.aliases).get(searched.language)
 
@@ -44,7 +44,7 @@ def get_entry_description(entry, color_num, searched, locale):
     )
 
 
-def generate_image_descriptions(entry, caption):
+def generate_image_descriptions(entry: WDEntry, caption: str) -> Iterator[Image]:
     for prop in config.IMAGE_PROPS:
         if prop not in entry.claims:
             continue
