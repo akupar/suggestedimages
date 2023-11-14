@@ -34,13 +34,20 @@ def get_entry_description(entry, color_num: int, searched: StrInLanguage, locale
 
     tooltip = build_tooltip(label, aliases, translation, description)
 
+    commonscat = entry.claims.get('P373')[0].getTarget() \
+        if entry.claims.get('P373') else None
+    commons_gallery = entry.claims.get('P935')[0].getTarget() \
+        if entry.claims.get('P935') else None
+
     return WDEntry(
         entry.id,
         label,
         description,
         tooltip,
         entry.full_url(),
-        'color-' + str(color_num % config.NUM_COLORS + 1)
+        'color-' + str(color_num % config.NUM_COLORS + 1),
+        commonscat,
+        commons_gallery,
     )
 
 
