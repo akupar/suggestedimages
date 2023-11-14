@@ -51,13 +51,16 @@ def generate_image_descriptions(entry: WDEntry, caption: str) -> Iterator[ImageR
 
         for image_entry in entry.claims[prop]:
             commons_media = image_entry.target
-            yield ImageResult(
-                name = commons_media.title(),
-                url = commons_media.full_url(),
-                thumb = commons_media.get_file_url(url_width=320),
-                caption = caption,
-                facet = name
-            )
+            if isinstance(commons_media, pywikibot.page.FilePage):
+                yield ImageResult(
+                    name = commons_media.title(),
+                    url = commons_media.full_url(),
+                    thumb = commons_media.get_file_url(url_width=320),
+                    caption = caption,
+                    facet = name
+                )
+            else:
+                print(entry, type(commons_media), commons_media)
 
 
 def generate_image_pages(generator, searched: StrInLanguage, locale: Locale) -> Iterator[tuple[ImageResult, WDEntry]]:
