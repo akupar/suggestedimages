@@ -5,7 +5,7 @@ from typing import *
 import pywikibot
 from pywikibot import pagegenerators
 
-from .result import Image, WDEntry, NoImage
+from .result import ImageResult, WDEntry, NoImage
 from .util import build_tooltip, StrInLanguage, StrInLanguages
 from .locales import Locale
 from . import queries
@@ -34,11 +34,6 @@ def get_entry_description(entry, color_num: int, searched: StrInLanguage, locale
 
     tooltip = build_tooltip(label, aliases, translation, description)
 
-    commonscat = entry.claims.get('P373')[0].getTarget() \
-        if entry.claims.get('P373') else None
-    commons_gallery = entry.claims.get('P935')[0].getTarget() \
-        if entry.claims.get('P935') else None
-
     return WDEntry(
         entry.id,
         label,
@@ -46,19 +41,17 @@ def get_entry_description(entry, color_num: int, searched: StrInLanguage, locale
         tooltip,
         entry.full_url(),
         'color-' + str(color_num % config.NUM_COLORS + 1),
-        commonscat,
-        commons_gallery,
     )
 
 
-def generate_image_descriptions(entry: WDEntry, caption: str) -> Iterator[Image]:
+def generate_image_descriptions(entry: WDEntry, caption: str) -> Iterator[ImageResult]:
     for prop in config.IMAGE_PROPS:
         if prop not in entry.claims:
             continue
 
         for image_entry in entry.claims[prop]:
             commons_media = image_entry.target
-            yield Image(
+            yield ImageResult(
                 name = commons_media.title(),
                 url = commons_media.full_url(),
                 thumb = commons_media.get_file_url(url_width=320),
@@ -66,7 +59,7 @@ def generate_image_descriptions(entry: WDEntry, caption: str) -> Iterator[Image]
             )
 
 
-def generate_image_pages(generator, searched: StrInLanguage, locale: Locale) -> Iterator[tuple[Image, WDEntry]]:
+def generate_image_pages(generator, searched: StrInLanguage, locale: Locale) -> Iterator[tuple[ImageResult, WDEntry]]:
 
     for color_num, entry in enumerate(generator, start=random.randint(0, config.NUM_COLORS)):
         entry_info = get_entry_description(entry, color_num, searched, locale)
@@ -80,7 +73,7 @@ def generate_image_pages(generator, searched: StrInLanguage, locale: Locale) -> 
             yield NoImage, entry_info
 
 
-def get_images_for_search(searched: StrInLanguage, locale: Locale) -> list[tuple[Image, WDEntry]]:
+def get_images_for_search(searched: StrInLanguage, locale: Locale) -> list[tuple[ImageResult, WDEntry]]:
     entries_generator = generate_label_or_alias_results(searched)
 
     return list(generate_image_pages(entries_generator, searched, locale))
