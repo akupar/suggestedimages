@@ -25,6 +25,19 @@
     <input name="title" id="title" value="{{ request.args.get('title') or "" }}" required autofocus>
     <input type="submit" value="{{ locale['Search'] }}">
   </form>
+  <div class="link-bar">
+    {% if edit_url %}
+    <a href="{{ view_url }}" target="_blank" title="View {{ request.args.get('title') }}">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Piece-ico-48px.png"/>
+    </a>
+    <a href="{{ edit_url }}" target="_blank" title="Edit {{ request.args.get('title') }}">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/VisualEditor-maps-edit-icon.png"/>
+    </a>
+    {% else %}
+    <img style="opacity: 50%" title="No wiktionary selected" src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Piece-ico-48px.png"/>
+    <img style="opacity: 50%" title="No wiktionary selected" src="https://upload.wikimedia.org/wikipedia/commons/8/87/VisualEditor-maps-edit-icon.png"/>
+    {% endif %}
+  </div>
   <hr/>
   <div class="loading-message" style="display: none;">
     {{ locale['Loading...'] }}
@@ -43,21 +56,21 @@
         {% endif %}
       </div>
       {% if result.url %}
-      <a href="{{ result.url or '' }}">
         {% if result.type == 'image' %}
-        <img class="result-image" src="{{ result.thumb }}" title="{{ wd.text }}">
+        <a href="{{ result.url or '' }}">
+          <img class="result-image" src="{{ result.thumb }}" title="{{ wd.text }}">
+        </a>
         <code>{{ locale.format_image(result.name, result.caption) }}</code>
         {% elif result.type == 'link' %}
         <div class="result-link">
           <div>
             <img class="logo" src="/static/Commons-logo.svg">
-            <span>{{ result.name }}</span>
+            <a href="{{ result.url or '' }}">{{ result.name }}</a>
           </div>
         </div>
         {% endif %}
-      </a>
       {% else %}
-        <img src="{{ result.thumb }}">
+      <img src="{{ result.thumb }}">
       {% endif %}
     </div>
     {% endfor %}

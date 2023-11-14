@@ -233,3 +233,13 @@ input[type=submit] {
     padding: 0.1rem;
     color: #000a;
 }
+
+
+.link-bar {
+    text-align: right;
+}
+
+.link-bar img {
+    max-height: 1em;
+    max-width: 1em;
+}
