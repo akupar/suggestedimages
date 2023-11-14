@@ -146,10 +146,9 @@ input[type=submit] {
     margin-bottom: 0.5em;
 }
 
-.imagebox img {
-    max-width: 320px;
+.result-image, .result-link {
+    width: 320px;
     max-height: 100%;
-
 }
 
 .imagebox code {
@@ -204,4 +203,21 @@ input[type=submit] {
 
 .color-12 {
     background-color: #a5d5d5;
+}
+
+.logo {
+    max-width: 4em;
+    max-height: 4em;
+}
+
+
+.result-link > div {
+    display: flex;
+    gap: 0.5em;
+    align-items: center;
+    background-color: #efefef;
+}
+
+.box-header > a:first-child {
+    flex-grow: 1;
 }
