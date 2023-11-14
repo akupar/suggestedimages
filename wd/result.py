@@ -27,16 +27,3 @@ class Image:
 
 
 NoImage = Image('No Images', None, config.NO_IMAGE_THUMB, None)
-
-
-if __name__ == "__main__":
-
-
-    img = Image("NGO Nishi Nagono 2-chome 20230208-01.jpg", "", "", "", "")
-    print(img.thumb)
-
-    img = Image("ジブチ大使館は一軒家.jpg", "", "", "", "")
-    print(img.thumb)
-
-    img = Image("SVG icon (letters).svg", "", "", "", "")
-    print(img.thumb)
