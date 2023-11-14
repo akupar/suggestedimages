@@ -24,6 +24,8 @@ class ImageResult:
     url: str
     thumb: str
     caption: str
+    facet: str
+
     type = 'image'
 
 @dataclass
@@ -36,4 +38,4 @@ class CommonsResult:
         return f'https://commons.wikimedia.org/wiki/{self.name.replace(" ", "_")}'
 
 
-NoImage = ImageResult('No Images', None, config.NO_IMAGE_THUMB, None)
+NoImage = ImageResult('No Images', None, config.NO_IMAGE_THUMB, None, None)

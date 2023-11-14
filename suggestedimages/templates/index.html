@@ -37,6 +37,10 @@
     <div class="imagebox {{ wd.color_class }}">
       <div class="box-header">
         <a href="{{ wd.url }}" title="{{ wd.text }}">{{ wd.id }}</a>
+
+        {% if result.facet %}
+        <span class="facet">{{ result.facet }}</span>
+        {% endif %}
       </div>
       {% if result.url %}
       <a href="{{ result.url or '' }}">

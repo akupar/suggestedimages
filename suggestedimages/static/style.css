@@ -218,6 +218,18 @@ input[type=submit] {
     background-color: #efefef;
 }
 
+.box-header {
+    display: flex;
+}
+
 .box-header > a:first-child {
     flex-grow: 1;
+}
+
+.facet {
+    /*border: solid #0003 1px;
+    border-radius: 0.5rem;
+    background-color: #0001;*/
+    padding: 0.1rem;
+    color: #000a;
 }

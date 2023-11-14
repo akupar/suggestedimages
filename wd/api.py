@@ -45,7 +45,7 @@ def get_entry_description(entry, color_num: int, searched: StrInLanguage, locale
 
 
 def generate_image_descriptions(entry: WDEntry, caption: str) -> Iterator[ImageResult]:
-    for prop in config.IMAGE_PROPS:
+    for (prop, name) in config.IMAGE_PROPS:
         if prop not in entry.claims:
             continue
 
@@ -56,6 +56,7 @@ def generate_image_descriptions(entry: WDEntry, caption: str) -> Iterator[ImageR
                 url = commons_media.full_url(),
                 thumb = commons_media.get_file_url(url_width=320),
                 caption = caption,
+                facet = name
             )
 
 
