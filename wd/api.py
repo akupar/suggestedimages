@@ -74,12 +74,11 @@ def generate_image_pages(generator, searched: StrInLanguage, locale: Locale) -> 
         if count == 0:
             yield NoImage, entry_info
 
-        prop = entry.claims.get('P373')
-        if prop and len(prop) > 0:
+
+        if (prop := entry.claims.get('P373')) and len(prop) > 0:
             yield CommonsResult('Category:' + prop[0].getTarget()), entry_info
 
-        prop = entry.claims.get('P935')
-        if prop and len(prop) > 0:
+        if (prop := entry.claims.get('P935')) and len(prop) > 0:
             yield CommonsResult(prop[0].getTarget()), entry_info
 
 
