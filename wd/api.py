@@ -76,10 +76,10 @@ def generate_image_pages(generator: Iterator, searched: StrInLanguage, locale: L
 
 
         if (prop := entry.claims.get('P373')) and len(prop) > 0:
-            yield CommonsResult('Category:' + prop[0].getTarget()), entry_info
+            yield CommonsResult('Category:' + prop[0].getTarget(), 'category'), entry_info
 
         if (prop := entry.claims.get('P935')) and len(prop) > 0:
-            yield CommonsResult(prop[0].getTarget()), entry_info
+            yield CommonsResult(prop[0].getTarget(), 'gallery'), entry_info
 
 
 def get_images_for_search(searched: StrInLanguage, locale: Locale) -> list[tuple[Result, WDEntry]]:

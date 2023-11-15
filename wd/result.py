@@ -36,6 +36,7 @@ class ImageResult(Result):
 @dataclass
 class CommonsResult(Result):
     name: str
+    facet: str
     type = 'link'
 
     @property
