@@ -1,14 +1,17 @@
 from dataclasses import dataclass
 import hashlib
+from typing import *
 
 import config
+from wd.util import StrInLanguage
 
 
 @dataclass
 class WDEntry:
     id: str
-    label: str
-    description: str
+    label: StrInLanguage
+    aliases: list[StrInLanguage]
+    description: StrInLanguage
     text: str
     full_url: str
     color_class: str
