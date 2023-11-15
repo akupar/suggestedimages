@@ -37,6 +37,7 @@ def get_entry_description(entry: Iterator, color_num: int, searched: StrInLangua
     return WDEntry(
         entry.id,
         label,
+        aliases or [],
         description,
         tooltip,
         entry.full_url(),
@@ -85,9 +86,36 @@ def generate_image_pages(generator: Iterator, searched: StrInLanguage, locale: L
 def get_images_for_search(searched: StrInLanguage, locale: Locale) -> list[tuple[Result, WDEntry]]:
     entries_generator = generate_label_or_alias_results(searched)
 
-    return list(generate_image_pages(entries_generator, searched, locale))
+    result_tuples = list(generate_image_pages(entries_generator, searched, locale))
+    ranks = get_ranks_for_entries(result_tuples, searched)
+
+    return sorted(
+        result_tuples,
+        key = lambda pair: ranks[pair[1].id],
+        reverse = True,
+    )
 
 
+
+def get_ranks_for_entries(results: list[tuple[Result, WDEntry]], searched: StrInLanguage):
+    entry_ranks = {}
+
+    for result_info, entry_info in results:
+        if entry_info.id not in entry_ranks:
+            entry_ranks[entry_info.id] = (False, True, False)
+
+        exact_case_match = (entry_info.label == searched or searched in entry_info.aliases)
+        no_images = (result_info == NoImage)
+        gallery_found = (isinstance(result_info, CommonsResult))
+
+        prev_rank = entry_ranks[entry_info.id]
+        entry_ranks[entry_info.id] = (
+            prev_rank[0] or exact_case_match,
+            prev_rank[1] and not no_images,
+            prev_rank[2] or gallery_found
+        )
+
+    return entry_ranks
 
 
 if __name__ == "__main__":
