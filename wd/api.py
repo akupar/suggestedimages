@@ -5,7 +5,7 @@ from typing import *
 import pywikibot
 from pywikibot import pagegenerators
 
-from .result import CommonsResult, ImageResult, WDEntry, NoImage
+from .result import Result, CommonsResult, ImageResult, WDEntry, NoImage
 from .util import build_tooltip, StrInLanguage, StrInLanguages
 from .locales import Locale
 from . import queries
@@ -14,13 +14,13 @@ import config
 
 site = pywikibot.Site("wikidata", "wikidata")
 
-def generate_label_or_alias_results(searched):
+def generate_label_or_alias_results(searched) -> Iterator:
     return pagegenerators.WikidataSPARQLPageGenerator(
         queries.label_or_alias_capitalized_or_not(searched.text, searched.language),
         site=site.data_repository()
     )
 
-def get_entry_description(entry, color_num: int, searched: StrInLanguage, locale: Locale) -> WDEntry:
+def get_entry_description(entry: Iterator, color_num: int, searched: StrInLanguage, locale: Locale) -> WDEntry:
     label = StrInLanguages(entry.labels).get(searched.language) or locale["[no label]"]
     aliases = StrInLanguages(entry.aliases).get(searched.language)
 
@@ -61,7 +61,7 @@ def generate_image_descriptions(entry: WDEntry, caption: str) -> Iterator[ImageR
                 )
 
 
-def generate_image_pages(generator, searched: StrInLanguage, locale: Locale) -> Iterator[tuple[ImageResult, WDEntry]]:
+def generate_image_pages(generator: Iterator, searched: StrInLanguage, locale: Locale) -> Iterator[tuple[Result, WDEntry]]:
 
     for color_num, entry in enumerate(generator, start=random.randint(0, config.NUM_COLORS)):
         entry_info = get_entry_description(entry, color_num, searched, locale)
@@ -82,12 +82,10 @@ def generate_image_pages(generator, searched: StrInLanguage, locale: Locale) -> 
             yield CommonsResult(prop[0].getTarget()), entry_info
 
 
-def get_images_for_search(searched: StrInLanguage, locale: Locale) -> list[tuple[ImageResult, WDEntry]]:
+def get_images_for_search(searched: StrInLanguage, locale: Locale) -> list[tuple[Result, WDEntry]]:
     entries_generator = generate_label_or_alias_results(searched)
 
-    lst = list(generate_image_pages(entries_generator, searched, locale))
-    return lst
-
+    return list(generate_image_pages(entries_generator, searched, locale))
 
 
 

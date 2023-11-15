@@ -17,9 +17,14 @@ class WDEntry:
     def url(self):
         return f'https://www.wikidata.org/wiki/{self.id}'
 
+class Result:
+    name: str
+    url: str
+    facet: str
+    type: str
 
 @dataclass
-class ImageResult:
+class ImageResult(Result):
     name: str
     url: str
     thumb: str
@@ -29,7 +34,7 @@ class ImageResult:
     type = 'image'
 
 @dataclass
-class CommonsResult:
+class CommonsResult(Result):
     name: str
     type = 'link'
 
