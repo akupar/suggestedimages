@@ -37,13 +37,19 @@ def bind_sparql_query(query, **params):
         if query.find("{{" + key + "}}") == -1:
             raise Exception(f"Parametre {key} not found in query")
 
-        if type(value) == str:
-            query = query.replace("{{" + key + "}}", f'"{value}"')
-        elif type(value) in [int, float]:
-            query = query.replace("{{" + key + "}}", str(value))
-        elif type(value) == Identifier:
-            query = query.replace("{{" + key + "}}", str(value))
-        else:
-            raise Exception(f'Invalid type: {str(value)}')
+        query = replace_placeholders(query, key, value)
 
     return query
+
+
+def replace_placeholders(query, key, value):
+    if type(value) == str:
+        return query.replace("{{" + key + "}}", f'"{value}"')
+    elif type(value) in [int, float]:
+        return query.replace("{{" + key + "}}", str(value))
+    elif type(value) == Identifier:
+        return query.replace("{{" + key + "}}", str(value))
+    elif type(value) == list and all(type(member) == str for member in value):
+        return query.replace("{{" + key + "}}", " ".join(f'"{member}"' for member in value))
+    else:
+        raise NotImplementedError(f'Type: {type(value)}')
