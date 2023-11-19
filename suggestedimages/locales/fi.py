@@ -1,3 +1,5 @@
+from .cldr_names import LanguageNames
+
 texts = {
     '[no label]': '[ei nimeä]',
     '(same)': '(sama)',
@@ -11,10 +13,6 @@ texts = {
     'No results.': 'Ei tuloksia.',
 }
 
-
-languages = {
-    'fi': 'suomi [fi]',
-    'en': 'englanti [en]',
-    'es': 'espanja [es]',
-    'sv': 'ruotsi [sv]',
-}
+language_names = LanguageNames('fi', {
+    'hr': 'kroaatti'
+})

@@ -5,7 +5,7 @@ import urllib
 
 from . import wikidata
 from .util import StrInLanguage
-from .locales import Locale, DEFAULT_LOCALE
+from .locales import Locale
 
 bp = Blueprint('main', __name__)
 
@@ -13,10 +13,10 @@ bp = Blueprint('main', __name__)
 def index():
     title = request.args.get('title')
     if not title:
-        return render_template('index.html', results=[], locale=DEFAULT_LOCALE)
+        return render_template('index.html', results=[], locale=Locale())
 
     wikt = request.args.get('wikt')
-    locale = Locale(wikt) if wikt else DEFAULT_LOCALE
+    locale = Locale(wikt) if wikt else Locale()
     lang = request.args.get('lang') or locale.language
     lang_str = StrInLanguage(title, lang=lang)
     encoded_title = urllib.parse.quote(title.replace(' ', '_'), safe='/', encoding=None, errors=None)

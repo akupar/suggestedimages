@@ -174,21 +174,22 @@ language_of_wiktionary = {
     'tn': 'tn', # Tswana
 }
 
-class DefaultLanguages:
+class DefaultLanguageNames:
     def __getitem__(self, key):
         return langcodes.Language.get(key).display_name()
 
 
 class Locale:
-    def __init__(self, wikt):
-        try:
-            self.language = language_of_wiktionary[wikt]
-        except KeyError:
-            raise Exception(f'No such wiktionary: {self.wikt}')
+    def __init__(self, wikt=None):
         self.wikt = wikt
 
+        if wikt and wikt not in language_of_wiktionary:
+            raise Exception(f'No such wiktionary: {wikt}')
+        else:
+            self.language = language_of_wiktionary.get(wikt, 'en')
+
         try:
-            self.module = importlib.import_module(f'wd.locales.{wikt}')
+            self.module = importlib.import_module(f'suggestedimages.locales.{wikt}')
         except ImportError:
             self.module = None
 
@@ -207,10 +208,7 @@ class Locale:
         return f"[[{self['File']}:{name}|{self['thumb']}|{caption}]]"
 
     @property
-    def languages(self):
-        if not self.module or not self.module.languages:
-            return DefaultLanguages()
-        return self.module.languages
-
-
-DEFAULT_LOCALE = Locale('en')
+    def language_names(self):
+        if not self.module or not self.module.language_names:
+            return DefaultLanguageNames()
+        return self.module.language_names
