@@ -13,17 +13,17 @@ def test_spaced():
     assert spaced('a', None, None, 'd') == 'a d'
 
 
-def test_build_tooltip():
-    assert build_tooltip('cat', None, None, None) == 'cat'
-    assert build_tooltip('cat', None, None, 'an animal') == 'cat: an animal'
-    assert build_tooltip('cat', ['domestic cat'], None, 'an animal') \
+def test_build_composite_description():
+    assert build_composite_description('cat', None, None, None) == 'cat'
+    assert build_composite_description('cat', None, None, 'an animal') == 'cat: an animal'
+    assert build_composite_description('cat', ['domestic cat'], None, 'an animal') \
         == 'cat (domestic cat): an animal'
 
-    assert build_tooltip('kissa', None, 'cat', None) == 'kissa [= cat]'
-    assert build_tooltip('kissa', None, 'cat', 'an animal') == 'kissa [= cat]: an animal'
+    assert build_composite_description('kissa', None, 'cat', None) == 'kissa [= cat]'
+    assert build_composite_description('kissa', None, 'cat', 'an animal') == 'kissa [= cat]: an animal'
 
-    assert build_tooltip('kissa', ['kotikissa'], 'cat', 'an animal') \
+    assert build_composite_description('kissa', ['kotikissa'], 'cat', 'an animal') \
         == 'kissa (kotikissa) [= cat]: an animal'
 
-    assert build_tooltip('kissa', ['kotikissa', 'kesykissa'], 'cat', 'an animal') \
+    assert build_composite_description('kissa', ['kotikissa', 'kesykissa'], 'cat', 'an animal') \
         == 'kissa (kotikissa, kesykissa) [= cat]: an animal'

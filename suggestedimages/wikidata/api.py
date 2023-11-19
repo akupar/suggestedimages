@@ -19,7 +19,9 @@ site = pywikibot.Site("wikidata", "wikidata")
 def spaced(*args):
     return " ".join(str(arg) for arg in args if arg != None)
 
-def build_tooltip(label, aliases, translation, description):
+def build_composite_description(label, aliases, translation, description):
+    """Combines descriptive texts into one text.
+    """
     return spaced((label if label else None),
                   ((f"({', '.join([str(alias) for alias in aliases])})") if aliases else None),
                   ((f"[= {translation}]") if translation else None)) \
@@ -43,7 +45,7 @@ def get_entry_description(entry: Iterator, color_num: int, searched: StrInLangua
 
     description = StrInLanguages(entry.descriptions).get(locale.language, 'en', searched.language)
 
-    tooltip = build_tooltip(label, aliases, translation, description)
+    tooltip = build_composite_description(label, aliases, translation, description)
 
     return WDEntry(
         entry.id,
