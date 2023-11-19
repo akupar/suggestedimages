@@ -114,7 +114,7 @@ def get_images_for_word(searched: StrInLanguage, locale: Locale) -> list[tuple[R
 
 
 
-def get_ranks_for_entries(results: list[tuple[Result, WDEntry]], searched: StrInLanguage) -> dict[str, tuple[bool, bool bool]]:
+def get_ranks_for_entries(results: list[tuple[Result, WDEntry]], searched: StrInLanguage) -> dict[str, tuple[bool, bool, bool]]:
     entry_ranks = {}
 
     # Since the results are sorted by the wikidata entry and there are multiple results for each entry,
