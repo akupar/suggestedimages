@@ -35,7 +35,7 @@ def yield_label_or_alias_results(searched) -> Iterator:
     )
 
 def yield_external_results(searched) -> Iterator:
-    for handler in external_apis_by_language[searched.language]:
+    for handler in external_apis_by_language.get(searched.language, []):
         results = handler.get(searched.text)
         values = [result.ref.value for result in results]
 
@@ -43,6 +43,8 @@ def yield_external_results(searched) -> Iterator:
             queries.property_has_any_of_values(handler.wikidata_property, values),
             site=site.data_repository()
         )
+
+    return []
 
 
 def get_entry_description(entry: Iterator, color_num: int, searched: StrInLanguage, locale: Locale) -> WDEntry:
