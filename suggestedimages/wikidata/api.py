@@ -11,6 +11,7 @@ from ..util import StrInLanguage, StrInLanguages
 from .result import Result, CommonsResult, ImageResult, WDEntry, NoImage
 from . import queries
 
+from ..external import by_language as external_apis_by_language
 
 
 site = pywikibot.Site("wikidata", "wikidata")
@@ -32,6 +33,17 @@ def yield_label_or_alias_results(searched) -> Iterator:
         queries.label_or_alias_capitalized_or_not(searched.text, searched.language),
         site=site.data_repository()
     )
+
+def yield_external_results(searched) -> Iterator:
+    for handler in external_apis_by_language[searched.language]:
+        results = handler.get(searched.text)
+        values = [result.ref.value for result in results]
+
+        return pagegenerators.WikidataSPARQLPageGenerator(
+            queries.property_has_any_of_values(handler.wikidata_property, values),
+            site=site.data_repository()
+        )
+
 
 def get_entry_description(entry: Iterator, color_num: int, searched: StrInLanguage, locale: Locale) -> WDEntry:
     label = StrInLanguages(entry.labels).get(searched.language) or locale["[no label]"]
@@ -99,9 +111,14 @@ def yield_image_pages(generator: Iterator, searched: StrInLanguage, locale: Loca
 
 
 def get_images_for_word(searched: StrInLanguage, locale: Locale) -> list[tuple[Result, WDEntry]]:
-    entries_generator = yield_label_or_alias_results(searched)
+    wikidata_entries_generator = remove_duplicate_entries(
+        yield_label_or_alias_results(searched),
+        yield_external_results(searched)
+    )
 
-    result_tuples = list(yield_image_pages(entries_generator, searched, locale))
+    result_tuples = list(
+        yield_image_pages(wikidata_entries_generator, searched, locale)
+    )
 
     # Get ranking for results to sort them so that the best results come first.
     ranks = get_ranks_for_entries(result_tuples, searched)
@@ -112,9 +129,18 @@ def get_images_for_word(searched: StrInLanguage, locale: Locale) -> list[tuple[R
         reverse = True,
     )
 
+def remove_duplicate_entries(*generators):
+    seen = set()
+    for generator in generators:
+        for entry in generator:
+            if entry.id not in seen:
+                yield entry
+                seen.add(entry.id)
 
 
-def get_ranks_for_entries(results: list[tuple[Result, WDEntry]], searched: StrInLanguage) -> dict[str, tuple[bool, bool bool]]:
+
+
+def get_ranks_for_entries(results: list[tuple[Result, WDEntry]], searched: StrInLanguage) -> dict[str, tuple[bool, bool, bool]]:
     entry_ranks = {}
 
     # Since the results are sorted by the wikidata entry and there are multiple results for each entry,
