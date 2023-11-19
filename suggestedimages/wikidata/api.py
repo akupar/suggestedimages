@@ -27,7 +27,7 @@ def build_composite_description(label, aliases, translation, description):
                   ((f"[= {translation}]") if translation else None)) \
                   + ((f": {description}") if description else "")
 
-def generate_label_or_alias_results(searched) -> Iterator:
+def yield_label_or_alias_results(searched) -> Iterator:
     return pagegenerators.WikidataSPARQLPageGenerator(
         queries.label_or_alias_capitalized_or_not(searched.text, searched.language),
         site=site.data_repository()
@@ -58,7 +58,7 @@ def get_entry_description(entry: Iterator, color_num: int, searched: StrInLangua
     )
 
 
-def generate_image_descriptions(entry: WDEntry, caption: str) -> Iterator[ImageResult]:
+def yield_image_descriptions(entry: WDEntry, caption: str) -> Iterator[ImageResult]:
     for (prop, name) in IMAGE_PROPS:
         if prop not in entry.claims:
             continue
@@ -75,13 +75,13 @@ def generate_image_descriptions(entry: WDEntry, caption: str) -> Iterator[ImageR
                 )
 
 
-def generate_image_pages(generator: Iterator, searched: StrInLanguage, locale: Locale) -> Iterator[tuple[Result, WDEntry]]:
+def yield_image_pages(generator: Iterator, searched: StrInLanguage, locale: Locale) -> Iterator[tuple[Result, WDEntry]]:
 
     for color_num, entry in enumerate(generator, start=random.randint(0, NUM_COLORS)):
         entry_info = get_entry_description(entry, color_num, searched, locale)
 
         count = 0
-        for image_info in generate_image_descriptions(entry, searched.text.capitalize()):
+        for image_info in yield_image_descriptions(entry, searched.text.capitalize()):
             yield image_info, entry_info
             count += 1
 
@@ -97,9 +97,9 @@ def generate_image_pages(generator: Iterator, searched: StrInLanguage, locale: L
 
 
 def get_images_for_search(searched: StrInLanguage, locale: Locale) -> list[tuple[Result, WDEntry]]:
-    entries_generator = generate_label_or_alias_results(searched)
+    entries_generator = yield_label_or_alias_results(searched)
 
-    result_tuples = list(generate_image_pages(entries_generator, searched, locale))
+    result_tuples = list(yield_image_pages(entries_generator, searched, locale))
     ranks = get_ranks_for_entries(result_tuples, searched)
 
     return sorted(
