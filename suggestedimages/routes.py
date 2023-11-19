@@ -3,9 +3,9 @@ from flask import (
 )
 import urllib
 
-import wd
-from wd.util import StrInLanguage
-from wd.locales import Locale, DEFAULT_LOCALE
+from . import wikidata
+from .util import StrInLanguage
+from .locales import Locale, DEFAULT_LOCALE
 
 bp = Blueprint('main', __name__)
 
@@ -25,7 +25,7 @@ def index():
 
 
     return render_template('index.html',
-                           results=wd.get_images_for_search(lang_str, locale),
+                           results=wikidata.get_images_for_search(lang_str, locale),
                            edit_url=edit_url,
                            view_url=view_url,
                            locale=locale)

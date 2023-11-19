@@ -5,14 +5,25 @@ from typing import *
 import pywikibot
 from pywikibot import pagegenerators
 
+from ..constants import *
+from ..locales import Locale
+from ..util import StrInLanguage, StrInLanguages
 from .result import Result, CommonsResult, ImageResult, WDEntry, NoImage
-from .util import build_tooltip, StrInLanguage, StrInLanguages
-from .locales import Locale
 from . import queries
-import config
+
 
 
 site = pywikibot.Site("wikidata", "wikidata")
+
+
+def spaced(*args):
+    return " ".join(str(arg) for arg in args if arg != None)
+
+def build_tooltip(label, aliases, translation, description):
+    return spaced((label if label else None),
+                  ((f"({', '.join([str(alias) for alias in aliases])})") if aliases else None),
+                  ((f"[= {translation}]") if translation else None)) \
+                  + ((f": {description}") if description else "")
 
 def generate_label_or_alias_results(searched) -> Iterator:
     return pagegenerators.WikidataSPARQLPageGenerator(
@@ -41,12 +52,12 @@ def get_entry_description(entry: Iterator, color_num: int, searched: StrInLangua
         description,
         tooltip,
         entry.full_url(),
-        'color-' + str(color_num % config.NUM_COLORS + 1),
+        'color-' + str(color_num % NUM_COLORS + 1),
     )
 
 
 def generate_image_descriptions(entry: WDEntry, caption: str) -> Iterator[ImageResult]:
-    for (prop, name) in config.IMAGE_PROPS:
+    for (prop, name) in IMAGE_PROPS:
         if prop not in entry.claims:
             continue
 
@@ -64,7 +75,7 @@ def generate_image_descriptions(entry: WDEntry, caption: str) -> Iterator[ImageR
 
 def generate_image_pages(generator: Iterator, searched: StrInLanguage, locale: Locale) -> Iterator[tuple[Result, WDEntry]]:
 
-    for color_num, entry in enumerate(generator, start=random.randint(0, config.NUM_COLORS)):
+    for color_num, entry in enumerate(generator, start=random.randint(0, NUM_COLORS)):
         entry_info = get_entry_description(entry, color_num, searched, locale)
 
         count = 0

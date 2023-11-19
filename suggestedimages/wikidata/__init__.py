@@ -1,4 +1,4 @@
-from wd.api import get_images_for_search
+from .api import get_images_for_search
 
 if __name__ == "__main__":
 

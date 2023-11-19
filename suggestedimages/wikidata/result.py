@@ -2,8 +2,8 @@ from dataclasses import dataclass
 import hashlib
 from typing import *
 
-import config
-from wd.util import StrInLanguage
+from ..constants import *
+from ..util import StrInLanguage
 
 
 @dataclass
@@ -47,4 +47,4 @@ class CommonsResult(Result):
         return f'https://commons.wikimedia.org/wiki/{self.name.replace(" ", "_")}'
 
 
-NoImage = ImageResult('No Images', None, config.NO_IMAGE_THUMB, None, None)
+NoImage = ImageResult('No Images', None, NO_IMAGE_THUMB, None, None)
