@@ -96,7 +96,7 @@ def yield_image_pages(generator: Iterator, searched: StrInLanguage, locale: Loca
             yield CommonsResult(prop[0].getTarget(), 'gallery'), entry_info
 
 
-def get_images_for_search(searched: StrInLanguage, locale: Locale) -> list[tuple[Result, WDEntry]]:
+def get_images_for_word(searched: StrInLanguage, locale: Locale) -> list[tuple[Result, WDEntry]]:
     entries_generator = yield_label_or_alias_results(searched)
 
     result_tuples = list(yield_image_pages(entries_generator, searched, locale))
@@ -132,4 +132,4 @@ def get_ranks_for_entries(results: list[tuple[Result, WDEntry]], searched: StrIn
 
 
 if __name__ == "__main__":
-    print(get_images_for_search(StrInLanguage('rautatiesilta', lang='fi'), 'fi'))
+    print(get_images_for_word(StrInLanguage('rautatiesilta', lang='fi'), 'fi'))
