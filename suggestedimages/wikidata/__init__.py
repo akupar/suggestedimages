@@ -1,3 +1,4 @@
+from ..constants import *
 from ..locales import Locale
 from ..util import StrInLanguage
 from .result import Result, CommonsResult, WDEntry, NoImage
@@ -43,6 +44,17 @@ def rank_search_results(results: list[tuple[Result, WDEntry]], searched: StrInLa
         )
 
     return entry_ranks
+
+
+class GetColorClass:
+    current_index = 0
+    colors = {}
+
+    def __call__(self, id):
+        if id not in self.colors:
+            self.current_index += 1
+            self.colors[id] = self.current_index
+        return f'color-{self.colors[id] % NUM_COLORS}'
 
 
 if __name__ == "__main__":

@@ -14,7 +14,6 @@ class WDEntry:
     description: StrInLanguage
     text: str
     full_url: str
-    color_class: str
 
     @property
     def url(self):

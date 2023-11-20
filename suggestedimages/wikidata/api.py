@@ -1,5 +1,4 @@
 import re
-import random
 from typing import *
 
 import pywikibot
@@ -49,7 +48,7 @@ def yield_external_results(searched) -> Iterator:
     return []
 
 
-def get_entry_description(entry: Iterator, color_num: int, searched: StrInLanguage, locale: Locale) -> WDEntry:
+def get_entry_description(entry: Iterator, searched: StrInLanguage, locale: Locale) -> WDEntry:
     label = StrInLanguages(entry.labels).get(searched.language) or locale["[no label]"]
     aliases = StrInLanguages(entry.aliases).get(searched.language)
 
@@ -70,7 +69,6 @@ def get_entry_description(entry: Iterator, color_num: int, searched: StrInLangua
         description,
         tooltip,
         entry.full_url(),
-        'color-' + str(color_num % NUM_COLORS + 1),
     )
 
 
@@ -93,8 +91,8 @@ def yield_image_descriptions(entry: WDEntry, caption: str) -> Iterator[ImageResu
 
 def yield_image_pages(generator: Iterator, searched: StrInLanguage, locale: Locale) -> Iterator[tuple[Result, WDEntry]]:
 
-    for color_num, entry in enumerate(generator, start=random.randint(0, NUM_COLORS)):
-        entry_info = get_entry_description(entry, color_num, searched, locale)
+    for entry in generator:
+        entry_info = get_entry_description(entry, searched, locale)
 
         count = 0
         for image_info in yield_image_descriptions(entry, searched.text.capitalize()):

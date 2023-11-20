@@ -28,4 +28,5 @@ def index():
                            results=wikidata.get_images_for_word(lang_str, locale),
                            edit_url=edit_url,
                            view_url=view_url,
-                           locale=locale)
+                           locale=locale,
+                           get_color_class=wikidata.GetColorClass())
