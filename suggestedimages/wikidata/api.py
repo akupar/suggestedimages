@@ -11,7 +11,7 @@ from ..util import StrInLanguage, StrInLanguages
 from .result import Result, CommonsResult, ImageResult, WDEntry, NoImage
 from . import queries
 
-from ..external import by_language as external_apis_by_language
+from ..external_apis import external_apis_by_language
 
 
 site = pywikibot.Site("wikidata", "wikidata")
