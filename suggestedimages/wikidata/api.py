@@ -30,7 +30,7 @@ def build_composite_description(label, aliases, translation, description):
 
 def yield_label_or_alias_results(searched) -> Iterator:
     return pagegenerators.WikidataSPARQLPageGenerator(
-        queries.label_or_alias_capitalized_or_not(searched.text, searched.language),
+        queries.label_or_alias_capitalized_or_not(searched),
         site=site.data_repository()
     )
 
@@ -38,6 +38,8 @@ def yield_external_results(searched) -> Iterator:
     for handler in external_apis_by_language.get(searched.language, []):
         results = handler.get(searched.text)
         values = [result.ref.value for result in results]
+        if not values:
+            continue
 
         return pagegenerators.WikidataSPARQLPageGenerator(
             queries.property_has_any_of_values(handler.wikidata_property, values),
