@@ -118,7 +118,7 @@ def get_images_for_word(searched: StrInLanguage, locale: Locale) -> list[tuple[R
         yield_external_results(searched)
     )
 
-    return list(yield_image_pages(entries_generator, searched, locale))
+    return list(yield_image_pages(wikidata_entries_generator, searched, locale))
 
 
 def remove_duplicate_entries(*generators):
