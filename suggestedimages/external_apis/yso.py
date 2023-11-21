@@ -1,3 +1,6 @@
+"""Handler for YSO API (https://finto.fi/yso/en/)
+"""
+
 from typing import *
 
 from .base import ExternalResult, Ref

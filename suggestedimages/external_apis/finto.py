@@ -1,3 +1,6 @@
+"""Handler for Finto API (https://finto.fi/en/)
+"""
+
 import requests
 
 from .base import ExternalApi
