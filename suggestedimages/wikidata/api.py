@@ -128,10 +128,3 @@ def remove_duplicate_entries(*generators):
             if entry.id not in seen:
                 yield entry
                 seen.add(entry.id)
-
-
-
-
-
-if __name__ == "__main__":
-    print(get_images_for_word(StrInLanguage('rautatiesilta', lang='fi'), 'fi'))

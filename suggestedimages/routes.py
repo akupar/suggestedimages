@@ -25,7 +25,7 @@ def index():
 
 
     return render_template('index.html',
-                           results=wikidata.get_images_for_word(lang_str, locale),
+                           results=wikidata.get_images_for_word_ranked(lang_str, locale),
                            edit_url=edit_url,
                            view_url=view_url,
                            locale=locale,
