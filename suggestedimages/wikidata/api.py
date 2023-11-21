@@ -142,8 +142,6 @@ def remove_duplicate_entries(*generators):
                 seen.add(entry.id)
 
 
-
-
 def get_ranks_for_entries(results: list[tuple[Result, WDEntry]], searched: StrInLanguage) -> dict[str, tuple[bool, bool, bool]]:
     entry_ranks = {}
 
