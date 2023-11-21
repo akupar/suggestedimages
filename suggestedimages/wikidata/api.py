@@ -121,6 +121,15 @@ def get_images_for_word(searched: StrInLanguage, locale: Locale) -> list[tuple[R
     return list(yield_image_pages(entries_generator, searched, locale))
 
 
+def remove_duplicate_entries(*generators):
+    seen = set()
+    for generator in generators:
+        for entry in generator:
+            if entry.id not in seen:
+                yield entry
+                seen.add(entry.id)
+
+
 
 
 
