@@ -25,6 +25,9 @@ class StrInLanguage:
     def __repr__(self):
         return f'"{self.text}"@{self.language}'
 
+    def capitalize(self):
+        return StrInLanguage(self.text.capitalize(), self.language)
+
 
 class StrInLanguages:
     """Utility class to extract StrInLanguage from a dict

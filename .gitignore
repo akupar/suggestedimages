@@ -162,3 +162,5 @@ cython_debug/
 
 **/apicache-py3
 **/throttle.ctrl
+
+http_cache.sqlite
