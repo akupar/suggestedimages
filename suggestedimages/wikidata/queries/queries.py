@@ -20,6 +20,8 @@ LIMIT %limit%
 
 ''',
         label = label,
+        # Ideally we would only want words matching exactly in case, but we search also for capitalized version,
+        # because some labels are capitalized although they shouldn't be.
         label_capitalized = label.capitalize(),
         limit = limit
     )

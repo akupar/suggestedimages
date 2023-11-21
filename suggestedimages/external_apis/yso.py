@@ -26,7 +26,8 @@ class YSO(Finto):
                 [item['altLabel']] if 'altLabel' in item else []
             ) \
             for item in json_response['results'] \
-            # We're only interested in exact maches
+            # YSO returns also matches differing in case, but we're only interested
+            # in exact matches, since case matters in words in wiktionary
             if item['prefLabel'] == word or item.get('altLabel') == word
         ]
 
