@@ -1,5 +1,7 @@
 import re
 
+
+
 def check_for_invalid_values(params):
     for value in params.values():
         if type(value) == str and value.find('"') != -1:
@@ -49,7 +51,26 @@ def replace_placeholders(query, key, value):
         return query.replace("{{" + key + "}}", str(value))
     elif type(value) == Identifier:
         return query.replace("{{" + key + "}}", str(value))
-    elif type(value) == list and all(type(member) == str for member in value):
-        return query.replace("{{" + key + "}}", " ".join(f'"{member}"' for member in value))
-    else:
-        raise NotImplementedError(f'Type: {type(value)}')
+    elif type(value) == list:
+        return replace_list_placeholders(query, key, value)
+
+    raise NotImplementedError(f'Type: {type(value)}')
+
+
+
+def replace_list_placeholders(query, key, list_value):
+    assert type(list_value) == list, f"not a list: {list_value}"
+
+    if len(list_value) == 0:
+        # Not sure what should happen here.
+        raise NotImplementedError(f"Don't know what to do with empty list")
+
+    item_type = type(list_value[0])
+
+    if not all(type(member) == item_type for member in list_value):
+        raise Exception(f'All members of a list must have the same type: {list_value}')
+
+    if item_type == str:
+        return query.replace("{{" + key + "}}", " ".join(f'"{member}"' for member in list_value))
+
+    raise NotImplementedError(f'Got list of type {item_type}')
