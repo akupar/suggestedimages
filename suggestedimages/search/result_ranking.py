@@ -1,12 +1,12 @@
 from ..locales import Locale
 from ..util import StrInLanguage
 from .result import Result, CommonsResult, WDEntry, NoImage
-from . import api as wikidata
+from . import q_items
 from . import lexemes
 
 
 def get_images_for_word_ranked(searched: StrInLanguage, locale: Locale) -> list[tuple[Result, WDEntry]]:
-    result_tuples = wikidata.get_images_for_word(searched, locale) \
+    result_tuples = q_items.get_images_for_word(searched, locale) \
         + lexemes.get_images_for_word(searched, locale)
 
     # Get ranking for results to sort them so that the best results come first.

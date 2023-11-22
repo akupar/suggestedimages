@@ -4,10 +4,10 @@ import pywikibot
 from pywikibot import pagegenerators
 from pywikibot.page import LexemePage, LexemeSense
 
-from suggestedimages.wikidata.result import Result, ImageResult, SenseEntry, NoImage
-from suggestedimages.wikidata import queries
-from suggestedimages.locales import Locale
-from suggestedimages.util import StrInLanguage, StrInLanguages
+from ..locales import Locale
+from ..util import StrInLanguage, StrInLanguages
+from .result import Result, ImageResult, SenseEntry, NoImage
+from . import queries
 
 
 site = pywikibot.Site("wikidata", "wikidata")

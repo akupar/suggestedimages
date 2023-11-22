@@ -3,7 +3,7 @@ from flask import (
 )
 import urllib
 
-from . import wikidata
+from . import search
 from .util import StrInLanguage
 from .locales import Locale
 
@@ -25,8 +25,8 @@ def index():
 
 
     return render_template('index.html',
-                           results=wikidata.get_images_for_word_ranked(lang_str, locale),
+                           results=search.get_images_for_word_ranked(lang_str, locale),
                            edit_url=edit_url,
                            view_url=view_url,
                            locale=locale,
-                           get_color_class=wikidata.GetColorClass())
+                           get_color_class=search.GetColorClass())
