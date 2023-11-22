@@ -19,6 +19,23 @@ class WDEntry:
     def url(self):
         return f'https://www.wikidata.org/wiki/{self.id}'
 
+
+@dataclass
+class SenseEntry:
+    id: str
+    label: StrInLanguage
+    lexeme: str
+    text: str
+    aliases = []
+
+    @property
+    def url(self):
+        return f'https://www.wikidata.org/wiki/Lexeme:{self.id.replace("-", "#")}'
+
+
+
+
+
 class Result:
     name: str
     url: str
