@@ -244,3 +244,28 @@ input[type=submit] {
     max-height: 1em;
     max-width: 1em;
 }
+
+
+
+input:invalid {
+    border: solid red 2px;
+}
+
+
+#lang {
+  width: 20em;
+  font-size: 13.3333px;
+  z-index: 1;
+  position: absolute;
+  background: transparent;
+}
+
+#language-name {
+  position: relative;
+  width: 20em;
+  text-align: right;
+  display: inline-block;
+  font-size: 13px;
+  z-index: 0;
+  color: slategray;
+}

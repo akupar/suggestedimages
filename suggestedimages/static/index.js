@@ -1,8 +1,25 @@
+function updateLanguage(langElem) {
+    const code = langElem.value;
+    const option = document.querySelector('#languages').querySelector('option[value="' + code + '"]');
+    if ( option ) {
+        langElem.setCustomValidity("");
+        document.querySelector('#language-name').textContent = option.textContent.replace(/ \[.*\]/, '');
+    } else if ( code == "" ) {
+        langElem.setCustomValidity("");
+        document.querySelector('#language-name').textContent = "(same)";
+
+    } else {
+        langElem.setCustomValidity("Invalid language code");
+        document.querySelector('#language-name').textContent = "";
+    }
+}
+
 document.addEventListener("DOMContentLoaded", (event) => {
     const textbox = document.getElementById('title');
-    if ( textbox.value !== "" ) {
+    if ( textbox.value.trim() !== "" ) {
         document.getElementById('title').select();
     }
+    updateLanguage(document.querySelector('#lang'));
 });
 
 document.querySelector('#wikt').addEventListener("change", (event) => {
@@ -23,3 +40,8 @@ document.forms[0].addEventListener("submit", (event) => {
     document.querySelector('.gallery').style.display = 'none';
     document.querySelector('.loading-message').style.display = 'block';
 });
+
+
+
+document.querySelector('#lang')
+        .addEventListener('input', (event) => updateLanguage(event.target));

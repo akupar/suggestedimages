@@ -14,15 +14,17 @@
       <option value="sv" {{ "selected" if request.args.get('wikt') == 'sv' }}>svenska</option>
     </select>
     <label for="title">{{ locale['Language'] }}</label>
-    <select name="lang" id="lang">
-      <option value="" {{ "selected" if request.args.get('lang') == '' }}>{{ locale['(same)'] }}</option>
-      <option value="fi" {{ "selected" if request.args.get('lang') == 'fi' }}>{{ locale.language_names['fi'] }}</option>
-      <option value="en" {{ "selected" if request.args.get('lang') == 'en' }}>{{ locale.language_names['en'] }}</option>
-      <option value="es" {{ "selected" if request.args.get('lang') == 'es' }}>{{ locale.language_names['es'] }}</option>
-      <option value="sv" {{ "selected" if request.args.get('lang') == 'sv' }}>{{ locale.language_names['sv'] }}</option>
-    </select>
+    <div>
+      <input list="languages" name="lang" id="lang" value="{{ request.args.get('lang') or '' }}" /> <span id="language-name">
+      </span>
+      <datalist id="languages">
+        {% for option in language_options %}
+        <option value="{{ option.value }}">{{ option.label }}</option>
+        {% endfor %}
+      </datalist>
+    </div>
     <label for="title">{{ locale['Title'] }}</label>
-    <input name="title" id="title" value="{{ request.args.get('title') or "" }}" required autofocus>
+    <input name="title" id="title" value="{{ request.args.get('title') or '' }}" required autofocus>
     <input type="submit" value="{{ locale['Search'] }}">
   </form>
   <div class="link-bar">

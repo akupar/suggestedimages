@@ -1,12 +1,11 @@
 import langcodes
 import importlib
 
+from .cldr_names import LanguageNames
 from .list_of_wiktionaries import language_of_wiktionary
 
 
-class DefaultLanguageNames:
-    def __getitem__(self, key):
-        return langcodes.Language.get(key).display_name()
+
 
 
 class Locale:
@@ -21,6 +20,7 @@ class Locale:
         try:
             self.module = importlib.import_module(f'suggestedimages.locales.{wikt}')
         except ImportError:
+            print(f"Couldn't load module: {wikt}")
             self.module = None
 
     def __repr__(self):
@@ -40,5 +40,5 @@ class Locale:
     @property
     def language_names(self):
         if not self.module or not self.module.language_names:
-            return DefaultLanguageNames()
+            return LanguageNames()
         return self.module.language_names

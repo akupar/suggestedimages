@@ -55,7 +55,7 @@ def yield_images(sense_generator: Iterator, searched: StrInLanguage, locale: Loc
 
 def get_sense_description(entry, searched: StrInLanguage, locale: Locale) -> SenseEntry:
     label = entry.on_lexeme.text['lemmas'].get(searched.language)
-    meaning = StrInLanguages(entry.glosses).get(locale.language)
+    meaning = StrInLanguages(entry.glosses).get(locale.language) or StrInLanguages(entry.glosses).get('en')
     if not meaning and searched.language != 'en':
         meaning = StrInLanguages(entry.glosses).get('en')
 
@@ -63,7 +63,7 @@ def get_sense_description(entry, searched: StrInLanguage, locale: Locale) -> Sen
         entry.id,
         label,
         entry.on_lexeme.id,
-        text = f'{label} ’{meaning}’'
+        text = f'{label}' + (f' ’{meaning}’' if meaning else '')
     )
 
 
