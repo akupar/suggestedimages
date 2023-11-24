@@ -31,3 +31,8 @@ def index():
                            locale=locale,
                            list_locales=Locale.list_locales,
                            get_color_class=search.GetColorClass())
+
+
+@bp.route('/help.html', methods=('GET',))
+def help():
+    return render_template('help.html')
