@@ -1,0 +1,19 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<h1>{% block title %}Help{% endblock %}</h1>
+<dl>
+  <dt>Wiktionary</dt>
+  <dd>Select the wiktionary you intend to add the image.</dd>
+  <dd>This localises the texts in the image markup and also the user interface.</dd>
+  <dd>A wiktionary must have a localisation implemented in the source code for it to be selectable. You can help by localising.</dd>
+
+  <dt>Language</dt>
+  <dd>Select the language of the word you want to find images for.</dd>
+  <dd>This controls the search language.</dd>
+  <dd>You can select the first value (same) if the language and the wiktionary's language are the same.</dd>
+
+  <dt>Title</dt>
+  <dd>The word (or phrase) you want to find images for i.e. the title of the page you intend to add the image. </dd>
+</dl>
+{% endblock %}

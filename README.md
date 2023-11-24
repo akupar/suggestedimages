@@ -3,13 +3,27 @@
 Image suggestion utility for wiktionaries.
 
 ## Setup
+Create an environment for the requirements.
 
-    . venv/bin/activate
+    python3 -m venv venv
+
+Activate it.
+
+    source venv/bin/activate
+
+Install requirements.
+
     pip install -r requirements.txt
 
-## Run in development mode
 
-    flask --app suggestedimages run
+## Run in development mode
+In the environment.
+
+    flask run
+
+or
+
+    flask run --debug
 
 ## Bookmarklet
 Add this bookmarklet to your browsers bookmark bar, and click it on a wiktionary page to see suggestios.
