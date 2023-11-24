@@ -252,13 +252,15 @@ input:invalid {
     box-shadow: 0px 0px 5px red;
 }
 
-
-
 input:invalid + span::before {
   content: "✖";
   color: red;
 }
 
+input:valid + span::before {
+  content: "✔";
+  color: green;
+}
 
 
 
