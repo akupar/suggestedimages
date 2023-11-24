@@ -262,6 +262,15 @@ input:valid + span::before {
   color: green;
 }
 
+
+input:invalid + span::before {
+  content: "✖";
+  color: red;
+}
+
+
+
+
 #lang {
   width: 20em;
   font-size: 13.3333px;
