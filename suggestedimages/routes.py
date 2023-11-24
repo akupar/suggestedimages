@@ -30,3 +30,10 @@ def index():
                            view_url=view_url,
                            locale=locale,
                            get_color_class=wikidata.GetColorClass())
+
+
+
+
+@bp.route('/help.html', methods=('GET',))
+def help():
+    return render_template('help.html')
