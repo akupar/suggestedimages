@@ -29,4 +29,5 @@ def index():
                            edit_url=edit_url,
                            view_url=view_url,
                            locale=locale,
+                           list_locales=Locale.list_locales,
                            get_color_class=search.GetColorClass())

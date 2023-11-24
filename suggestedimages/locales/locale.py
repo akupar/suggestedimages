@@ -1,7 +1,10 @@
+import os
 import langcodes
 import importlib
 
-from .list_of_wiktionaries import language_of_wiktionary
+from .list_of_wiktionaries import wiktionary_info
+
+LOCALES_DIR = os.path.join(os.path.dirname(__file__), 'locales')
 
 
 class DefaultLanguageNames:
@@ -10,16 +13,26 @@ class DefaultLanguageNames:
 
 
 class Locale:
+
+    @staticmethod
+    def list_locales():
+        return [
+            wiktionary_info[filename.removesuffix('.py')] \
+            for filename in os.listdir(LOCALES_DIR) \
+            if filename.endswith('.py')
+        ]
+
     def __init__(self, wikt=None):
         self.wikt = wikt
 
-        if wikt and wikt not in language_of_wiktionary:
+        if wikt and wikt not in wiktionary_info:
             raise Exception(f'No such wiktionary: {wikt}')
         else:
-            self.language = language_of_wiktionary.get(wikt, 'en')
+            info = wiktionary_info.get(wikt)
+            self.language = info.language_code if info else 'en'
 
         try:
-            self.module = importlib.import_module(f'suggestedimages.locales.{wikt}')
+            self.module = importlib.import_module(f'suggestedimages.locales.locales.{wikt}')
         except ImportError:
             self.module = None
 
