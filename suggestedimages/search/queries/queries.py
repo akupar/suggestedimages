@@ -27,7 +27,6 @@ LIMIT %limit%
     )
 
 
-
 def property_has_any_of_values(property: str, values: list[str], limit=50):
     return bind_sparql_query('''
 
@@ -43,5 +42,20 @@ LIMIT %limit%
 ''',
         property = Identifier(property),
         values = values,
+        limit = limit
+    )
+
+
+def lexeme(lexeme: StrInLanguage, limit=50):
+    return bind_sparql_query('''
+
+SELECT ?item WHERE {
+  ?item wikibase:lemma %lexeme% .
+}
+
+LIMIT %limit%
+
+''',
+        lexeme = lexeme,
         limit = limit
     )
