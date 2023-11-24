@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-<div>
+<h1>{% block title %}Help{% endblock %}</h1>
 <dl>
   <dt>Wiktionary</dt>
   <dd>Select the wiktionary you intend to add the image.</dd>
@@ -16,5 +16,4 @@
   <dt>Title</dt>
   <dd>The word (or phrase) you want to find images for i.e. the title of the page you intend to add the image. </dd>
 </dl>
-</div>
 {% endblock %}
