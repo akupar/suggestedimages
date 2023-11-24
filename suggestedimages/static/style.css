@@ -248,8 +248,18 @@ input[type=submit] {
 
 
 input:invalid {
-    border: solid red 2px;
+    border: 1px solid rgba(255, 0, 0, 0.7);
+    box-shadow: 0px 0px 5px red;
 }
+
+
+
+input:invalid + span::before {
+  content: "✖";
+  color: red;
+}
+
+
 
 
 #lang {
