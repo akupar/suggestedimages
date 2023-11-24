@@ -1,7 +1,5 @@
 from ..cldr_names import LanguageNames
 
-name = "Suomenkielinen wikisanakirja"
-
 texts = {
     '[no label]': '[ei nimeä]',
     '(same)': '(sama)',
