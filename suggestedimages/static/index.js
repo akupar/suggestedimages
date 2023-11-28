@@ -69,5 +69,4 @@ document.forms[0].addEventListener("submit", (event) => {
     hideGallery();
 });
 
-
 document.forms[0].lang.addEventListener('input', (event) => handleChangedLanguage(event.target));
