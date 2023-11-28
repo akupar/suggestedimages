@@ -9,9 +9,38 @@ from . import search
 from .util import StrInLanguage
 from .locales import Locale
 
-LangOption = namedtuple("LangOption", "value label")
-
 bp = Blueprint('main', __name__)
+
+LanguageOption = namedtuple("LanguageOption", "value label")
+
+def list_language_options(locale):
+    return [
+        LanguageOption(
+            value = lang,
+            label = locale.language_names[lang] + f' [{lang}]'
+        ) for lang in locale.language_names.keys()
+    ]
+
+
+def wikiencode_title(title):
+    return urllib.parse.quote(title.replace(' ', '_'), safe='/', encoding=None, errors=None)
+
+
+def get_edit_url(wikt, title):
+    if not wikt:
+        return None
+
+    encoded_title = wikiencode_title(title)
+    return f"https://{wikt}.wiktionary.org/w/index.php?title={encoded_title}&action=edit"
+
+
+def get_view_url(wikt, title):
+    if not wikt:
+        return None
+
+    encoded_title = wikiencode_title(title)
+    return f"https://{wikt}.wiktionary.org/wiki/{encoded_title}"
+
 
 @bp.route('/', methods=('GET',))
 def index():
@@ -20,32 +49,21 @@ def index():
     locale = Locale(wikt) if wikt else Locale()
     lang = request.args.get('lang') or locale.language
 
-    language_options = [
-        LangOption(
-            value = lang,
-            label = locale.language_names[lang] + f' [{lang}]'
-        ) for lang in
-            locale.language_names.keys()
-    ]
-
     if not title:
         return render_template('index.html',
-                               results=[],
-                               locale=locale,
-                               language_options=language_options)
+                               results = [],
+                               locale = locale,
+                               language_options = list_language_options(locale))
 
-    title_with_lang = StrInLanguage(title, lang=lang)
-    encoded_title = urllib.parse.quote(title.replace(' ', '_'), safe='/', encoding=None, errors=None)
-    edit_url = f"https://{wikt}.wiktionary.org/w/index.php?title={encoded_title}&action=edit" if wikt else None
-    view_url = f"https://{wikt}.wiktionary.org/wiki/{encoded_title}" if wikt else None
+    title_with_language = StrInLanguage(title, lang=lang)
 
     return render_template('index.html',
-                           results=search.get_images_for_word_ranked(title_with_lang, locale),
-                           edit_url=edit_url,
-                           view_url=view_url,
-                           locale=locale,
-                           language_options=language_options,
-                           get_color_class=search.GetColorClass())
+                           results = search.get_images_for_word_ranked(title_with_language, locale),
+                           edit_url = get_edit_url(wikt, title),
+                           view_url = get_view_url(wikt, title),
+                           locale = locale,
+                           language_options = list_language_options(locale),
+                           get_color_class = search.GetColorClass())
 
 
 @bp.route('/help.html', methods=('GET',))
