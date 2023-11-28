@@ -9,9 +9,12 @@
     <label for="title">{{ locale['Wiktionary'] }}</label>
     <select name="wikt" id="wikt">
       <option value="" {{ "selected" if request.args.get('wikt') == '' }}>default (English)</option>
-      {% for wikt_info in list_locales() %}
-      <option value="{{ wikt_info.subdomain }}" {{ "selected" if request.args.get('wikt') == wikt_info.subdomain }}>
-        {{ wikt_info.local_name }}
+      {% for wiktionary_info in list_locales() %}
+      <option
+        value="{{ wiktionary_info.subdomain }}"
+        {{ "selected" if request.args.get('wikt') == wiktionary_info.subdomain }}
+      >
+        {{ wiktionary_info.local_name }}
       </option>
       {% endfor %}
     </select>
