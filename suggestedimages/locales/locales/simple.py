@@ -1,6 +1,9 @@
 from ..language_name_db import LanguageNames
 
-class NopDict:
+class ReturnKeyDict:
+    """Returns the key as the value when accessed.
+    """
+
     def __getitem__(self, key):
         return key
 
@@ -8,6 +11,6 @@ class NopDict:
         return key
 
 
-texts = NopDict()
+texts = ReturnKeyDict()
 
-language_names = LanguageNames('en', {})
+language_names = LanguageNames('en')
