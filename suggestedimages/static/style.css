@@ -262,8 +262,6 @@ input:valid + span::before {
   color: green;
 }
 
-
-
 #lang {
   width: 20em;
   font-size: 13.3333px;
