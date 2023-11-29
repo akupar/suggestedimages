@@ -1,4 +1,4 @@
-from ..locales import Locale
+from ..localization.locale import Locale
 from ..util import StrInLanguage
 from .result import Result, CommonsResult, WDEntry, NoImage
 from . import q_items
