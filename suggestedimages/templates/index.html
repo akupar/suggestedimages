@@ -9,10 +9,14 @@
     <label for="title">{{ locale['Wiktionary'] }}</label>
     <select name="wikt" id="wikt">
       <option value="" {{ "selected" if request.args.get('wikt') == '' }}>default (English)</option>
-      <option value="fi" {{ "selected" if request.args.get('wikt') == 'fi' }}>suomi</option>
-      <option value="en" {{ "selected" if request.args.get('wikt') == 'en' }}>English</option>
-      <option value="es" {{ "selected" if request.args.get('wikt') == 'es' }}>español</option>
-      <option value="sv" {{ "selected" if request.args.get('wikt') == 'sv' }}>svenska</option>
+      {% for wiktionary_info in list_locales() %}
+      <option
+        value="{{ wiktionary_info.subdomain }}"
+        {{ "selected" if request.args.get('wikt') == wiktionary_info.subdomain }}
+      >
+        {{ wiktionary_info.local_name }}
+      </option>
+      {% endfor %}
     </select>
     <label for="title">{{ locale['Language'] }}</label>
     <div>

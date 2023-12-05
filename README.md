@@ -26,7 +26,11 @@ or
     flask run --debug
 
 ## Bookmarklet
-Add this bookmarklet to your browsers bookmark bar, and click it on a wiktionary page to see suggestios.
+You can use this bookmarklet to open search results for a Wiktionary page you are currently on.
+
+Add it in your bookmark bar and click it while on any wiktionary page (in any language) to open search results in a new tab.
+
+The bookmarklet extracts the wiktionary code and the article name from the page and sends them to the app in a new tab.
 
 ```javascript
 javascript:(function () {

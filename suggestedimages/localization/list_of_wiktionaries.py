@@ -1,171 +1,176 @@
-# Source: https://meta.wikimedia.org/wiki/Wiktionary, retrieved 2023-11-12
-language_of_wiktionary = {
-    'en': 'en', # English
-    'fr': 'fr', # French
-    'mg': 'mg', # Malagasy
-    'zh': 'zh', # Chinese
-    'el': 'el', # Greek
-    'ru': 'ru', # Russian
-    'de': 'de', # German
-    'ku': 'ku', # Kurdish
-    'es': 'es', # Spanish
-    'sh': 'sh', # Serbo-Croatian
-    'sv': 'sv', # Swedish
-    'nl': 'nl', # Dutch
-    'pl': 'pl', # Polish
-    'lt': 'lt', # Lithuanian
-    'ca': 'ca', # Catalan
-    'it': 'it', # Italian
-    'hu': 'hu', # Hungarian
-    'fi': 'fi', # Finnish
-    'pt': 'pt', # Portuguese
-    'ta': 'ta', # Tamil
-    'tr': 'tr', # Turkish
-    'ja': 'ja', # Japanese
-    'io': 'io', # Ido
-    'hy': 'hy', # Armenian
-    'ko': 'ko', # Korean
-    'kn': 'kn', # Kannada
-    'vi': 'vi', # Vietnamese
-    'sr': 'sr', # Serbian
-    'th': 'th', # Thai
-    'hi': 'hi', # Hindi
-    'ro': 'ro', # Romanian
-    'id': 'id', # Indonesian
-    'no': 'no', # Norwegian
-    'et': 'et', # Estonian
-    'skr': 'skr', # Saraiki
-    'cs': 'cs', # Czech
-    'ml': 'ml', # Malayalam
-    'my': 'my', # Burmese
-    'uz': 'uz', # Uzbek
-    'li': 'li', # Limburgish
-    'eo': 'eo', # Esperanto
-    'or': 'or', # Odia
-    'te': 'te', # Telugu
-    'fa': 'fa', # Persian
-    'gl': 'gl', # Galician
-    'sg': 'sg', # Sango
-    'oc': 'oc', # Occitan
-    'ar': 'ar', # Arabic
-    'jv': 'jv', # Javanese
-    'is': 'is', # Icelandic
-    'az': 'az', # Azerbaijani
-    'uk': 'uk', # Ukrainian
-    'ast': 'ast', # Asturian
-    'eu': 'eu', # Basque
-    'br': 'br', # Breton
-    'bn': 'bn', # Bangla
-    'mnw': 'mnw', # Mon
-    'da': 'da', # Danish
-    'simple': 'en', # Simple English
-    'lo': 'lo', # Lao
-    'la': 'la', # Latin
-    'shn': 'shn', # Shan
-    'hr': 'hr', # Croatian
-    'sk': 'sk', # Slovak
-    'fj': 'fj', # Fijian
-    'wa': 'wa', # Walloon
-    'ky': 'ky', # Kyrgyz
-    'lmo': 'lmo', # Lombard
-    'bg': 'bg', # Bulgarian
-    'ur': 'ur', # Urdu
-    'cy': 'cy', # Welsh
-    'ps': 'ps', # Pashto
-    'tg': 'tg', # Tajik
-    'kbd': 'kbd', # Kabardian
-    'he': 'he', # Hebrew
-    'vo': 'vo', # Volapük
-    'om': 'om', # Oromo
-    'sl': 'sl', # Slovenian
-    'af': 'af', # Afrikaans
-    'nan': 'nan', # Min Nan Chinese
-    'ms': 'ms', # Malay
-    'scn': 'scn', # Sicilian
-    'tl': 'tl', # Tagalog
-    'pa': 'pa', # Punjabi
-    'fy': 'fy', # Western Frisian
-    'sw': 'sw', # Swahili
-    'kk': 'kk', # Kazakh
-    'ka': 'ka', # Georgian
-    'nn': 'nn', # Norwegian Nynorsk
-    'min': 'min', # Minangkabau
-    'lv': 'lv', # Latvian
-    'nds': 'nds', # Low German
-    'gor': 'gor', # Gorontalo
-    'sq': 'sq', # Albanian
-    'lb': 'lb', # Luxembourgish
-    'bs': 'bs', # Bosnian
-    'co': 'co', # Corsican
-    'mn': 'mn', # Mongolian
-    'pnb': 'pnb', # Western Punjabi
-    'nah': 'nah', # Nāhuatl
-    'yue': 'yue', # Cantonese
-    'ckb': 'ckb', # Central Kurdish
-    'sa': 'sa', # Sanskrit
-    'diq': 'diq', # Zazaki
-    'km': 'km', # Khmer
-    'be': 'be', # Belarusian
-    'vec': 'vec', # Venetian
-    'nia': 'nia', # Nias
-    'tk': 'tk', # Turkmen
-    'mk': 'mk', # Macedonian
-    'sm': 'sm', # Samoan
-    'hsb': 'hsb', # Upper Sorbian
-    'ks': 'ks', # Kashmiri
-    'shy': 'shy', # Shawiya
-    'bcl': 'bcl', # Central Bikol
-    'su': 'su', # Sundanese
-    'ga': 'ga', # Irish
-    'btm': 'btm', # Batak Mandailing
-    'gd': 'gd', # Scottish Gaelic
-    'an': 'an', # Aragonese
-    'gom': 'gom', # Goan Konkani
-    'mr': 'mr', # Marathi
-    'ha': 'ha', # Hausa
-    'wo': 'wo', # Wolof
-    'mni': 'mni', # Manipuri
-    'ia': 'ia', # Interlingua
-    'bjn': 'bjn', # Banjar
-    'ang': 'ang', # Old English
-    'mt': 'mt', # Maltese
-    'tt': 'tt', # Tatar
-    'sd': 'sd', # Sindhi
-    'blk': 'blk', # Pa'O
-    'fo': 'fo', # Faroese
-    'so': 'so', # Somali
-    'si': 'si', # Sinhala
-    'gn': 'gn', # Guarani
-    'ie': 'ie', # Interlingue
-    'mi': 'mi', # Māori
-    'csb': 'csb', # Kashubian
-    'ug': 'ug', # Uyghur
-    'guw': 'guw', # Gun
-    'st': 'st', # Southern Sotho
-    'hif': 'hif', # Fiji Hindi
-    'jbo': 'jbo', # Lojban
-    'roa-rup': 'rup', # Aromanian
-    'kl': 'kl', # Kalaallisut
-    'zu': 'zu', # Zulu
-    'ay': 'ay', # Aymara
-    'ln': 'ln', # Lingala
-    'yi': 'yi', # Yiddish
-    'gu': 'gu', # Gujarati
-    'kcg': 'kcg', # Tyap
-    'na': 'na', # Nauru
-    'gv': 'gv', # Manx
-    'kw': 'kw', # Cornish
-    'tpi': 'tpi', # Tok Pisin
-    'am': 'am', # Amharic
-    'ne': 'ne', # Nepali
-    'rw': 'rw', # Kinyarwanda
-    'ts': 'ts', # Tsonga
-    'ig': 'ig', # Igbo
-    'qu': 'qu', # Quechua
-    'ss': 'ss', # Swati
-    'iu': 'iu', # Inuktitut
-    'chr': 'chr', # Cherokee
-    'dv': 'dv', # Divehi
-    'ti': 'ti', # Tigrinya
-    'tn': 'tn', # Tswana
+from collections import namedtuple
+
+
+Wikt = namedtuple("Wikt", "subdomain language_code local_name english_name")
+
+wiktionary_info = {
+    "af":	Wikt("af",	"af",	"Afrikaans",	"Afrikaans"),
+    "am":	Wikt("am",	"am",	"አማርኛ",	"Amharic"),
+    "an":	Wikt("an",	"an",	"aragonés",	"Aragonese"),
+    "ang":	Wikt("ang",	"ang",	"Ænglisc",	"Anglo-Saxon"),
+    "ar":	Wikt("ar",	"ar",	"العربية",	"Arabic"),
+    "ast":	Wikt("ast",	"ast",	"asturianu",	"Asturian"),
+    "ay":	Wikt("ay",	"ay",	"Aymar aru",	"Aymara"),
+    "az":	Wikt("az",	"az",	"azərbaycanca",	"Azerbaijani"),
+    "bcl":	Wikt("bcl",	"bcl",	"Bikol Central",	"Central Bicolano"),
+    "be":	Wikt("be",	"be",	"беларуская",	"Belarusian"),
+    "bg":	Wikt("bg",	"bg",	"български",	"Bulgarian"),
+    "bn":	Wikt("bn",	"bn",	"বাংলা",	"Bengali"),
+    "br":	Wikt("br",	"br",	"brezhoneg",	"Breton"),
+    "bs":	Wikt("bs",	"bs",	"bosanski",	"Bosnian"),
+    "ca":	Wikt("ca",	"ca",	"català",	"Catalan"),
+    "chr":	Wikt("chr",	"chr",	"ᏣᎳᎩ",	"Cherokee"),
+    "ckb":	Wikt("ckb",	"ckb",	"کوردی",	"Central Kurdish"),
+    "co":	Wikt("co",	"co",	"corsu",	"Corsican"),
+    "cs":	Wikt("cs",	"cs",	"čeština",	"Czech"),
+    "csb":	Wikt("csb",	"csb",	"kaszëbsczi",	"Kashubian"),
+    "cy":	Wikt("cy",	"cy",	"Cymraeg",	"Welsh"),
+    "da":	Wikt("da",	"da",	"dansk",	"Danish"),
+    "de":	Wikt("de",	"de",	"Deutsch",	"German"),
+    "diq":	Wikt("diq",	"diq",	"Zazaki",	"Zazaki"),
+    "dv":	Wikt("dv",	"dv",	"ދިވެހިބަސް",	"Divehi"),
+    "el":	Wikt("el",	"el",	"Ελληνικά",	"Greek"),
+    "en":	Wikt("en",	"en",	"English",	"English"),
+    "simple":	Wikt("simple",	"en",	"Simple English",	"Simple English"),
+    "eo":	Wikt("eo",	"eo",	"Esperanto",	"Esperanto"),
+    "es":	Wikt("es",	"es",	"español",	"Spanish"),
+    "et":	Wikt("et",	"et",	"eesti",	"Estonian"),
+    "eu":	Wikt("eu",	"eu",	"euskara",	"Basque"),
+    "fa":	Wikt("fa",	"fa",	"فارسی",	"Persian"),
+    "fi":	Wikt("fi",	"fi",	"suomi",	"Finnish"),
+    "fj":	Wikt("fj",	"fj",	"Na Vosa Vakaviti",	"Fijian"),
+    "fo":	Wikt("fo",	"fo",	"føroyskt",	"Faroese"),
+    "fr":	Wikt("fr",	"fr",	"français",	"French"),
+    "fy":	Wikt("fy",	"fy",	"Frysk",	"West Frisian"),
+    "ga":	Wikt("ga",	"ga",	"Gaeilge",	"Irish"),
+    "gd":	Wikt("gd",	"gd",	"Gàidhlig",	"Scottish Gaelic"),
+    "gl":	Wikt("gl",	"gl",	"galego",	"Galician"),
+    "gn":	Wikt("gn",	"gn",	"Avañe'ẽ",	"Guarani"),
+    "gom":	Wikt("gom",	"gom",	"गोंयची कोंकणी / Gõychi Konknni",	"Goan Konkani"),
+    "gu":	Wikt("gu",	"gu",	"ગુજરાતી",	"Gujarati"),
+    "gv":	Wikt("gv",	"gv",	"Gaelg",	"Manx"),
+    "ha":	Wikt("ha",	"ha",	"Hausa",	"Hausa"),
+    "he":	Wikt("he",	"he",	"עברית",	"Hebrew"),
+    "hi":	Wikt("hi",	"hi",	"हिन्दी",	"Hindi"),
+    "hif":	Wikt("hif",	"hif",	"Fiji Hindi",	"Fiji Hindi"),
+    "hr":	Wikt("hr",	"hr",	"hrvatski",	"Croatian"),
+    "hsb":	Wikt("hsb",	"hsb",	"hornjoserbsce",	"Upper Sorbian"),
+    "hu":	Wikt("hu",	"hu",	"magyar",	"Hungarian"),
+    "hy":	Wikt("hy",	"hy",	"հայերեն",	"Armenian"),
+    "ia":	Wikt("ia",	"ia",	"interlingua",	"Interlingua"),
+    "id":	Wikt("id",	"id",	"Bahasa Indonesia",	"Indonesian"),
+    "ie":	Wikt("ie",	"ie",	"Interlingue",	"Interlingue"),
+    "io":	Wikt("io",	"io",	"Ido",	"Ido"),
+    "is":	Wikt("is",	"is",	"íslenska",	"Icelandic"),
+    "it":	Wikt("it",	"it",	"italiano",	"Italian"),
+    "iu":	Wikt("iu",	"iu",	"ᐃᓄᒃᑎᑐᑦ / inuktitut",	"Inuktitut"),
+    "ja":	Wikt("ja",	"ja",	"日本語",	"Japanese"),
+    "jbo":	Wikt("jbo",	"jbo",	"la .lojban.",	"Lojban"),
+    "jv":	Wikt("jv",	"jv",	"Jawa",	"Javanese"),
+    "ka":	Wikt("ka",	"ka",	"ქართული",	"Georgian"),
+    "kk":	Wikt("kk",	"kk",	"қазақша",	"Kazakh"),
+    "kl":	Wikt("kl",	"kl",	"kalaallisut",	"Greenlandic"),
+    "km":	Wikt("km",	"km",	"ភាសាខ្មែរ",	"Khmer"),
+    "kn":	Wikt("kn",	"kn",	"ಕನ್ನಡ",	"Kannada"),
+    "ko":	Wikt("ko",	"ko",	"한국어",	"Korean"),
+    "ks":	Wikt("ks",	"ks",	"कॉशुर / کٲشُر",	"Kashmiri"),
+    "ku":	Wikt("ku",	"ku",	"kurdî",	"Kurdish"),
+    "kw":	Wikt("kw",	"kw",	"kernowek",	"Cornish"),
+    "ky":	Wikt("ky",	"ky",	"кыргызча",	"Kyrgyz"),
+    "la":	Wikt("la",	"la",	"Latina",	"Latin"),
+    "lb":	Wikt("lb",	"lb",	"Lëtzebuergesch",	"Luxembourgish"),
+    "li":	Wikt("li",	"li",	"Limburgs",	"Limburgish"),
+    "lmo":	Wikt("lmo",	"lmo",	"lombard",	"Lombard"),
+    "ln":	Wikt("ln",	"ln",	"lingála",	"Lingala"),
+    "lo":	Wikt("lo",	"lo",	"ລາວ",	"Lao"),
+    "lt":	Wikt("lt",	"lt",	"lietuvių",	"Lithuanian"),
+    "lv":	Wikt("lv",	"lv",	"latviešu",	"Latvian"),
+    "mg":	Wikt("mg",	"mg",	"Malagasy",	"Malagasy"),
+    "mi":	Wikt("mi",	"mi",	"Māori",	"Maori"),
+    "min":	Wikt("min",	"min",	"Minangkabau",	"Minangkabau"),
+    "mk":	Wikt("mk",	"mk",	"македонски",	"Macedonian"),
+    "ml":	Wikt("ml",	"ml",	"മലയാളം",	"Malayalam"),
+    "mn":	Wikt("mn",	"mn",	"монгол",	"Mongolian"),
+    "mni":	Wikt("mni",	"mni",	"ꯃꯤꯇꯩ ꯂꯣꯟ",	"Meitei"),
+    "mnw":	Wikt("mnw",	"mnw",	"ဘာသာ မန်",	"Mon"),
+    "mr":	Wikt("mr",	"mr",	"मराठी",	"Marathi"),
+    "ms":	Wikt("ms",	"ms",	"Bahasa Melayu",	"Malay"),
+    "mt":	Wikt("mt",	"mt",	"Malti",	"Maltese"),
+    "my":	Wikt("my",	"my",	"မြန်မာဘာသာ",	"Burmese"),
+    "na":	Wikt("na",	"na",	"Dorerin Naoero",	"Nauruan"),
+    "nah":	Wikt("nah",	"nah",	"Nāhuatl",	"Nahuatl"),
+    "nds":	Wikt("nds",	"nds",	"Plattdüütsch",	"Low Saxon"),
+    "ne":	Wikt("ne",	"ne",	"नेपाली",	"Nepali"),
+    "nia":	Wikt("nia",	"nia",	"Li Niha",	"Nias"),
+    "nl":	Wikt("nl",	"nl",	"Nederlands",	"Dutch"),
+    "nn":	Wikt("nn",	"nn",	"norsk nynorsk",	"Norwegian Wikt(Nynorsk)"),
+    "no":	Wikt("no",	"no",	"norsk",	"Norwegian Wikt(Bokmål)"),
+    "oc":	Wikt("oc",	"oc",	"occitan",	"Occitan"),
+    "om":	Wikt("om",	"om",	"Oromoo",	"Oromo"),
+    "or":	Wikt("or",	"or",	"ଓଡ଼ିଆ",	"Oriya"),
+    "pa":	Wikt("pa",	"pa",	"ਪੰਜਾਬੀ",	"Punjabi"),
+    "pl":	Wikt("pl",	"pl",	"polski",	"Polish"),
+    "pnb":	Wikt("pnb",	"pnb",	"پنجابی",	"Western Punjabi"),
+    "ps":	Wikt("ps",	"ps",	"پښتو",	"Pashto"),
+    "pt":	Wikt("pt",	"pt",	"português",	"Portuguese"),
+    "qu":	Wikt("qu",	"qu",	"Runa Simi",	"Quechua"),
+    "ro":	Wikt("ro",	"ro",	"română",	"Romanian"),
+    "ru":	Wikt("ru",	"ru",	"русский",	"Russian"),
+    "rw":	Wikt("rw",	"rw",	"Ikinyarwanda",	"Kinyarwanda"),
+    "sa":	Wikt("sa",	"sa",	"संस्कृतम्",	"Sanskrit"),
+    "scn":	Wikt("scn",	"scn",	"sicilianu",	"Sicilian"),
+    "sd":	Wikt("sd",	"sd",	"سنڌي",	"Sindhi"),
+    "sg":	Wikt("sg",	"sg",	"Sängö",	"Sango"),
+    "sh":	Wikt("sh",	"sh",	"srpskohrvatski / српскохрватски",	"Serbo-Croatian"),
+    "shn":	Wikt("shn",	"shn",	"ၽႃႇသႃႇတႆး ",	"Shan"),
+    "shy":	Wikt("shy",	"shy",	"tacawit",	"Shawiya"),
+    "si":	Wikt("si",	"si",	"සිංහල",	"Sinhalese"),
+    "sk":	Wikt("sk",	"sk",	"slovenčina",	"Slovak"),
+    "skr":	Wikt("skr",	"skr",	"سرائیکی",	"Saraiki"),
+    "sl":	Wikt("sl",	"sl",	"slovenščina",	"Slovenian"),
+    "sm":	Wikt("sm",	"sm",	"Gagana Samoa",	"Samoan"),
+    "so":	Wikt("so",	"so",	"Soomaaliga",	"Somali"),
+    "sq":	Wikt("sq",	"sq",	"shqip",	"Albanian"),
+    "sr":	Wikt("sr",	"sr",	"српски / srpski",	"Serbian"),
+    "ss":	Wikt("ss",	"ss",	"SiSwati",	"Swati"),
+    "st":	Wikt("st",	"st",	"Sesotho",	"Sesotho"),
+    "su":	Wikt("su",	"su",	"Sunda",	"Sundanese"),
+    "sv":	Wikt("sv",	"sv",	"svenska",	"Swedish"),
+    "sw":	Wikt("sw",	"sw",	"Kiswahili",	"Swahili"),
+    "ta":	Wikt("ta",	"ta",	"தமிழ்",	"Tamil"),
+    "te":	Wikt("te",	"te",	"తెలుగు",	"Telugu"),
+    "tg":	Wikt("tg",	"tg",	"тоҷикӣ",	"Tajik"),
+    "th":	Wikt("th",	"th",	"ไทย",	"Thai"),
+    "ti":	Wikt("ti",	"ti",	"ትግርኛ",	"Tigrinya"),
+    "tk":	Wikt("tk",	"tk",	"Türkmençe",	"Turkmen"),
+    "tl":	Wikt("tl",	"tl",	"Tagalog",	"Tagalog"),
+    "tn":	Wikt("tn",	"tn",	"Setswana",	"Tswana"),
+    "tpi":	Wikt("tpi",	"tpi",	"Tok Pisin",	"Tok Pisin"),
+    "tr":	Wikt("tr",	"tr",	"Türkçe",	"Turkish"),
+    "ts":	Wikt("ts",	"ts",	"Xitsonga",	"Tsonga"),
+    "tt":	Wikt("tt",	"tt",	"татарча / tatarça",	"Tatar"),
+    "ug":	Wikt("ug",	"ug",	"ئۇيغۇرچە / Uyghurche",	"Uyghur"),
+    "uk":	Wikt("uk",	"uk",	"українська",	"Ukrainian"),
+    "ur":	Wikt("ur",	"ur",	"اردو",	"Urdu"),
+    "uz":	Wikt("uz",	"uz",	"oʻzbekcha / ўзбекча",	"Uzbek"),
+    "vec":	Wikt("vec",	"vec",	"vèneto",	"Venetian"),
+    "vi":	Wikt("vi",	"vi",	"Tiếng Việt",	"Vietnamese"),
+    "vo":	Wikt("vo",	"vo",	"Volapük",	"Volapük"),
+    "wa":	Wikt("wa",	"wa",	"walon",	"Walloon"),
+    "wo":	Wikt("wo",	"wo",	"Wolof",	"Wolof"),
+    "yi":	Wikt("yi",	"yi",	"ייִדיש",	"Yiddish"),
+    "yue":	Wikt("yue",	"yue",	"粵語",	"Cantonese"),
+    "zh":	Wikt("zh",	"zh",	"中文",	"Chinese"),
+    "zu":	Wikt("zu",	"zu",	"isiZulu",	"Zulu"),
+
+    "bjn":	Wikt("bjn",	"bjn",	"Banjar",	"Banjar"),
+    "blk":	Wikt("blk",	"blk",	"ပအိုဝ်ႏဘာႏသာႏ",	"Pa'O"),
+    "btm":	Wikt("btm",	"btm",	"Saro Mandailing",	"Batak Mandailing"),
+    "gor":	Wikt("gor",	"gor",	"Bahasa Hulontalo",	"Gorontalo"),
+    "guw":	Wikt("guw",	"guw",	"gungbe",	"Gun"),
+    "ig":	Wikt("ig",	"ig",	"Ásụ̀sụ́ Ìgbò",	"Igbo"),
+    "kbd":	Wikt("kbd",	"kbd",	"адыгэбзэ",	"Kabardian"),
+    "kcg":	Wikt("kcg",	"kcg",	"A̱lyem Tyap",	"Tyap"),
+    "nan":	Wikt("nan",	"nan",	"Bân-lâm-gú",	"Min Nan Chinese"),
+    "roa-rup":	Wikt("roa-rup",	"rup",	"armãneashti",	"Aromanian"),
 }

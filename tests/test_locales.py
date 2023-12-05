@@ -1,6 +1,6 @@
 import pytest
 
-from suggestedimages.locales import *
+from suggestedimages.localization import *
 
 
 def test_Locale():
@@ -17,7 +17,7 @@ def test_Locale():
     test = Locale('simple')
     assert test.wikt == 'simple'
     assert test.language == 'en'
-    assert test.module is None
+    assert test.module is not None
 
     with pytest.raises(Exception):
         Locale('this-doesnt-exist')
@@ -27,12 +27,12 @@ def test_Locale_language_names():
     test = Locale()
     assert test.language_names['am'] == "Amharic"
 
-    import suggestedimages.locales.fi
+    import suggestedimages.localization.locales.fi as fi_locale
     test = Locale('fi')
-    assert test.language_names['sv'] == suggestedimages.locales.fi.language_names['sv']
+    assert test.language_names['sv'] == fi_locale.language_names['sv']
 
 
 
 def test_language_names():
-    from suggestedimages.locales.fi import language_names
+    from suggestedimages.localization.locales.fi import language_names
     assert language_names['sv'] == 'ruotsi'

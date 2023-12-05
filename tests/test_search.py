@@ -1,7 +1,7 @@
 import pytest
 
 from suggestedimages.constants import *
-from suggestedimages.wikidata import *
+from suggestedimages.search import *
 
 
 def test_GetColorClass():

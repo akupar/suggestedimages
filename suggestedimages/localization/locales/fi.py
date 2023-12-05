@@ -1,4 +1,4 @@
-from .cldr_names import LanguageNames
+from ..language_name_db import LanguageNames
 
 texts = {
     '[no label]': '[ei nimeä]',
