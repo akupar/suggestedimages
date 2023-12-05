@@ -5,7 +5,7 @@ import pywikibot
 from pywikibot import pagegenerators
 
 from ..constants import *
-from ..locales import Locale
+from ..localization import Locale
 from ..util import StrInLanguage, StrInLanguages
 from .result import Result, CommonsResult, ImageResult, WDEntry, NoImage
 from . import queries

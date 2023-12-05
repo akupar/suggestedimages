@@ -4,7 +4,7 @@ import pywikibot
 from pywikibot import pagegenerators
 from pywikibot.page import LexemePage, LexemeSense
 
-from ..locales import Locale
+from ..localization import Locale
 from ..util import StrInLanguage, StrInLanguages
 from .result import Result, ImageResult, SenseEntry, NoImage
 from . import queries

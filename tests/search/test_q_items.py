@@ -1,6 +1,6 @@
 import pytest
 
-from suggestedimages.wikidata.api import *
+from suggestedimages.search.q_items import *
 from suggestedimages.util import StrInLanguage
 
 

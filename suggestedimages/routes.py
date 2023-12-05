@@ -7,7 +7,7 @@ from collections import namedtuple
 
 from . import search
 from .util import StrInLanguage
-from .locales import Locale
+from .localization import Locale
 
 bp = Blueprint('main', __name__)
 
@@ -62,6 +62,7 @@ def index():
                            edit_url = get_edit_url(wikt, title),
                            view_url = get_view_url(wikt, title),
                            locale = locale,
+                           list_locales = Locale.list_locales,
                            language_options = list_language_options(locale),
                            get_color_class = search.GetColorClass())
 
