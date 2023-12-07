@@ -53,6 +53,7 @@ def index():
         return render_template('index.html',
                                results = [],
                                locale = locale,
+                               list_locales = Locale.list_locales,
                                language_options = list_language_options(locale))
 
     title_with_language = StrInLanguage(title, lang=lang)
