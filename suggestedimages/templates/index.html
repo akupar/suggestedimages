@@ -56,7 +56,12 @@
     {% for result, wd in results %}
     <div class="imagebox {{ get_color_class(wd.id) }}">
       <div class="box-header">
-        <a href="{{ wd.url }}" title="{{ wd.text }}">{{ wd.id }}</a>
+        <span>
+          <a href="{{ wd.url }}" title="{{ wd.text }}">{{ wd.id }}</a>{{' '}}
+          <a
+            href="more-images?item={{ wd.id }}&title={{ request.args.get('title') }}&wikt={{ request.args.get('wikt') }}"
+            title="Search for more images">🔍</a>
+        </span>
 
         {% if result.facet %}
         <span class="facet">{{ result.facet }}</span>
