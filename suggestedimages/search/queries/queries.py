@@ -59,3 +59,21 @@ LIMIT %limit%
         lexeme = lexeme,
         limit = limit
     )
+
+
+def property_depicts_has_given_id(q_id: str, limit=50):
+    # P180 = ’depicts’
+    return bind_sparql_query('''
+
+SELECT ?item WHERE{
+  ?item wdt:P180 wd:%id% .
+  ?item schema:contentUrl ?url .
+}
+
+
+LIMIT %limit%
+
+''',
+        id = Identifier(q_id),
+        limit = limit
+    )
