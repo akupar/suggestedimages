@@ -222,7 +222,7 @@ input[type=submit] {
     display: flex;
 }
 
-.box-header > a:first-child {
+.box-header > :first-child {
     flex-grow: 1;
 }
 
@@ -291,4 +291,20 @@ input:valid + span::before {
   font-size: 13px;
   z-index: 0;
   color: slategray;
+}
+
+
+.breadcrumbs {
+    list-style-type: none;
+    display: flex;
+    margin-left: -1em;
+    gap: 1ex;
+}
+
+.breadcrumbs li {
+    display: inline-block;
+}
+
+.breadcrumbs li:not(:first-child)::before {
+    content: "» ";
 }

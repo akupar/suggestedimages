@@ -1,0 +1,88 @@
+{% extends 'layout.html' %}
+{% block title %}Search{% endblock %}
+
+{% block path %}
+<li><a href="#" onclick="history.back()">search</a></li>
+<li>more images</li>
+{% endblock %}
+
+
+{% block content %}
+  {% for message in get_flashed_messages() %}
+  <div class="flash">{{ message }}</div>
+  {% endfor %}
+  <div class="link-bar">
+    {% if edit_url %}
+    <a href="{{ view_url }}" target="_blank" title="View {{ request.args.get('title') }}">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Piece-ico-48px.png"/>
+    </a>
+    <a href="{{ edit_url }}" target="_blank" title="Edit {{ request.args.get('title') }}">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/VisualEditor-maps-edit-icon.png"/>
+    </a>
+    {% else %}
+    <img style="opacity: 50%" title="No wiktionary selected" src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Piece-ico-48px.png"/>
+    <img style="opacity: 50%" title="No wiktionary selected" src="https://upload.wikimedia.org/wikipedia/commons/8/87/VisualEditor-maps-edit-icon.png"/>
+    {% endif %}
+  </div>
+  <hr/>
+  <div class="loading-message" style="display: none;">
+    {{ 'Loading...' }}
+  </div>
+  <div class="gallery">
+    {% for result in results %}
+    <div class="imagebox">
+      <div class="box-header">
+        <a href="x" title="y">z</a>
+
+        {% if result.facet %}
+        <span class="facet">{{ result.facet }}</span>
+        {% endif %}
+      </div>
+      {% if result.url %}
+      <a href="{{ result.url or '' }}">
+        <img class="result-image" src="{{ result.thumb }}" title="å">
+      </a>
+      <code>{{ locale.format_image(result.name, result.caption) }}</code>
+      {% else %}
+      <img src="{{ result.thumb }}">
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+  <button id="load-more">More results...</button>
+  <script type="text/javascript">
+    console.log("code");
+    async function loadMore() {
+        document.querySelector('#load-more').innerText = "Loading";
+        const response = await fetch("/api/structured-data");
+        const images = await response.json();
+        const gallery = document.querySelector('.gallery');
+        if ( images.length < 4 ) {
+            document.querySelector('#load-more').remove();
+        }
+        for ( const item of images ) {
+            const box = document.createElement('div');
+            box.setAttribute('class', 'imagebox');
+            const header = document.createElement('div');
+            header.setAttribute('class', 'box-header');
+            box.appendChild(header);
+            const img = document.createElement('img');
+            const a = document.createElement('a');
+            a.href = item.url;
+            img.setAttribute('src', item.thumb);
+            a.appendChild(img);
+            const code = document.createElement('code');
+            code.textContent = 'xxx';
+            box.appendChild(a);
+            box.appendChild(code);
+            gallery.appendChild(box);
+        }
+        document.querySelector('#load-more').innerText = "More results...";
+
+    }
+
+    document.querySelector('#load-more').addEventListener("click", loadMore);
+    loadMore();
+
+  </script>
+{% endblock %}
