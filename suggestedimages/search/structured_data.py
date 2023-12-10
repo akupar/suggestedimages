@@ -23,19 +23,16 @@ site.login()
 wikidata_site = pywikibot.Site("wikidata", "wikidata")
 
 
-def get_images_for_item_buffered(searched_id: str, title: str, locale: Locale, buffer_len: int) -> list[tuple[ImageResult, WDEntry]]:
+def get_chunk_of_images_for_item(searched_id: str, title: str, locale: Locale, buffer_len: int) -> list[tuple[ImageResult, WDEntry]]:
     item = pywikibot.ItemPage(wikidata_site.data_repository(), searched_id)
     entry_info = get_entry_description(item, StrInLanguage(title, lang=locale.language), locale)
     media_page_generator = yield_media_depicting_item(entry_info)
-    images_generator = yield_images(media_page_generator, entry_info, title, locale)
-    buf = []
-    for i, image in enumerate(images_generator, start=1):
-        buf.append(image)
-        if i % buffer_len == 0:
-            yield buf
-            buf = []
 
-    yield buf
+    id_chunk_generator = yield_chunk_of_ids(media_page_generator, buffer_len)
+
+    for ids in id_chunk_generator:
+        images_generator = yield_images(ids, entry_info, title, locale)
+        yield list(images_generator)
 
 
 def yield_media_depicting_item(wd_entry: WDEntry) -> Iterator[Page]:
@@ -47,11 +44,21 @@ def yield_media_depicting_item(wd_entry: WDEntry) -> Iterator[Page]:
         entity_url = 'https://commons.wikimedia.org/entity/'
     )
 
+def yield_chunk_of_ids(media_page_generator: Iterator[list[str]], buffer_len: int):
+    ids_buffer = []
+    for i, media_page in enumerate(media_page_generator, start=1):
+        ids_buffer.append(media_page.id)
 
-def yield_images(media_page_generator: Iterator, wd_entry: WDEntry, searched_name: str, locale: Locale) \
+        if i % buffer_len == 0:
+            yield ids_buffer
+            ids_buffer = []
+
+    yield ids_buffer
+
+
+def yield_images(ids: list[str], wd_entry: WDEntry, searched_name: str, locale: Locale) \
     -> Iterator[tuple[ImageResult, WDEntry]]:
 
-    ids = [page.id for page in media_page_generator]
     request = site.simple_request(action='wbgetentities', ids=ids)
 
     raw = request.submit()

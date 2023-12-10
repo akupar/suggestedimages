@@ -88,7 +88,7 @@ def more_images():
     except:
         locale = Locale()
 
-    generator = search.get_images_for_item_buffered(item, title, locale, 10)
+    generator = search.get_chunk_of_images_for_item(item, title, locale, 10)
 
     image_template = locale.format_image("$FILE", title.capitalize())
 
