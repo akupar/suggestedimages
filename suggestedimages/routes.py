@@ -102,5 +102,8 @@ def more_images():
 
 @bp.route('/api/structured-data', methods=('GET',))
 def api_structured_data():
-    batch = next(generator)
+    try:
+        batch = next(generator)
+    except StopIteration:
+        batch = []
     return jsonify([vars(item) for item in batch])
