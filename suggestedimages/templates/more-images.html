@@ -8,9 +8,11 @@
 
 
 {% block content %}
+  <div id="messages">
   {% for message in get_flashed_messages() %}
   <div class="flash">{{ message }}</div>
   {% endfor %}
+  </div>
   <div class="link-bar">
     {% if edit_url %}
     <a href="{{ view_url }}" target="_blank" title="View {{ request.args.get('title') }}">
@@ -51,7 +53,72 @@
   </div>
   <button id="load-more">More results...</button>
   <script type="text/javascript">
-    console.log("code");
+    const IMAGE_TEMPLATE = "{{ image_template }}";
+
+    function addMessage(type, message) {
+        const container = document.querySelector('#messages');
+        const elem = document.createElement('div');
+        elem.setAttribute('class', 'flash');
+        elem.textContent = message;
+        if ( type == 'success' ) {
+            elem.classList.add('success');
+        } else {
+            elem.classList.add('error');
+        }
+        container.appendChild(elem);
+        setTimeout(() => {
+            elem.remove();
+        }, 5000);
+    }
+
+    function createImageBox(item) {
+        const box = document.createElement('div');
+        box.setAttribute('class', 'imagebox');
+
+        const header = document.createElement('div');
+        header.setAttribute('class', 'box-header');
+
+        const img = document.createElement('img');
+        const a = document.createElement('a');
+        a.href = item.url;
+        img.setAttribute('src', item.thumb);
+        a.appendChild(img);
+
+        const source = document.createElement('div');
+        source.setAttribute('class', 'image-source');
+
+        const code = document.createElement('code');
+        code.textContent = IMAGE_TEMPLATE.replace('$FILE', item.name);
+
+        const copyButton = document.createElement('button');
+        copyButton.setAttribute('title', 'Copy to clipboard');
+        copyButton.addEventListener('click', () => {
+            navigator.clipboard.writeText(code.textContent).then(function() {
+                addMessage('success', 'Copied!');
+            }, function(err) {
+                addMessage('error', 'Couldn’t copy text: ' + err.toString());
+            });
+        });
+
+        const copyIcon = document.createElement('img');
+        copyIcon.setAttribute('src', '/static/copy.svg');
+
+        copyButton.appendChild(copyIcon);
+
+        source.appendChild(code);
+
+        if ( navigator.clipboard ) {
+            source.appendChild(copyButton);
+        }
+
+        box.appendChild(header);
+        box.appendChild(a);
+        box.appendChild(source);
+
+        return box;
+
+    }
+
     async function loadMore() {
         document.querySelector('#load-more').innerText = "Loading";
         const response = await fetch("/api/structured-data");
@@ -61,20 +128,7 @@
             document.querySelector('#load-more').remove();
         }
         for ( const item of images ) {
-            const box = document.createElement('div');
-            box.setAttribute('class', 'imagebox');
-            const header = document.createElement('div');
-            header.setAttribute('class', 'box-header');
-            box.appendChild(header);
-            const img = document.createElement('img');
-            const a = document.createElement('a');
-            a.href = item.url;
-            img.setAttribute('src', item.thumb);
-            a.appendChild(img);
-            const code = document.createElement('code');
-            code.textContent = 'xxx';
-            box.appendChild(a);
-            box.appendChild(code);
+            const box = createImageBox(item);
             gallery.appendChild(box);
         }
         document.querySelector('#load-more').innerText = "More results...";

@@ -90,9 +90,12 @@ def more_images():
 
     generator = search.get_images_for_item_buffered(item, title, locale, 10)
 
+    image_template = locale.format_image("$FILE", title.capitalize())
+
     return render_template('more-images.html',
                            results = [],
                            locale = locale,
+                           image_template = image_template,
                            get_color_class = search.GetColorClass())
 
 

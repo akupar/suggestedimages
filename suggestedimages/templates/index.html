@@ -3,9 +3,11 @@
 
 {% block content %}
   <form method="get">
-    {% for message in get_flashed_messages() %}
-    <div class="flash">{{ message }}</div>
-    {% endfor %}
+    <div class="messages">
+      {% for message in get_flashed_messages() %}
+      <div class="flash">{{ message }}</div>
+      {% endfor %}
+    </div>
     <label for="title">{{ locale['Wiktionary'] }}</label>
     <select name="wikt" id="wikt">
       <option value="" {{ "selected" if request.args.get('wikt') == '' }}>default (English)</option>

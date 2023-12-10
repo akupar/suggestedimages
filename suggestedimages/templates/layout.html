@@ -11,6 +11,9 @@
         <li><a href="help.html" target="_blank">Help</a>
       </ul>
     </nav>
+    <ul class="breadcrumbs">
+        {% block path %}{% endblock %}
+    </ul>
     <main class="content">
       <header>
         {% block header %}{% endblock %}
