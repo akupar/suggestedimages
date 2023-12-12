@@ -75,7 +75,7 @@ def yield_images(ids: list[str], wd_entry: WDEntry, searched_name: str, locale: 
                     continue
                 page_name = page_data['title']
                 yield ImageResult(
-                    name = page_name,
+                    name = page_name.removeprefix('File:'),
                     url = f'https://commons.wikimedia.org/wiki/{page_name}',
                     thumb = get_wikimedia_commons_thumb(page_name.removeprefix('File:')),
                     caption = searched_name.capitalize(),
