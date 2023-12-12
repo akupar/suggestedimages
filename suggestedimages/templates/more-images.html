@@ -52,7 +52,10 @@
     {% endfor %}
   </div>
   <button id="load-more">More results...</button>
-  <script type="text/javascript">
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript">
     const IMAGE_TEMPLATE = "{{ image_template }}";
 
     function addMessage(type, message) {
