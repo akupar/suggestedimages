@@ -164,3 +164,5 @@ cython_debug/
 **/throttle.ctrl
 
 http_cache.sqlite
+user-config.py
+*.lwp

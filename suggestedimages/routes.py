@@ -1,5 +1,5 @@
 from flask import (
-    Blueprint, flash, redirect, render_template, request, url_for
+    Blueprint, flash, redirect, render_template, request, url_for, jsonify
 )
 import urllib
 from collections import namedtuple
@@ -46,7 +46,10 @@ def get_view_url(wikt, title):
 def index():
     title = request.args.get('title')
     wikt = request.args.get('wikt')
-    locale = Locale(wikt) if wikt else Locale()
+    try:
+        locale = Locale(wikt) if wikt else Locale()
+    except:
+        locale = Locale()
     lang = request.args.get('lang') or locale.language
 
     if not title:
@@ -71,3 +74,36 @@ def index():
 @bp.route('/help.html', methods=('GET',))
 def help():
     return render_template('help.html')
+
+generator = None
+
+@bp.route('/more-images', methods=('GET',))
+def more_images():
+    global generator
+    item = request.args.get('item')
+    title = request.args.get('title')
+    wikt = request.args.get('wikt')
+    try:
+        locale = Locale(wikt) if wikt else Locale()
+    except:
+        locale = Locale()
+
+    generator = search.get_chunk_of_images_for_item(item, title, locale, 10)
+
+    image_template = locale.format_image("$FILE", title.capitalize())
+
+    return render_template('more-images.html',
+                           results = [],
+                           locale = locale,
+                           image_template = image_template,
+                           get_color_class = search.GetColorClass())
+
+
+
+@bp.route('/api/structured-data', methods=('GET',))
+def api_structured_data():
+    try:
+        batch = next(generator)
+    except StopIteration:
+        batch = []
+    return jsonify([vars(item) for item in batch])

@@ -6,26 +6,16 @@ from pywikibot import pagegenerators
 
 from ..constants import *
 from ..localization import Locale
-from ..util import StrInLanguage, StrInLanguages
+from ..util import StrInLanguage
 from .result import Result, CommonsResult, ImageResult, WDEntry, NoImage
 from . import queries
+from .wikidata import get_entry_description
 
 from ..external_apis import external_apis_by_language
 
 
 site = pywikibot.Site("wikidata", "wikidata")
 
-
-def spaced(*args):
-    return " ".join(str(arg) for arg in args if arg != None)
-
-def build_composite_description(label, aliases, translation, description):
-    """Combines descriptive texts into one text.
-    """
-    return spaced((label if label else None),
-                  ((f"({', '.join([str(alias) for alias in aliases])})") if aliases else None),
-                  ((f"[= {translation}]") if translation else None)) \
-                  + ((f": {description}") if description else "")
 
 def yield_label_or_alias_results(searched) -> Iterator:
     return pagegenerators.WikidataSPARQLPageGenerator(
@@ -47,29 +37,6 @@ def yield_external_results(searched) -> Iterator:
 
     return []
 
-
-def get_entry_description(entry: Iterator, searched: StrInLanguage, locale: Locale) -> WDEntry:
-    label = StrInLanguages(entry.labels).get(searched.language) or locale["[no label]"]
-    aliases = StrInLanguages(entry.aliases).get(searched.language)
-
-    translation = None
-    if locale.language != searched.language:
-        translation = StrInLanguages(entry.labels).get(locale.language)
-        if not translation and searched.language != 'en':
-            translation = StrInLanguages(entry.labels).get('en')
-
-    description = StrInLanguages(entry.descriptions).get(locale.language, 'en', searched.language)
-
-    tooltip = build_composite_description(label, aliases, translation, description)
-
-    return WDEntry(
-        entry.id,
-        label,
-        aliases or [],
-        description,
-        tooltip,
-        entry.full_url(),
-    )
 
 
 def yield_image_descriptions(entry: WDEntry, caption: str) -> Iterator[ImageResult]:
