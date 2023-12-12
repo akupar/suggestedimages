@@ -27,9 +27,6 @@
     {% endif %}
   </div>
   <hr/>
-  <div class="loading-message" style="display: none;">
-    {{ 'Loading...' }}
-  </div>
   <div class="gallery">
     {% for result in results %}
     <div class="imagebox">
@@ -52,6 +49,9 @@
     {% endfor %}
   </div>
   <button id="load-more">More results...</button>
+  <div id="loading-indicator" style="display: none;">
+    <img src="static/Loading_indicator.gif"/>
+  </div>
 {% endblock %}
 
 {% block scripts %}
@@ -123,7 +123,8 @@
     }
 
     async function loadMore() {
-        document.querySelector('#load-more').innerText = "Loading";
+        document.querySelector('#load-more').style.display = "none";
+        document.querySelector('#loading-indicator').style.display = "block";
         const response = await fetch("/api/structured-data");
         const images = await response.json();
         const gallery = document.querySelector('.gallery');
@@ -135,7 +136,8 @@
             gallery.appendChild(box);
         }
         document.querySelector('#load-more').innerText = "More results...";
-
+        document.querySelector('#load-more').style.display = "block";
+        document.querySelector('#loading-indicator').style.display = "none";
     }
 
     document.querySelector('#load-more').addEventListener("click", loadMore);

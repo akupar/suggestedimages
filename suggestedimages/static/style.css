@@ -321,3 +321,7 @@ input:valid + span::before {
 .image-source button img {
     height: 1.2ex;
 }
+
+#loading-indicator {
+    text-align: center;
+}
