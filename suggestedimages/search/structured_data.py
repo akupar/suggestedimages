@@ -83,15 +83,21 @@ def yield_images(ids: list[str], wd_entry: WDEntry, searched_name: str, locale: 
                 )
 
 
-def get_wikimedia_commons_thumb(image, width=300):
-    image = image.replace(' ', '_')
+def get_wikimedia_commons_thumb(image_name, width=300):
+    image_name = image_name.replace(' ', '_')
     m = hashlib.md5()
-    m.update(image.encode('utf-8'))
+    m.update(image_name.encode('utf-8'))
     digest = m.hexdigest()
-    return f'https://upload.wikimedia.org/wikipedia/commons/thumb/{digest[0]}/{digest[0:2]}/{image}/{str(width)}px-{image}' \
-        + ('.png' if image.endswith('.svg') else '')
+    return f'https://upload.wikimedia.org/wikipedia/commons/thumb/{digest[0]}/{digest[0:2]}/{image_name}/{str(width)}px-{image_name}' \
+        + get_thumb_extension(image_name)
 
 
+def get_thumb_extension(image_name):
+    if image_name.endswith('.svg'):
+        return '.png'
+    if image_name.endswith('.tif'):
+        return '.jpg'
+    return ''
 
 
 if __name__ == "__main__":
