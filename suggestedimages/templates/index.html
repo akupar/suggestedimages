@@ -70,7 +70,7 @@
           <a href="{{ wd.url }}" title="{{ wd.text }}">{{ wd.id }}</a>{{' '}}
           {% if wd.id.startswith('Q') %}
           <a
-            href="more-images?item={{ wd.id }}&title={{ request.args.get('title') }}&wikt={{ request.args.get('wikt') }}"
+            href="more-images?{{ make_query_params(request.args.get('wikt'), wd.id, request.args.get('title')) }}"
             title="Search for more images">🔍</a>
           {% endif %}
         </span>
