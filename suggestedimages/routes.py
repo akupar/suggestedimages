@@ -7,12 +7,16 @@ from collections import namedtuple
 
 
 from . import search
-from .util import StrInLanguage
+from .util import StrInLanguage, GeneratorCache
 from .localization import Locale
 
 bp = Blueprint('main', __name__)
 
 LanguageOption = namedtuple("LanguageOption", "value label")
+
+# TODO: might not work on production server
+generators = GeneratorCache()
+
 
 
 def list_language_options(locale):
@@ -77,8 +81,6 @@ def index():
 def help():
     return render_template('help.html')
 
-
-generators = {}
 
 @bp.route('/more-images', methods=('GET',))
 def more_images():
