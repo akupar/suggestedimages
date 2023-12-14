@@ -1,5 +1,6 @@
 (function () {
-    const kielikoodit = {
+    const WIKTIONARY = 'fi';
+    const language_heading_to_code = {
         'Englanti': 'en',
         'Espanja': 'es',
         'Ruotsi': 'sv',
@@ -8,16 +9,15 @@
     };
 
     $('h2').each(function () {
-        const kieli = $(this).children('.mw-headline').text();
-	console.log("kieli", kieli, kielikoodit[kieli]);
-        if ( kielikoodit[kieli] ) {
-            const sivu = mw.config.get('wgTitle');
-            const url = 'http://127.0.0.1:5000/?' + $.param({
-                wikt: 'fi',
-                lang: kielikoodit[kieli],
-                title: encodeURIComponent(sivu),
+        const language = $(this).children('.mw-headline').text();
+        if ( language_heading_to_code[language] ) {
+            const title = mw.config.get('wgTitle');
+            const url = 'https://imgs-for-wikt.toolforge.org/?' + $.param({
+                wikt: WIKTIONARY,
+                lang: language_heading_to_code[language],
+                title: title,
             });
-	    $(this).append(' ', $('<a target="_BLANK" title="Etsi kuvia">🖼</a>').attr('href', url));
+	    $(this).append(' ', $('<a target="_BLANK" title="Image search">🖼</a>').attr('href', url));
         }
     });
 }());
