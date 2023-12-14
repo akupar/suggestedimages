@@ -125,23 +125,32 @@
     async function loadMore() {
         document.querySelector('#load-more').style.display = "none";
         document.querySelector('#loading-indicator').style.display = "block";
-        const response = await fetch("/api/structured-data");
-        const images = await response.json();
-        const gallery = document.querySelector('.gallery');
-        if ( images.length < 4 ) {
-            document.querySelector('#load-more').remove();
+
+        try {
+            const response = await fetch("/api/structured-data?item=" + "{{ item_id }}");
+            if ( !response.ok ) {
+                throw new Error(`${response.status} ${response.statusText}`);
+            }
+            const images = await response.json();
+            const gallery = document.querySelector('.gallery');
+            for ( const item of images ) {
+                const box = createImageBox(item);
+                gallery.appendChild(box);
+            }
+
+            if ( images.length < 4 ) {
+                document.querySelector('#load-more').remove();
+            }
+        } catch ( error ) {
+            addMessage('error', error.toString());
+            console.error(error);
+        } finally {
+            document.querySelector('#loading-indicator').style.display = "none";
+            document.querySelector('#load-more').style.display = "block";
         }
-        for ( const item of images ) {
-            const box = createImageBox(item);
-            gallery.appendChild(box);
-        }
-        document.querySelector('#load-more').innerText = "More results...";
-        document.querySelector('#load-more').style.display = "block";
-        document.querySelector('#loading-indicator').style.display = "none";
     }
 
     document.querySelector('#load-more').addEventListener("click", loadMore);
     loadMore();
-
   </script>
 {% endblock %}
