@@ -97,6 +97,8 @@ def get_thumb_extension(image_name):
         return '.png'
     if image_name.endswith('.tif'):
         return '.jpg'
+    if image_name.endswith('.webm'):
+        return '.jpg'
     return ''
 
 
