@@ -65,7 +65,7 @@
         elem.textContent = message;
         if ( type == 'success' ) {
             elem.classList.add('success');
-        } else {
+        } else if ( type == 'error' ) {
             elem.classList.add('error');
         }
         container.appendChild(elem);
@@ -138,15 +138,20 @@
                 gallery.appendChild(box);
             }
 
-            if ( images.length < 4 ) {
-                document.querySelector('#load-more').remove();
+            if ( gallery.childElementCount === 0 ) {
+                addMessage('neutral', 'No results');
+            }
+
+            if ( images.length < 10 ) {
+                document.querySelector('#load-more').style.display = "none";
+            } else {
+                document.querySelector('#load-more').style.display = "block";
             }
         } catch ( error ) {
             addMessage('error', error.toString());
             console.error(error);
         } finally {
             document.querySelector('#loading-indicator').style.display = "none";
-            document.querySelector('#load-more').style.display = "block";
         }
     }
 
