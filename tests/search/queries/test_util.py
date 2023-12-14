@@ -1,7 +1,7 @@
 import pytest
 
 from suggestedimages.util import StrInLanguage
-from suggestedimages.wikidata.queries import *
+from suggestedimages.search.queries import *
 
 
 def check_for_invalid_values():

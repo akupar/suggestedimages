@@ -3,16 +3,22 @@
 
 {% block content %}
   <form method="get">
-    {% for message in get_flashed_messages() %}
-    <div class="flash">{{ message }}</div>
-    {% endfor %}
+    <div class="messages">
+      {% for message in get_flashed_messages() %}
+      <div class="flash">{{ message }}</div>
+      {% endfor %}
+    </div>
     <label for="title">{{ locale['Wiktionary'] }}</label>
     <select name="wikt" id="wikt">
       <option value="" {{ "selected" if request.args.get('wikt') == '' }}>default (English)</option>
-      <option value="fi" {{ "selected" if request.args.get('wikt') == 'fi' }}>suomi</option>
-      <option value="en" {{ "selected" if request.args.get('wikt') == 'en' }}>English</option>
-      <option value="es" {{ "selected" if request.args.get('wikt') == 'es' }}>español</option>
-      <option value="sv" {{ "selected" if request.args.get('wikt') == 'sv' }}>svenska</option>
+      {% for wiktionary_info in list_locales() %}
+      <option
+        value="{{ wiktionary_info.subdomain }}"
+        {{ "selected" if request.args.get('wikt') == wiktionary_info.subdomain }}
+      >
+        {{ wiktionary_info.local_name }}
+      </option>
+      {% endfor %}
     </select>
     <label for="title">{{ locale['Language'] }}</label>
     <div>
@@ -52,7 +58,12 @@
     {% for result, wd in results %}
     <div class="imagebox {{ get_color_class(wd.id) }}">
       <div class="box-header">
-        <a href="{{ wd.url }}" title="{{ wd.text }}">{{ wd.id }}</a>
+        <span>
+          <a href="{{ wd.url }}" title="{{ wd.text }}">{{ wd.id }}</a>{{' '}}
+          <a
+            href="more-images?item={{ wd.id }}&title={{ request.args.get('title') }}&wikt={{ request.args.get('wikt') }}"
+            title="Search for more images">🔍</a>
+        </span>
 
         {% if result.facet %}
         <span class="facet">{{ result.facet }}</span>
@@ -78,4 +89,8 @@
     </div>
     {% endfor %}
   </div>
+{% endblock %}
+
+{% block scripts %}
+  <script type="text/javascript" src="static/index.js"></script>
 {% endblock %}

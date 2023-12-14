@@ -12,7 +12,7 @@ function handleChangedLanguage(languageInput) {
     const option = document.querySelector('#languages').querySelector('option[value="' + code + '"]');
 
     if ( option ) {
-        setLanguageNameDisplay(extractLanguageNameFromOptionLabel(otion.textContent));
+        setLanguageNameDisplay(extractLanguageNameFromOptionLabel(option.textContent));
         languageInput.setCustomValidity("");
     } else if ( code == "" ) {
         setLanguageNameDisplay("(same)");

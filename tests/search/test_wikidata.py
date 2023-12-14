@@ -1,7 +1,6 @@
 import pytest
 
-from suggestedimages.wikidata.api import *
-from suggestedimages.util import StrInLanguage
+from suggestedimages.search.wikidata import *
 
 
 def test_spaced():
@@ -28,14 +27,3 @@ def test_build_composite_description():
 
     assert build_composite_description('kissa', ['kotikissa', 'kesykissa'], 'cat', 'an animal') \
         == 'kissa (kotikissa, kesykissa) [= cat]: an animal'
-
-
-def test_yield_external_results():
-    # https://www.wikidata.org/wiki/Q20793
-    CORRECT_ID = 'Q20793'
-
-    searched_word = StrInLanguage('eurooppalainen lyhytkarva', 'fi')
-    results = list(yield_external_results(searched_word))
-
-    assert len(results) == 1
-    assert results[0].id == CORRECT_ID

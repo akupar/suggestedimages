@@ -70,11 +70,29 @@ nav ul li a, nav ul li span, header .action {
     margin: 1rem 0 0.25rem 0;
 }
 
+#messages {
+    position: fixed;
+    left: 10em;
+    top: 1em;
+    left: 50%;
+    transform: translate(-50%, 1em);
+}
+
 .flash {
-    margin: 1em 0;
+    margin: 0.2em 0;
     padding: 1em;
     background: #cae6f6;
     border: 1px solid #377ba8;
+}
+
+.success {
+    background: #caf6e6;
+    border: 1px solid #37a87b;
+}
+
+.error {
+    background: #f6cae6;
+    border: 1px solid #a8377b;
 }
 
 .post > header {
@@ -152,7 +170,6 @@ input[type=submit] {
 }
 
 .imagebox code {
-    display: block;
     word-wrap: anywhere;
     background-color: #fffc;
 }
@@ -222,7 +239,7 @@ input[type=submit] {
     display: flex;
 }
 
-.box-header > a:first-child {
+.box-header > :first-child {
     flex-grow: 1;
 }
 
@@ -291,4 +308,28 @@ input:valid + span::before {
   font-size: 13px;
   z-index: 0;
   color: slategray;
+}
+
+
+.breadcrumbs {
+    list-style-type: none;
+    display: flex;
+    margin-left: -1em;
+    gap: 1ex;
+}
+
+.breadcrumbs li {
+    display: inline-block;
+}
+
+.breadcrumbs li:not(:first-child)::before {
+    content: "» ";
+}
+
+.image-source button img {
+    height: 1.2ex;
+}
+
+#loading-indicator {
+    text-align: center;
 }

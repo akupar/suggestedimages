@@ -1,17 +1,23 @@
+import uuid
 from flask import (
-    Blueprint, flash, redirect, render_template, request, url_for
+    Blueprint, flash, redirect, render_template, request, url_for, jsonify
 )
 import urllib
 from collections import namedtuple
 
 
 from . import search
-from .util import StrInLanguage
-from .locales import Locale
+from .util import StrInLanguage, GeneratorCache
+from .localization import Locale
 
 bp = Blueprint('main', __name__)
 
 LanguageOption = namedtuple("LanguageOption", "value label")
+
+# TODO: might not work on production server
+generators = GeneratorCache()
+
+
 
 def list_language_options(locale):
     return [
@@ -46,13 +52,17 @@ def get_view_url(wikt, title):
 def index():
     title = request.args.get('title')
     wikt = request.args.get('wikt')
-    locale = Locale(wikt) if wikt else Locale()
+    try:
+        locale = Locale(wikt) if wikt else Locale()
+    except:
+        locale = Locale()
     lang = request.args.get('lang') or locale.language
 
     if not title:
         return render_template('index.html',
                                results = [],
                                locale = locale,
+                               list_locales = Locale.list_locales,
                                language_options = list_language_options(locale))
 
     title_with_language = StrInLanguage(title, lang=lang)
@@ -62,6 +72,7 @@ def index():
                            edit_url = get_edit_url(wikt, title),
                            view_url = get_view_url(wikt, title),
                            locale = locale,
+                           list_locales = Locale.list_locales,
                            language_options = list_language_options(locale),
                            get_color_class = search.GetColorClass())
 
@@ -69,3 +80,46 @@ def index():
 @bp.route('/help.html', methods=('GET',))
 def help():
     return render_template('help.html')
+
+
+@bp.route('/more-images', methods=('GET',))
+def more_images():
+    item = request.args.get('item')
+    title = request.args.get('title')
+    wikt = request.args.get('wikt')
+    id = hash((request.cookies.get('remember_token'), item))
+
+    try:
+        locale = Locale(wikt) if wikt else Locale()
+    except:
+        locale = Locale()
+
+
+    generator = search.get_chunk_of_images_for_item(item, title, locale, 10)
+    generators[id] = generator
+
+    image_template = locale.format_image("$FILE", title.capitalize())
+
+
+    return render_template('more-images.html',
+                           results = [],
+                           item_id = item,
+                           locale = locale,
+                           image_template = image_template,
+                           get_color_class = search.GetColorClass())
+
+
+@bp.route('/api/structured-data', methods=('GET',))
+def api_structured_data():
+    item = request.args.get('item')
+    id = hash((request.cookies.get('remember_token'), item))
+    if not id in generators:
+        return "No stream found", 110
+
+    generator = generators[id]
+
+    try:
+        batch = next(generator)
+    except StopIteration:
+        batch = []
+    return jsonify([vars(item) for item in batch])
