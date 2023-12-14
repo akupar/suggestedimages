@@ -2,6 +2,7 @@
 NO_IMAGE_THUMB = '/static/Noimages.svg'
 
 NUM_COLORS = 12
+MORE_IMAGES_CACHE_TIME_IN_SECONDS = 60 * 60 * 24
 
 # The props that are looked for images
 # https://www.wikidata.org/wiki/Property:P18 related property (P1659)

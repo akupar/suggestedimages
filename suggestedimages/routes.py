@@ -1,3 +1,4 @@
+import uuid
 from flask import (
     Blueprint, flash, redirect, render_template, request, url_for, jsonify
 )
@@ -6,12 +7,17 @@ from collections import namedtuple
 
 
 from . import search
-from .util import StrInLanguage
+from .util import StrInLanguage, GeneratorCache
 from .localization import Locale
 
 bp = Blueprint('main', __name__)
 
 LanguageOption = namedtuple("LanguageOption", "value label")
+
+# TODO: might not work on production server
+generators = GeneratorCache()
+
+
 
 def list_language_options(locale):
     return [
@@ -75,33 +81,43 @@ def index():
 def help():
     return render_template('help.html')
 
-generator = None
 
 @bp.route('/more-images', methods=('GET',))
 def more_images():
-    global generator
     item = request.args.get('item')
     title = request.args.get('title')
     wikt = request.args.get('wikt')
+    id = hash((request.cookies.get('remember_token'), item))
+
     try:
         locale = Locale(wikt) if wikt else Locale()
     except:
         locale = Locale()
 
+
     generator = search.get_chunk_of_images_for_item(item, title, locale, 10)
+    generators[id] = generator
 
     image_template = locale.format_image("$FILE", title.capitalize())
 
+
     return render_template('more-images.html',
                            results = [],
+                           item_id = item,
                            locale = locale,
                            image_template = image_template,
                            get_color_class = search.GetColorClass())
 
 
-
 @bp.route('/api/structured-data', methods=('GET',))
 def api_structured_data():
+    item = request.args.get('item')
+    id = hash((request.cookies.get('remember_token'), item))
+    if not id in generators:
+        return "No stream found", 110
+
+    generator = generators[id]
+
     try:
         batch = next(generator)
     except StopIteration:
