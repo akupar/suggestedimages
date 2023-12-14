@@ -1,8 +1,9 @@
 import uuid
+
 from flask import (
     Blueprint, flash, redirect, render_template, request, url_for, jsonify
 )
-import urllib
+import urllib.parse
 from collections import namedtuple
 
 
@@ -48,6 +49,14 @@ def get_view_url(wikt, title):
     return f"https://{wikt}.wiktionary.org/wiki/{encoded_title}"
 
 
+def make_query_params(wikt, item_id, title):
+    return urllib.parse.urlencode({
+        'wikt': wikt,
+        'item': item_id,
+        'title': title
+    })
+
+
 @bp.route('/', methods=('GET',))
 def index():
     title = request.args.get('title')
@@ -74,6 +83,7 @@ def index():
                            locale = locale,
                            list_locales = Locale.list_locales,
                            language_options = list_language_options(locale),
+                           make_query_params = make_query_params,
                            get_color_class = search.GetColorClass())
 
 
@@ -99,7 +109,6 @@ def more_images():
     generators[id] = generator
 
     image_template = locale.format_image("$FILE", title.capitalize())
-
 
     return render_template('more-images.html',
                            results = [],
