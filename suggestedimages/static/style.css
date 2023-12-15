@@ -153,7 +153,14 @@ input[type=submit] {
 }
 
 .gallery {
-    column-width: 324px;
+    /*column-width: 324px;*/
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1em;
+}
+
+.column-1, .column-2, .column-3 {
+    height: min-content;
 }
 
 .imagebox {

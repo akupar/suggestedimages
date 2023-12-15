@@ -49,6 +49,7 @@ class ImageResult(Result):
     thumb: str
     caption: str
     facet: str
+    size: tuple[int, int]
 
     type = 'image'
 
@@ -63,4 +64,4 @@ class CommonsResult(Result):
         return f'https://commons.wikimedia.org/wiki/{self.name.replace(" ", "_")}'
 
 
-NoImage = ImageResult('No Images', None, NO_IMAGE_THUMB, None, None)
+NoImage = ImageResult('No Images', None, NO_IMAGE_THUMB, None, None, (320, 320))

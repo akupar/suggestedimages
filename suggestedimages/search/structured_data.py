@@ -16,7 +16,6 @@ from suggestedimages.search.result import ImageResult, WDEntry
 from suggestedimages.search import queries
 from .wikidata import get_entry_description
 
-
 site = pywikibot.Site("commons", "commons")
 site.login()
 
@@ -61,29 +60,40 @@ def yield_images(ids: list[str], wd_entry: WDEntry, searched_name: str, locale: 
 
     request = site.simple_request(action='wbgetentities', ids=ids)
 
+    # Note: site.data_repository() returns wrong datasite (wikidata), so we have to use
+    # this in the MediaInfo constructor.
+    repo = pywikibot.site.DataSite("commons", "commons")
+
+
     raw = request.submit()
+
 
     if 'entities' in raw:
         for page_id, page_data in raw['entities'].items():
             if not 'statements' in page_data:
                 continue
+
+            mediainfo = pywikibot.MediaInfo(repo, page_id)
+            filepage = mediainfo.file
+            info = filepage.latest_file_info
+
+            # P180 = depicts
             for item in page_data['statements']['P180']:
-                if not 'mainsnak' in item or not 'datavalue' in item['mainsnak']:
+                claim = pywikibot.Claim.fromJSON(site, item)
+                if claim.target.id != wd_entry.id:
                     continue
-                q_id = item['mainsnak']['datavalue']['value']['id']
-                if q_id != wd_entry.id:
-                    continue
-                page_name = page_data['title']
+
                 yield ImageResult(
-                    name = page_name.removeprefix('File:'),
-                    url = f'https://commons.wikimedia.org/wiki/{page_name}',
-                    thumb = get_wikimedia_commons_thumb(page_name.removeprefix('File:')),
+                    name = filepage.title(),
+                    url = filepage.full_url(),
+                    thumb = filepage.get_file_url(url_width=320),
                     caption = searched_name.capitalize(),
-                    facet = ''
+                    facet = '',
+                    size = (info['width'], info['height'])
                 )
 
 
-def get_wikimedia_commons_thumb(image_name, width=300):
+def get_wikimedia_commons_thumb_url(image_name, width=300):
     image_name = image_name.replace(' ', '_')
     m = hashlib.md5()
     m.update(image_name.encode('utf-8'))

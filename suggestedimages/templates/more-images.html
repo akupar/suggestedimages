@@ -28,25 +28,9 @@
   </div>
   <hr/>
   <div class="gallery">
-    {% for result in results %}
-    <div class="imagebox">
-      <div class="box-header">
-        <a href="x" title="y">z</a>
-
-        {% if result.facet %}
-        <span class="facet">{{ result.facet }}</span>
-        {% endif %}
-      </div>
-      {% if result.url %}
-      <a href="{{ result.url or '' }}">
-        <img class="result-image" src="{{ result.thumb }}" title="å">
-      </a>
-      <code>{{ locale.format_image(result.name, result.caption) }}</code>
-      {% else %}
-      <img src="{{ result.thumb }}">
-      {% endif %}
-    </div>
-    {% endfor %}
+    <div class="column-1"></div>
+    <div class="column-2"></div>
+    <div class="column-3"></div>
   </div>
   <button id="load-more">More results...</button>
   <div id="loading-indicator" style="display: none;">
@@ -55,7 +39,8 @@
 {% endblock %}
 
 {% block scripts %}
-    <script type="text/javascript">
+  <script type="text/javascript" src="static/imagebox.js"></script>
+  <script type="text/javascript">
     const IMAGE_TEMPLATE = "{{ image_template }}";
 
     function addMessage(type, message) {
@@ -74,54 +59,6 @@
         }, 5000);
     }
 
-    function createImageBox(item) {
-        const box = document.createElement('div');
-        box.setAttribute('class', 'imagebox');
-
-        const header = document.createElement('div');
-        header.setAttribute('class', 'box-header');
-
-        const img = document.createElement('img');
-        const a = document.createElement('a');
-        a.href = item.url;
-        img.setAttribute('src', item.thumb);
-        a.appendChild(img);
-
-        const source = document.createElement('div');
-        source.setAttribute('class', 'image-source');
-
-        const code = document.createElement('code');
-        code.textContent = IMAGE_TEMPLATE.replace('$FILE', item.name);
-
-        const copyButton = document.createElement('button');
-        copyButton.setAttribute('title', 'Copy to clipboard');
-        copyButton.addEventListener('click', () => {
-            navigator.clipboard.writeText(code.textContent).then(function() {
-                addMessage('success', 'Copied!');
-            }, function(err) {
-                addMessage('error', 'Couldn’t copy text: ' + err.toString());
-            });
-        });
-
-        const copyIcon = document.createElement('img');
-        copyIcon.setAttribute('src', '/static/copy.svg');
-
-        copyButton.appendChild(copyIcon);
-
-        source.appendChild(code);
-
-        if ( navigator.clipboard ) {
-            source.appendChild(copyButton);
-        }
-
-        box.appendChild(header);
-        box.appendChild(a);
-        box.appendChild(source);
-
-        return box;
-
-    }
-
     async function loadMore() {
         document.querySelector('#load-more').style.display = "none";
         document.querySelector('#loading-indicator').style.display = "block";
@@ -131,18 +68,16 @@
             if ( !response.ok ) {
                 throw new Error(`${response.status} ${response.statusText}`);
             }
-            const images = await response.json();
-            const gallery = document.querySelector('.gallery');
-            for ( const item of images ) {
-                const box = createImageBox(item);
-                gallery.appendChild(box);
-            }
+            const imageDatas = await response.json();
+            const column1 = document.querySelector('.column-1');
 
-            if ( gallery.childElementCount === 0 ) {
+            distributeImages(imageDatas);
+
+            if ( column1.childElementCount === 0 ) {
                 addMessage('neutral', 'No results');
             }
 
-            if ( images.length < 10 ) {
+            if ( imageDatas.length < 10 ) {
                 document.querySelector('#load-more').style.display = "none";
             } else {
                 document.querySelector('#load-more').style.display = "block";

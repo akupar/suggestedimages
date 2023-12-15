@@ -46,13 +46,15 @@ def yield_image_descriptions(entry: WDEntry, caption: str) -> Iterator[ImageResu
 
         for image_entry in entry.claims[prop]:
             commons_media = image_entry.target
+            info = commons_media.latest_file_info
             if isinstance(commons_media, pywikibot.page.FilePage):
                 yield ImageResult(
                     name = commons_media.title(),
                     url = commons_media.full_url(),
                     thumb = commons_media.get_file_url(url_width=320),
                     caption = caption,
-                    facet = name
+                    facet = name,
+                    size = (info['width'], info['height'])
                 )
 
 
