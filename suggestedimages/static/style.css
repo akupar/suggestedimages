@@ -161,6 +161,9 @@ input[type=submit] {
 
 .column-1, .column-2, .column-3 {
     height: min-content;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
 }
 
 .imagebox {
@@ -174,6 +177,8 @@ input[type=submit] {
 .result-image, .result-link {
     width: 320px;
     max-height: 100%;
+    padding: 0.2em;
+    border: solid #000000aa 1px;
 }
 
 .imagebox code {
@@ -235,9 +240,10 @@ input[type=submit] {
 }
 
 
-.result-link > div {
+.result-link > a {
     display: flex;
     gap: 0.5em;
+    margin: 0.2em;
     align-items: center;
     background-color: #efefef;
 }

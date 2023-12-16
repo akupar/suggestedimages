@@ -90,6 +90,65 @@ function createImageBox(item, entry) {
 
 }
 
+function createLinkBox(item, entry) {
+
+    const box = document.createElement('div');
+    box.setAttribute('class', 'result-link');
+
+    const header = document.createElement('div');
+    header.setAttribute('class', 'box-header');
+    if ( entry ) {
+        const span = document.createElement('span');
+        const wikidataLink = document.createElement('a');
+        wikidataLink.textContent = entry.id;
+        wikidataLink.setAttribute('href', entry.url);
+        span.appendChild(wikidataLink);
+        header.appendChild(span);
+        box.classList.add(entry.colorClass);
+        box.setAttribute('title', entry.text);
+        if ( entry.id.startsWith('Q') ) {
+            const moreLink = document.createElement('a');
+            moreLink.textContent = '🔍';
+            moreLink.setAttribute('href', 'more-images?' + location.search + '&item=' + entry.id);
+            span.appendChild(moreLink);
+
+        }
+    }
+    if ( item.facet ) {
+        const facet = document.createElement('span');
+        facet.setAttribute('class', 'facet');
+        facet.textContent = item.facet;
+        header.appendChild(facet);
+    }
+
+    const img = document.createElement('img');
+    const a = document.createElement('a');
+    a.href = item.url;
+    img.setAttribute('src', '/static/Commons-logo.svg');
+    img.setAttribute('width', 100);
+    img.setAttribute('height', 100);
+    const label = document.createElement('label');
+    label.textContent = item.name;
+    a.appendChild(img);
+    a.appendChild(label);
+
+    box.appendChild(header);
+    box.appendChild(a);
+
+    return box;
+
+}
+
+function createResultBox(item, entry) {
+    if ( item.type === 'image' ) {
+        return createImageBox(item, entry);
+    } else if ( item.type === 'link' ) {
+        return createLinkBox(item, entry);
+    } else {
+        throw new Error(`Unknown type: ${item.type}`);
+    }
+}
+
 function argmin(arr) {
     const min = Math.min(...arr);
     return arr.indexOf(min);
@@ -106,10 +165,7 @@ const distributeImages = (() => {
     function distributeImages(imageDatas) {
         console.log("Distribute images");
         for ( const [item, entry] of imageDatas ) {
-            if ( !item.size ) {
-                continue;
-            }
-            const box = createImageBox(item, entry);
+            const box = createResultBox(item, entry);
             const columnIndex = argmin(columnHeights);
             columns[columnIndex].appendChild(box);
             columnHeights[columnIndex] = columns[columnIndex].clientHeight;
