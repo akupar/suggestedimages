@@ -1,4 +1,5 @@
 import uuid
+import json
 
 from flask import (
     Blueprint, flash, redirect, render_template, request, url_for, jsonify
@@ -76,15 +77,32 @@ def index():
 
     title_with_language = StrInLanguage(title, lang=lang)
 
+    get_color_class = search.GetColorClass()
+
+    results = search.get_images_for_word_ranked(title_with_language, locale)
+    results_json = [
+        (
+            vars(image),
+            {
+                "id": entry.id,
+                "url": entry.url,
+                "text": entry.text,
+                "colorClass": get_color_class(entry.id)
+            }
+        ) for image, entry in results
+    ]
+
+    image_template = locale.format_image("$FILE", title.capitalize())
+
     return render_template('index.html',
-                           results = search.get_images_for_word_ranked(title_with_language, locale),
+                           results_json = results_json,
                            edit_url = get_edit_url(wikt, title),
                            view_url = get_view_url(wikt, title),
                            locale = locale,
+                           image_template = image_template,
                            list_locales = Locale.list_locales,
                            language_options = list_language_options(locale),
-                           make_query_params = make_query_params,
-                           get_color_class = search.GetColorClass())
+                           make_query_params = make_query_params)
 
 
 @bp.route('/help.html', methods=('GET',))
@@ -123,7 +141,7 @@ def api_structured_data():
     item = request.args.get('item')
     id = hash((request.cookies.get('remember_token'), item))
     if not id in generators:
-        return "No stream found", 110
+        return "No result stream found", 110
 
     generator = generators[id]
 
@@ -131,4 +149,5 @@ def api_structured_data():
         batch = next(generator)
     except StopIteration:
         batch = []
-    return jsonify([vars(item) for item in batch])
+
+    return jsonify([(vars(item), None) for item in batch])

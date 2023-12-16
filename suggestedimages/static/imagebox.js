@@ -1,4 +1,21 @@
-function createImageBox(item) {
+function addMessage(type, message) {
+    const container = document.querySelector('#messages');
+    const elem = document.createElement('div');
+    elem.setAttribute('class', 'flash');
+    elem.textContent = message;
+    if ( type == 'success' ) {
+        elem.classList.add('success');
+    } else if ( type == 'error' ) {
+        elem.classList.add('error');
+    }
+    container.appendChild(elem);
+    setTimeout(() => {
+        elem.remove();
+    }, 5000);
+}
+
+
+function createImageBox(item, entry) {
     const [width, height] = item.size;
 
     const box = document.createElement('div');
@@ -6,6 +23,29 @@ function createImageBox(item) {
 
     const header = document.createElement('div');
     header.setAttribute('class', 'box-header');
+    if ( entry ) {
+        const span = document.createElement('span');
+        const wikidataLink = document.createElement('a');
+        wikidataLink.textContent = entry.id;
+        wikidataLink.setAttribute('href', entry.url);
+        span.appendChild(wikidataLink);
+        header.appendChild(span);
+        box.classList.add(entry.colorClass);
+        box.setAttribute('title', entry.text);
+        if ( entry.id.startsWith('Q') ) {
+            const moreLink = document.createElement('a');
+            moreLink.textContent = '🔍';
+            moreLink.setAttribute('href', 'more-images?' + location.search + '&item=' + entry.id);
+            span.appendChild(moreLink);
+
+        }
+    }
+    if ( item.facet ) {
+        const facet = document.createElement('span');
+        facet.setAttribute('class', 'facet');
+        facet.textContent = item.facet;
+        header.appendChild(facet);
+    }
 
     const img = document.createElement('img');
     const a = document.createElement('a');
@@ -65,9 +105,11 @@ const distributeImages = (() => {
 
     function distributeImages(imageDatas) {
         console.log("Distribute images");
-        for ( const item of imageDatas ) {
-            const box = createImageBox(item);
-            const image = box.querySelector('img');
+        for ( const [item, entry] of imageDatas ) {
+            if ( !item.size ) {
+                continue;
+            }
+            const box = createImageBox(item, entry);
             const columnIndex = argmin(columnHeights);
             columns[columnIndex].appendChild(box);
             columnHeights[columnIndex] = columns[columnIndex].clientHeight;

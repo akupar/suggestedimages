@@ -71,12 +71,14 @@ def yield_image_descriptions(entry: SenseEntry, caption: str) -> Iterator[ImageR
     for image_entry in entry.claims.get('P18', []):
         commons_media = image_entry.target
         if isinstance(commons_media, pywikibot.page.FilePage):
+            info = commons_media.latest_file_info
             yield ImageResult(
                 name = commons_media.title(),
                 url = commons_media.full_url(),
                 thumb = commons_media.get_file_url(url_width=320),
                 caption = caption,
-                facet = None
+                facet = None,
+                size = (info['width'], info['height'])
             )
 
 

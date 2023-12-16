@@ -43,22 +43,6 @@
   <script type="text/javascript">
     const IMAGE_TEMPLATE = "{{ image_template }}";
 
-    function addMessage(type, message) {
-        const container = document.querySelector('#messages');
-        const elem = document.createElement('div');
-        elem.setAttribute('class', 'flash');
-        elem.textContent = message;
-        if ( type == 'success' ) {
-            elem.classList.add('success');
-        } else if ( type == 'error' ) {
-            elem.classList.add('error');
-        }
-        container.appendChild(elem);
-        setTimeout(() => {
-            elem.remove();
-        }, 5000);
-    }
-
     async function loadMore() {
         document.querySelector('#load-more').style.display = "none";
         document.querySelector('#loading-indicator').style.display = "block";
