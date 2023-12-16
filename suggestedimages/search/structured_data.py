@@ -84,7 +84,7 @@ def yield_images(ids: list[str], wd_entry: WDEntry, searched_name: str, locale: 
                     continue
 
                 yield ImageResult(
-                    name = filepage.title(),
+                    name = filepage.title().removeprefix('File:'),
                     url = filepage.full_url(),
                     thumb = filepage.get_file_url(url_width=320),
                     caption = searched_name.capitalize(),
