@@ -14,12 +14,9 @@ function addMessage(type, message) {
     }, 5000);
 }
 
-
-function createImageBox(item, entry) {
-    const [width, height] = item.size;
-
+function createBox(item, entry) {
     const box = document.createElement('div');
-    box.setAttribute('class', 'imagebox');
+    box.setAttribute('class', 'result-box');
 
     const header = document.createElement('div');
     header.setAttribute('class', 'box-header');
@@ -47,6 +44,16 @@ function createImageBox(item, entry) {
         header.appendChild(facet);
     }
 
+    box.appendChild(header);
+
+    return box;
+}
+
+function createImageBox(item, entry) {
+    const [width, height] = item.size;
+    const box = createBox(item, entry);
+    box.classList.add('imagebox');
+
     const img = document.createElement('img');
     const a = document.createElement('a');
     a.href = item.url;
@@ -55,8 +62,8 @@ function createImageBox(item, entry) {
     img.setAttribute('height', 320 * (height/Math.max(width, 1)));
     a.appendChild(img);
 
-    const source = document.createElement('div');
-    source.setAttribute('class', 'image-source');
+    const footer = document.createElement('div');
+    footer.setAttribute('class', 'box-footer');
 
     const code = document.createElement('code');
     code.textContent = IMAGE_TEMPLATE.replace('$FILE', item.name);
@@ -76,15 +83,14 @@ function createImageBox(item, entry) {
 
     copyButton.appendChild(copyIcon);
 
-    source.appendChild(code);
+    footer.appendChild(code);
 
     if ( navigator.clipboard ) {
-        source.appendChild(copyButton);
+        footer.appendChild(copyButton);
     }
 
-    box.appendChild(header);
     box.appendChild(a);
-    box.appendChild(source);
+    box.appendChild(footer);
 
     return box;
 
@@ -92,34 +98,8 @@ function createImageBox(item, entry) {
 
 function createLinkBox(item, entry) {
 
-    const box = document.createElement('div');
-    box.setAttribute('class', 'result-link');
-
-    const header = document.createElement('div');
-    header.setAttribute('class', 'box-header');
-    if ( entry ) {
-        const span = document.createElement('span');
-        const wikidataLink = document.createElement('a');
-        wikidataLink.textContent = entry.id;
-        wikidataLink.setAttribute('href', entry.url);
-        span.appendChild(wikidataLink);
-        header.appendChild(span);
-        box.classList.add(entry.colorClass);
-        box.setAttribute('title', entry.text);
-        if ( entry.id.startsWith('Q') ) {
-            const moreLink = document.createElement('a');
-            moreLink.textContent = '🔍';
-            moreLink.setAttribute('href', 'more-images?' + location.search + '&item=' + entry.id);
-            span.appendChild(moreLink);
-
-        }
-    }
-    if ( item.facet ) {
-        const facet = document.createElement('span');
-        facet.setAttribute('class', 'facet');
-        facet.textContent = item.facet;
-        header.appendChild(facet);
-    }
+    const box = createBox(item, entry);
+    box.classList.add('result-link');
 
     const img = document.createElement('img');
     const a = document.createElement('a');
@@ -132,7 +112,6 @@ function createLinkBox(item, entry) {
     a.appendChild(img);
     a.appendChild(label);
 
-    box.appendChild(header);
     box.appendChild(a);
 
     return box;
@@ -163,7 +142,6 @@ const distributeImages = (() => {
     ];
 
     function distributeImages(imageDatas) {
-        console.log("Distribute images");
         for ( const [item, entry] of imageDatas ) {
             const box = createResultBox(item, entry);
             const columnIndex = argmin(columnHeights);

@@ -166,7 +166,7 @@ input[type=submit] {
     gap: 0.5em;
 }
 
-.imagebox {
+.result-box {
     display: inline-block;
     border: solid #000000aa 1px;
     padding: 0.2em;
@@ -174,11 +174,13 @@ input[type=submit] {
     margin-bottom: 0.5em;
 }
 
+.imagebox {
+
+}
+
 .result-image, .result-link {
     width: 320px;
     max-height: 100%;
-    padding: 0.2em;
-    border: solid #000000aa 1px;
 }
 
 .imagebox code {
@@ -255,6 +257,13 @@ input[type=submit] {
 .box-header > :first-child {
     flex-grow: 1;
 }
+
+.box-header span {
+    display: flex;
+    gap: 0.5ex;
+}
+
+
 
 .facet {
     /*border: solid #0003 1px;
@@ -339,7 +348,7 @@ input:valid + span::before {
     content: "» ";
 }
 
-.image-source button img {
+.box-footer button img {
     height: 1.2ex;
 }
 
