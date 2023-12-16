@@ -48,7 +48,7 @@ def yield_image_descriptions(entry: WDEntry, caption: str) -> Iterator[ImageResu
 
             commons_media = image_entry.target
 
-            if type(commons_media) == str:
+            if type(commons_media) != object:
                 continue
             if isinstance(commons_media, pywikibot.page.FilePage):
                 info = commons_media.latest_file_info
