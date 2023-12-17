@@ -1,6 +1,6 @@
 from ..localization import Locale
 from ..util import StrInLanguage
-from .result import Result, CommonsResult, WDEntry, NoImage
+from .result import Result, CommonsResult, WDEntry, NoImagesResult
 from . import q_items
 from . import lexemes
 
@@ -29,12 +29,12 @@ def rank_search_results(results: list[tuple[Result, WDEntry]], searched: StrInLa
         if entry_info.id not in entry_ranks:
             entry_ranks[entry_info.id] = (
                 False, # Result matches exactly
-                True,  # There is at least one image, initalized to True, because there is a NoImages item if no images were found.
+                True,  # There is at least one image, initalized to True, because there is a NoImagesResult item if no images were found.
                 False  # There is a gallery or a category
             )
 
         exact_case_match = (entry_info.label == searched or searched in entry_info.aliases)
-        no_images = (result_info == NoImage)
+        no_images = (isinstance(result_info, NoImagesResult))
         gallery_found = (isinstance(result_info, CommonsResult))
 
         prev_rank = entry_ranks[entry_info.id]

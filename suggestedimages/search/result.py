@@ -64,4 +64,9 @@ class CommonsResult(Result):
         self.url = f'https://commons.wikimedia.org/wiki/{self.name.replace(" ", "_")}'
 
 
-NoImage = ImageResult('No Images', None, NO_IMAGE_THUMB, None, None, (320, 320))
+@dataclass
+class NoImagesResult(Result):
+    def __post_init__(self):
+        self.url = NO_IMAGE_THUMB
+        self.size = (320, 320)
+        self.type = 'no-images'

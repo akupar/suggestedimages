@@ -37,7 +37,7 @@ function createBox(item, entry) {
 
         }
     }
-    if ( item.facet ) {
+    if ( item && item.facet ) {
         const facet = document.createElement('span');
         facet.setAttribute('class', 'facet');
         facet.textContent = item.facet;
@@ -103,7 +103,8 @@ function createLinkBox(item, entry) {
 
     const img = document.createElement('img');
     const a = document.createElement('a');
-    a.href = item.url;
+    a.setAttribute('class', 'box-content');
+    a.setAttribute('href', item.url);
     img.setAttribute('src', '/static/Commons-logo.svg');
     img.setAttribute('width', 100);
     img.setAttribute('height', 100);
@@ -115,7 +116,27 @@ function createLinkBox(item, entry) {
     box.appendChild(a);
 
     return box;
+}
 
+function createNoImagesBox(entry) {
+
+    const box = createBox(null, entry);
+    box.classList.add('result-no-images');
+
+    const img = document.createElement('img');
+    const div = document.createElement('div');
+    div.setAttribute('class', 'box-content');
+    img.setAttribute('src', '/static/No_Image_(2879926)_-_The_Noun_Project.svg');
+    img.setAttribute('width', 100);
+    img.setAttribute('height', 100);
+    const label = document.createElement('label');
+    label.textContent = "No images";
+    div.appendChild(img);
+    div.appendChild(label);
+
+    box.appendChild(div);
+
+    return box;
 }
 
 function createResultBox(item, entry) {
@@ -123,6 +144,8 @@ function createResultBox(item, entry) {
         return createImageBox(item, entry);
     } else if ( item.type === 'link' ) {
         return createLinkBox(item, entry);
+    } else if ( item.type === 'no-images' ) {
+        return createNoImagesBox(entry);
     } else {
         throw new Error(`Unknown type: ${item.type}`);
     }

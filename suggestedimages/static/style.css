@@ -242,12 +242,20 @@ input[type=submit] {
 }
 
 
-.result-link > a {
+.box-content {
     display: flex;
     gap: 0.5em;
     margin: 0.2em;
     align-items: center;
     background-color: #efefef;
+}
+
+.result-no-images .box-content > img {
+    opacity: 50%;
+}
+
+.result-no-images .box-content > label {
+    opacity: 50%;
 }
 
 .box-header {

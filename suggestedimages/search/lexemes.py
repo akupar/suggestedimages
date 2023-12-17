@@ -6,7 +6,7 @@ from pywikibot.page import LexemePage, LexemeSense
 
 from ..localization import Locale
 from ..util import StrInLanguage, StrInLanguages
-from .result import Result, ImageResult, SenseEntry, NoImage
+from .result import Result, ImageResult, SenseEntry, NoImagesResult
 from . import queries
 
 
@@ -44,12 +44,12 @@ def yield_images(sense_generator: Iterator, searched: StrInLanguage, locale: Loc
         sense_info = get_sense_description(sense, searched, locale)
 
         count = 0
-        for image_info in yield_image_descriptions(sense, searched):
+        for image_info in yield_image_descriptions(sense, searched.text.capitalize()):
             yield image_info, sense_info
             count += 1
 
         if count == 0:
-            yield NoImage, sense_info
+            yield NoImagesResult(), sense_info
 
 
 
