@@ -56,6 +56,9 @@
     <div class="column-2"></div>
     <div class="column-3"></div>
   </div>
+  <div id="loading-indicator" style="display: none;">
+    <img src="static/Loading_indicator.gif"/>
+  </div>
 {% endblock %}
 
 {% block scripts %}
@@ -63,12 +66,35 @@
   <script type="text/javascript" src="static/index.js"></script>
   <script type="text/javascript">
     const IMAGE_TEMPLATE = "{{ image_template }}";
-    const results = [
-        {% for result in results_json %}
-        {{ result|tojson|safe }},
-        {% endfor %}
-    ];
 
-    distributeImages(results);
+    async function loadResults() {
+        document.querySelector('#loading-indicator').style.display = "block";
+
+        try {
+            const response = await fetch("/api/item-results" + location.search);
+            if ( !response.ok ) {
+                throw new Error(`${response.status} ${response.statusText}`);
+            }
+            const imageDatas = await response.json();
+            const column1 = document.querySelector('.column-1');
+
+            distributeImages(imageDatas);
+
+            if ( column1.childElementCount === 0 ) {
+                addMessage('neutral', 'No results');
+            }
+
+        } catch ( error ) {
+            addMessage('error', error.toString());
+            console.error(error);
+        } finally {
+            document.querySelector('#loading-indicator').style.display = "none";
+        }
+    }
+
+    document.querySelector('form > input').addEventListener("click", loadResults);
+    if ( location.search ) {
+        loadResults();
+    }
   </script>
 {% endblock %}

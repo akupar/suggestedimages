@@ -77,25 +77,10 @@ def index():
 
     title_with_language = StrInLanguage(title, lang=lang)
 
-    get_color_class = search.GetColorClass()
-
-    results = search.get_images_for_word_ranked(title_with_language, locale)
-    results_json = [
-        (
-            vars(image),
-            {
-                "id": entry.id,
-                "url": entry.url,
-                "text": entry.text,
-                "colorClass": get_color_class(entry.id)
-            }
-        ) for image, entry in results
-    ]
 
     image_template = locale.format_image("$FILE", title.capitalize())
 
     return render_template('index.html',
-                           results_json = results_json,
                            edit_url = get_edit_url(wikt, title),
                            view_url = get_view_url(wikt, title),
                            locale = locale,
@@ -134,6 +119,36 @@ def more_images():
                            locale = locale,
                            image_template = image_template,
                            get_color_class = search.GetColorClass())
+
+
+@bp.route('/api/item-results', methods=('GET',))
+def api_item_results():
+    title = request.args.get('title')
+    wikt = request.args.get('wikt')
+    locale = Locale(wikt)
+    lang = request.args.get('lang') or locale.language
+
+    if not title or not wikt or not lang:
+        return "Parametre 'title', 'wikt', or 'lang' missing", 400
+
+    title_with_language = StrInLanguage(title, lang=lang)
+
+    get_color_class = search.GetColorClass()
+
+    results = search.get_images_for_word_ranked(title_with_language, locale)
+    results_json = [
+        (
+            vars(image),
+            {
+                "id": entry.id,
+                "url": entry.url,
+                "text": entry.text,
+                "colorClass": get_color_class(entry.id)
+            }
+        ) for image, entry in results
+    ]
+
+    return jsonify(results_json)
 
 
 @bp.route('/api/structured-data', methods=('GET',))
