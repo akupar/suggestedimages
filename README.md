@@ -15,6 +15,8 @@ Install requirements.
 
     pip install -r requirements.txt
 
+Create a config.py file in the `instace` folder with `SECRET_KEY` set.
+
 
 ## Run in development mode
 In the environment.

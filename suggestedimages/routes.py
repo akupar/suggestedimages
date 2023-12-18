@@ -1,8 +1,10 @@
 import uuid
+import json
+
 from flask import (
     Blueprint, flash, redirect, render_template, request, url_for, jsonify
 )
-import urllib
+import urllib.parse
 from collections import namedtuple
 
 
@@ -48,6 +50,14 @@ def get_view_url(wikt, title):
     return f"https://{wikt}.wiktionary.org/wiki/{encoded_title}"
 
 
+def make_query_params(wikt, item_id, title):
+    return urllib.parse.urlencode({
+        'wikt': wikt,
+        'item': item_id,
+        'title': title
+    })
+
+
 @bp.route('/', methods=('GET',))
 def index():
     title = request.args.get('title')
@@ -67,14 +77,17 @@ def index():
 
     title_with_language = StrInLanguage(title, lang=lang)
 
+
+    image_template = locale.format_image("$FILE", title.capitalize())
+
     return render_template('index.html',
-                           results = search.get_images_for_word_ranked(title_with_language, locale),
                            edit_url = get_edit_url(wikt, title),
                            view_url = get_view_url(wikt, title),
                            locale = locale,
+                           image_template = image_template,
                            list_locales = Locale.list_locales,
                            language_options = list_language_options(locale),
-                           get_color_class = search.GetColorClass())
+                           make_query_params = make_query_params)
 
 
 @bp.route('/help.html', methods=('GET',))
@@ -100,7 +113,6 @@ def more_images():
 
     image_template = locale.format_image("$FILE", title.capitalize())
 
-
     return render_template('more-images.html',
                            results = [],
                            item_id = item,
@@ -109,12 +121,42 @@ def more_images():
                            get_color_class = search.GetColorClass())
 
 
+@bp.route('/api/item-results', methods=('GET',))
+def api_item_results():
+    title = request.args.get('title')
+    wikt = request.args.get('wikt')
+    locale = Locale(wikt)
+    lang = request.args.get('lang') or locale.language
+
+    if not title or not wikt or not lang:
+        return "Parametre 'title', 'wikt', or 'lang' missing", 400
+
+    title_with_language = StrInLanguage(title, lang=lang)
+
+    get_color_class = search.GetColorClass()
+
+    results = search.get_images_for_word_ranked(title_with_language, locale)
+    results_json = [
+        (
+            vars(image),
+            {
+                "id": entry.id,
+                "url": entry.url,
+                "text": entry.text,
+                "colorClass": get_color_class(entry.id)
+            }
+        ) for image, entry in results
+    ]
+
+    return jsonify(results_json)
+
+
 @bp.route('/api/structured-data', methods=('GET',))
 def api_structured_data():
     item = request.args.get('item')
     id = hash((request.cookies.get('remember_token'), item))
     if not id in generators:
-        return "No stream found", 110
+        return "No result stream found", 110
 
     generator = generators[id]
 
@@ -122,4 +164,5 @@ def api_structured_data():
         batch = next(generator)
     except StopIteration:
         batch = []
-    return jsonify([vars(item) for item in batch])
+
+    return jsonify([(vars(item), None) for item in batch])

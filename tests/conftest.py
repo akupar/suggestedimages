@@ -8,6 +8,7 @@ from suggestedimages import create_app
 def app():
     app = create_app({
         'TESTING': True,
+        'SECRET_KEY': 'Hello',
     })
 
     yield app

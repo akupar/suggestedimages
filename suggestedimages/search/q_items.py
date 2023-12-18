@@ -7,7 +7,7 @@ from pywikibot import pagegenerators
 from ..constants import *
 from ..localization import Locale
 from ..util import StrInLanguage
-from .result import Result, CommonsResult, ImageResult, WDEntry, NoImage
+from .result import Result, CommonsResult, ImageResult, WDEntry, NoImagesResult
 from . import queries
 from .wikidata import get_entry_description
 
@@ -46,13 +46,16 @@ def yield_image_descriptions(entry: WDEntry, caption: str) -> Iterator[ImageResu
 
         for image_entry in entry.claims[prop]:
             commons_media = image_entry.target
+
             if isinstance(commons_media, pywikibot.page.FilePage):
+                info = commons_media.latest_file_info
                 yield ImageResult(
-                    name = commons_media.title(),
+                    name = commons_media.title().removeprefix('File:'),
                     url = commons_media.full_url(),
                     thumb = commons_media.get_file_url(url_width=320),
                     caption = caption,
-                    facet = name
+                    facet = name,
+                    size = (info['width'], info['height'])
                 )
 
 
@@ -67,7 +70,7 @@ def yield_image_pages(generator: Iterator, searched: StrInLanguage, locale: Loca
             count += 1
 
         if count == 0:
-            yield NoImage, entry_info
+            yield NoImagesResult(), entry_info
 
 
         # Property P373 = Commons category

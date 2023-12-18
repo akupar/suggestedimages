@@ -49,18 +49,24 @@ class ImageResult(Result):
     thumb: str
     caption: str
     facet: str
+    size: tuple[int, int]
 
-    type = 'image'
+    def __post_init__(self):
+        self.type = 'image'
 
 @dataclass
 class CommonsResult(Result):
     name: str
     facet: str
-    type = 'link'
 
-    @property
-    def url(self):
-        return f'https://commons.wikimedia.org/wiki/{self.name.replace(" ", "_")}'
+    def __post_init__(self):
+        self.type = 'link'
+        self.url = f'https://commons.wikimedia.org/wiki/{self.name.replace(" ", "_")}'
 
 
-NoImage = ImageResult('No Images', None, NO_IMAGE_THUMB, None, None)
+@dataclass
+class NoImagesResult(Result):
+    def __post_init__(self):
+        self.url = NO_IMAGE_THUMB
+        self.size = (320, 320)
+        self.type = 'no-images'
