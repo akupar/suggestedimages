@@ -93,7 +93,7 @@
     }
 
     document.querySelector('form > input').addEventListener("click", loadResults);
-    if ( location.search ) {
+    if ( location.search && document.getElementById('title').value.trim() !== "" ) {
         loadResults();
     }
   </script>
