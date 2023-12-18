@@ -3,7 +3,7 @@
 
 {% block content %}
   <form method="get">
-    <div class="messages">
+    <div id="messages">
       {% for message in get_flashed_messages() %}
       <div class="flash">{{ message }}</div>
       {% endfor %}
@@ -52,47 +52,49 @@
     {{ locale['Loading...'] }}
   </div>
   <div class="gallery">
-    {% if results|length == 0 %}
-    {{ locale['No results.'] }}
-    {% endif %}
-    {% for result, wd in results %}
-    <div class="imagebox {{ get_color_class(wd.id) }}">
-      <div class="box-header">
-        <span>
-          <a href="{{ wd.url }}" title="{{ wd.text }}">{{ wd.id }}</a>{{' '}}
-          {% if wd.id.startswith('Q') %}
-          <a
-            href="more-images?{{ make_query_params(request.args.get('wikt'), wd.id, request.args.get('title')) }}"
-            title="Search for more images">🔍</a>
-          {% endif %}
-        </span>
-
-        {% if result.facet %}
-        <span class="facet">{{ result.facet }}</span>
-        {% endif %}
-      </div>
-      {% if result.url %}
-        {% if result.type == 'image' %}
-        <a href="{{ result.url or '' }}">
-          <img class="result-image" src="{{ result.thumb }}" title="{{ wd.text }}">
-        </a>
-        <code>{{ locale.format_image(result.name, result.caption) }}</code>
-        {% elif result.type == 'link' %}
-        <div class="result-link">
-          <div>
-            <img class="logo" src="/static/Commons-logo.svg">
-            <a href="{{ result.url or '' }}">{{ result.name }}</a>
-          </div>
-        </div>
-        {% endif %}
-      {% else %}
-      <img src="{{ result.thumb }}">
-      {% endif %}
-    </div>
-    {% endfor %}
+    <div class="column-1"></div>
+    <div class="column-2"></div>
+    <div class="column-3"></div>
+  </div>
+  <div id="loading-indicator" style="display: none;">
+    <img src="static/Loading_indicator.gif"/>
   </div>
 {% endblock %}
 
 {% block scripts %}
+  <script type="text/javascript" src="static/imagebox.js"></script>
   <script type="text/javascript" src="static/index.js"></script>
+  <script type="text/javascript">
+    const IMAGE_TEMPLATE = "{{ image_template }}";
+
+    async function loadResults() {
+        document.querySelector('#loading-indicator').style.display = "block";
+
+        try {
+            const response = await fetch("/api/item-results" + location.search);
+            if ( !response.ok ) {
+                throw new Error(`${response.status} ${response.statusText}`);
+            }
+            const imageDatas = await response.json();
+            const column1 = document.querySelector('.column-1');
+
+            distributeImages(imageDatas);
+
+            if ( column1.childElementCount === 0 ) {
+                addMessage('neutral', 'No results');
+            }
+
+        } catch ( error ) {
+            addMessage('error', error.toString());
+            console.error(error);
+        } finally {
+            document.querySelector('#loading-indicator').style.display = "none";
+        }
+    }
+
+    document.querySelector('form > input').addEventListener("click", loadResults);
+    if ( location.search ) {
+        loadResults();
+    }
+  </script>
 {% endblock %}
