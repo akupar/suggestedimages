@@ -86,13 +86,7 @@ def index():
                            image_template = image_template,
                            list_locales = Locale.list_locales,
                            language_options = list_language_options(locale),
-<<<<<<< HEAD
                            make_query_params = make_query_params)
-=======
-                           make_query_params = make_query_params,
-                           get_color_class = search.GetColorClass())
->>>>>>> ec8639e (Fix encoding of url parametres)
-
 
 @bp.route('/help.html', methods=('GET',))
 def help():
