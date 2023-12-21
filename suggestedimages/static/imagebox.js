@@ -170,10 +170,7 @@ const distributeImages = (() => {
             const columnIndex = argmin(columnHeights);
             columns[columnIndex].appendChild(box);
             columnHeights[columnIndex] = columns[columnIndex].clientHeight;
-            console.log("  Add", item.name, "to", columnIndex);
-            console.log("    heights:", ...columnHeights);
         }
-
     }
 
     return distributeImages;
