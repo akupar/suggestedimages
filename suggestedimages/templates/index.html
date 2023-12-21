@@ -20,9 +20,15 @@
       </option>
       {% endfor %}
     </select>
+    {% if show_localization_blurb %}
+    <div class="notice">
+      No localization found for wiktionary ’{{ request.args.get('wikt') }}’. Using default output.{{' '}}
+      Contact user <a href="https://fi.wiktionary.org/wiki/Käyttäjä:Hunsvotti">Hunsvotti</a>, if you want to add localization.
+    </div>
+    {% endif %}
     <label for="title">{{ locale['Language'] }}</label>
     <div>
-      <input list="languages" name="lang" id="lang" value="{{ request.args.get('lang') or '' }}" /> <span id="language-name">
+      <input list="languages" name="lang" id="lang" value="{{ request.args.get('lang') or locale.language }}" /> <span id="language-name">
       </span>
       <datalist id="languages">
         {% for option in language_options %}

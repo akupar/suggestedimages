@@ -363,3 +363,9 @@ input:valid + span::before {
 #loading-indicator {
     text-align: center;
 }
+
+.notice {
+    background-color: lightyellow;
+    font-size: smaller;
+    margin: 1px;
+}
