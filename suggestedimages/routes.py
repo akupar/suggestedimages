@@ -106,7 +106,6 @@ def more_images():
     except:
         locale = Locale()
 
-
     generator = search.get_chunk_of_images_for_item(item, title, locale, 10)
     generators[id] = generator
 
@@ -124,11 +123,14 @@ def more_images():
 def api_item_results():
     title = request.args.get('title')
     wikt = request.args.get('wikt')
-    locale = Locale(wikt)
+    try:
+        locale = Locale(wikt) if wikt else Locale()
+    except:
+        locale = Locale()
     lang = request.args.get('lang') or locale.language
 
-    if not title or not wikt or not lang:
-        return "Parametre 'title', 'wikt', or 'lang' missing", 400
+    if not title:
+        return "Parametre 'title' missing", 400
 
     title_with_language = StrInLanguage(title, lang=lang)
 
