@@ -57,14 +57,18 @@ def make_query_params(wikt, item_id, title):
     })
 
 
+def get_locale(wikt):
+    try:
+        return Locale(wikt) if wikt else Locale()
+    except:
+        return Locale()
+
+
 @bp.route('/', methods=('GET',))
 def index():
     title = request.args.get('title')
     wikt = request.args.get('wikt')
-    try:
-        locale = Locale(wikt) if wikt else Locale()
-    except:
-        locale = Locale()
+    locale = get_locale(wikt)
     lang = request.args.get('lang') or locale.language
 
     if not title:
@@ -101,10 +105,7 @@ def more_images():
     wikt = request.args.get('wikt')
     id = hash((request.cookies.get('remember_token'), item))
 
-    try:
-        locale = Locale(wikt) if wikt else Locale()
-    except:
-        locale = Locale()
+    locale = get_locale(wikt)
 
     generator = search.get_chunk_of_images_for_item(item, title, locale, 10)
     generators[id] = generator
@@ -123,10 +124,7 @@ def more_images():
 def api_item_results():
     title = request.args.get('title')
     wikt = request.args.get('wikt')
-    try:
-        locale = Locale(wikt) if wikt else Locale()
-    except:
-        locale = Locale()
+    locale = get_locale(wikt)
     lang = request.args.get('lang') or locale.language
 
     if not title:
