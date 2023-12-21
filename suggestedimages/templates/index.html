@@ -74,7 +74,7 @@
     const IMAGE_TEMPLATE = "{{ image_template }}";
 
     async function loadResults() {
-        if ( location.search === "" ) {
+        if ( location.search.indexOf('title=') === "" ) {
             return;
         }
 
