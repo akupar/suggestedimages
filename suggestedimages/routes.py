@@ -172,7 +172,7 @@ def api_structured_data():
 
     if not request_id in generators:
         logger.info('no generator for %x' % (request_id,))
-        return "No result stream found", 110
+        return { error: "No result stream found" }, 110
 
     generator = generators[request_id]
 
