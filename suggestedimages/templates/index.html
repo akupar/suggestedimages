@@ -72,15 +72,25 @@
   <script type="text/javascript" src="static/index.js"></script>
   <script type="text/javascript">
     const IMAGE_TEMPLATE = "{{ image_template }}";
+    function getJsonFromUrl(url) {
+        const query = url.substr(1);
+        const result = {};
+        query.split("&").forEach(part => {
+            const item = part.split("=");
+            result[item[0]] = decodeURIComponent(item[1]);
+        });
+        return result;
+    }
 
     async function loadResults() {
-        if ( location.search.indexOf('title=') === -1 ) {
+        const query = getJsonFromUrl(location.search);
+        if ( query.title.trim() === "" ) {
             return;
         }
 
         document.querySelector('#loading-indicator').style.display = "block";
         try {
-            const response = await fetch("/api/item-results" + location.search);
+            const response = await fetch("/api/item-results?" + new URLSearchParams(query));
             if ( !response.ok ) {
                 throw new Error(`${response.status} ${response.statusText}`);
             }
@@ -102,7 +112,7 @@
     }
 
     document.querySelector('form > input').addEventListener("click", loadResults);
-    if ( location.search && document.getElementById('title').value.trim() !== "" ) {
+    if ( location.search ) {
         loadResults();
     }
   </script>
