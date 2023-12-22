@@ -43,9 +43,12 @@
   <script type="text/javascript">
     const IMAGE_TEMPLATE = "{{ image_template }}";
 
-    async function loadMore() {
-        document.querySelector('#load-more').style.display = "none";
-        document.querySelector('#loading-indicator').style.display = "block";
+    async function loadMore(event) {
+        const loadMoreButton = event.target;
+        loadMoreButton.textContent = 'Load more';
+
+        loadMoreButton.style.display = "none";
+        document.querySelector('#loading-indicator').style.display = null;
 
         try {
             const response = await fetch("/api/structured-data?item=" + "{{ item_id }}");
@@ -62,19 +65,24 @@
             }
 
             if ( imageDatas.length < 10 ) {
-                document.querySelector('#load-more').style.display = "none";
+                loadMoreButton.style.display = "none";
             } else {
-                document.querySelector('#load-more').style.display = "block";
+                loadMoreButton.style.display = null;
             }
         } catch ( error ) {
             addMessage('error', error.toString());
             console.error(error);
+            loadMoreButton.style.display = null;
+            loadMoreButton.textContent = 'Retry';
         } finally {
             document.querySelector('#loading-indicator').style.display = "none";
         }
     }
 
-    document.querySelector('#load-more').addEventListener("click", loadMore);
-    loadMore();
+    {
+        const loadMoreButton = document.querySelector('#load-more');
+        loadMoreButton.addEventListener("click", loadMore);
+        loadMoreButton.click();
+    }
   </script>
 {% endblock %}
