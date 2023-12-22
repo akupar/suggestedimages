@@ -92,7 +92,8 @@
         try {
             const response = await fetch("/api/item-results?" + new URLSearchParams(query));
             if ( !response.ok ) {
-                throw new Error(`${response.status} ${response.statusText}`);
+                const json = await response.json();
+                throw new Error(`${response.statusText}: ${json.error}`);
             }
             const imageDatas = await response.json();
             const column1 = document.querySelector('.column-1');

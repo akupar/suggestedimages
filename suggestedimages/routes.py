@@ -139,7 +139,7 @@ def api_item_results():
     lang = request.args.get('lang') or locale.language
 
     if not title:
-        return "Parametre 'title' missing", 400
+        return { 'error': "Parametre 'title' missing" }, 400
 
     title_with_language = StrInLanguage(title, lang=lang)
 
@@ -172,7 +172,7 @@ def api_structured_data():
 
     if not request_id in generators:
         logger.info('no generator for %x' % (request_id,))
-        return { error: "No result stream found" }, 110
+        return { 'error': "No result stream found" }, 110
 
     generator = generators[request_id]
 
