@@ -32,7 +32,7 @@ function createBox(item, entry) {
         if ( entry.id.startsWith('Q') ) {
             const moreLink = document.createElement('a');
             moreLink.textContent = '🔍';
-            moreLink.setAttribute('href', 'more-images?' + location.search + '&item=' + entry.id);
+            moreLink.setAttribute('href', 'more-images' + location.search + '&item=' + entry.id);
             span.appendChild(moreLink);
 
         }
