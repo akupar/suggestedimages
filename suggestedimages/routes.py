@@ -108,10 +108,8 @@ def more_images():
     wikt = request.args.get('wikt')
 
     locale = Locale(wikt if wikt != '' else None)
-    request_id = hash((request.cookies.get('remember_token'), item))
 
-    logger.debug('more-images_init: item: %s, title: %s, wikt: %s, request_id: %x, language: %s'
-                 % (item, title, wikt, request_id, locale.language))
+    logger.debug(f'more-images_init: item: {item}, title: {title}, wikt: {wikt}, language: {locale.language}')
 
     image_template = locale.format_image("$FILE", title.capitalize())
 
@@ -163,15 +161,11 @@ def api_structured_data():
     wikt = request.args.get('wikt')
     locale = Locale(wikt if wikt != '' else None)
 
-    request_id = hash((request.cookies.get('remember_token'), item))
-
-    logger.debug('api_structured_data: item: %s, request_id: %x'
-                 % (item, request_id))
-
+    logger.debug(f'api_structured_data: item: {item}, offset: {offset}')
 
     batch = search.get_chunk_of_images_for_item(item, title, locale, N_RESULTS_IN_BATCH, int(offset))
 
-    logger.debug('api_structured_data: batch: offset: %s, length: %s', offset, len(batch))
+    logger.debug(f'api_structured_data: batch: offset: {offset}, length: {len(batch)}')
 
     return jsonify({
         'offset': (int(offset) + N_RESULTS_IN_BATCH) if len(batch) == N_RESULTS_IN_BATCH else None,
