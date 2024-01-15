@@ -51,24 +51,31 @@
         document.querySelector('#loading-indicator').style.display = null;
 
         try {
-            const response = await fetch("/api/structured-data?item=" + "{{ item_id }}");
+            const params = new URLSearchParams({
+                wikt: "{{ wikt }}",
+                title: "{{ title }}",
+                item: "{{ item_id }}",
+                offset: loadMoreButton.dataset?.offset ?? 0,
+            });
+            const response = await fetch("/api/structured-data?" + params);
             if ( !response.ok ) {
                 const json = await response.json();
                 throw new Error(`${response.statusText}: ${json.error}`);
             }
-            const imageDatas = await response.json();
+            const { offset, imagesData } = await response.json();
             const column1 = document.querySelector('.column-1');
 
-            distributeImages(imageDatas);
+            distributeImages(imagesData);
 
             if ( column1.childElementCount === 0 ) {
                 addMessage('neutral', 'No results');
             }
 
-            if ( imageDatas.length < 10 ) {
+            if ( imagesData.length < 10 ) {
                 loadMoreButton.style.display = "none";
             } else {
                 loadMoreButton.style.display = null;
+                loadMoreButton.dataset.offset = offset;
             }
         } catch ( error ) {
             addMessage('error', error.toString());

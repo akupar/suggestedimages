@@ -83,31 +83,3 @@ class StrInLanguages:
         self.__dict[lang] = item.text
 
         print(self.__dict)
-
-
-
-
-class GeneratorCache:
-    __items: dict[CacheEntry]
-
-    def __init__(self, keep_time_in_seconds=MORE_IMAGES_CACHE_TIME_IN_SECONDS):
-        self.keep_time = keep_time_in_seconds
-        self.__items = {}
-
-    def __contains__(self, key):
-        return key in self.__items
-
-    def __getitem__(self, key):
-        item = self.__items[key]
-        return item.value
-
-    def __setitem__(self, key, value):
-        self.remove_outdated()
-        now = time.time()
-        self.__items[key] = CacheEntry(now, value)
-
-    def remove_outdated(self):
-        now = time.time()
-        for key, cache_entry in self.__items.items():
-            if cache_entry.time < now - self.keep_time:
-                del self.__items[key]

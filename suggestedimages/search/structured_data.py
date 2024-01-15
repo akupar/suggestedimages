@@ -22,37 +22,31 @@ site.login()
 wikidata_site = pywikibot.Site("wikidata", "wikidata")
 
 
-def get_chunk_of_images_for_item(searched_id: str, title: str, locale: Locale, buffer_len: int) -> list[tuple[ImageResult, WDEntry]]:
+def get_chunk_of_images_for_item(searched_id: str, title: str, locale: Locale, buffer_len: int, offset: int)\
+    -> list[tuple[ImageResult, WDEntry]]:
     item = pywikibot.ItemPage(wikidata_site.data_repository(), searched_id)
     entry_info = get_entry_description(item, StrInLanguage(title, lang=locale.language), locale)
-    media_page_generator = yield_media_depicting_item(entry_info)
+    media_page_generator = yield_media_depicting_item(entry_info, buffer_len, offset)
 
-    id_chunk_generator = yield_chunk_of_ids(media_page_generator, buffer_len)
+    ids = get_ids(media_page_generator)
 
-    for ids in id_chunk_generator:
-        images_generator = yield_images(ids, entry_info, title, locale)
-        yield list(images_generator)
+    images_generator = yield_images(ids, entry_info, title, locale)
+    return list(images_generator)
 
 
-def yield_media_depicting_item(wd_entry: WDEntry) -> Iterator[Page]:
-
+def yield_media_depicting_item(wd_entry: WDEntry, limit: int, offset: int) -> Iterator[Page]:
     return pagegenerators.WikidataSPARQLPageGenerator(
-        queries.property_depicts_has_given_id(wd_entry.id),
+        queries.property_depicts_has_given_id(wd_entry.id, limit, offset),
         site = site,
         endpoint = 'https://commons-query.wikimedia.org/sparql',
         entity_url = 'https://commons.wikimedia.org/entity/'
     )
 
-def yield_chunk_of_ids(media_page_generator: Iterator[list[str]], buffer_len: int):
-    ids_buffer = []
-    for i, media_page in enumerate(media_page_generator, start=1):
-        ids_buffer.append(media_page.id)
-
-        if i % buffer_len == 0:
-            yield ids_buffer
-            ids_buffer = []
-
-    yield ids_buffer
+def get_ids(media_page_generator: Iterator[list[str]]):
+    ids = []
+    for media_page in media_page_generator:
+        ids.append(media_page.id)
+    return ids
 
 
 def yield_images(ids: list[str], wd_entry: WDEntry, searched_name: str, locale: Locale) \
