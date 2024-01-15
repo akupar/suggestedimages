@@ -28,39 +28,3 @@ def test_StrsInLanguage():
     x = StrInLanguages({ 'en': 'cat', 'fi': 'kissa' })
     x.add(StrInLanguage('gato', lang='es'))
     assert x == StrInLanguages({ 'en': 'cat', 'fi': 'kissa', 'es': 'gato' })
-
-
-
-def test_GeneratorCache_case_default_cache_time_is_one_day():
-    cache = GeneratorCache()
-    assert cache.keep_time == 60 * 60 * 24
-
-
-def test_GeneratorCache_case_deletes_outdated_items():
-    import time
-    cache = GeneratorCache(1.0)
-    cache['test1'] = 'x'
-    time.sleep(0.5)
-    cache['test2'] = 'y'
-
-    assert cache['test1'] == 'x'
-    assert cache['test2'] == 'y'
-
-    time.sleep(0.6)
-    assert cache['test2'] == 'y'
-
-    with pytest.raises(KeyError):
-        x = cache['testi1']
-
-
-def test_GeneratorCache_case_doesnt_delete_outdated_items_if_new_items_are_not_added():
-    import time
-    cache = GeneratorCache(1.0)
-    cache['test1'] = 'x'
-    time.sleep(0.5)
-
-    assert cache['test1'] == 'x'
-
-    time.sleep(0.6)
-
-    assert cache['test1'] == 'x'

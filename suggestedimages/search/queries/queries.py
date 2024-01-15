@@ -61,7 +61,7 @@ LIMIT %limit%
     )
 
 
-def property_depicts_has_given_id(q_id: str):
+def property_depicts_has_given_id(q_id: str, limit: int, offset: int):
     # P180 = ’depicts’
     return bind_sparql_query('''
 
@@ -69,7 +69,11 @@ SELECT ?item WHERE{
   ?item wdt:P180 wd:%id% .
   ?item schema:contentUrl ?url .
 }
+LIMIT %limit%
+OFFSET %offset%
 
 ''',
         id = Identifier(q_id),
+        limit = limit,
+        offset = offset,
     )
