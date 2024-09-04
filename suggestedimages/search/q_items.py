@@ -92,11 +92,11 @@ def yield_image_pages(generator: Iterator, searched: StrInLanguage, locale: Loca
 
         # Property P373 = Commons category
         if (prop := entry.claims.get('P373')) and len(prop) > 0:
-            yield CommonsResult('Category:' + prop[0].getTarget(), 'category'), entry_info
+            yield CommonsResult('Category:' + prop[0].getTarget(), get_prop_name(locale, 'P373')), entry_info
 
         # Property P935 = Commons gallery page
         if (prop := entry.claims.get('P935')) and len(prop) > 0:
-            yield CommonsResult(prop[0].getTarget(), 'gallery'), entry_info
+            yield CommonsResult(prop[0].getTarget(), get_prop_name(locale, 'P935')), entry_info
 
 
 def get_images_for_word(searched: StrInLanguage, locale: Locale) -> list[tuple[Result, WDEntry]]:
