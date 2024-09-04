@@ -38,23 +38,40 @@ def yield_external_results(searched) -> Iterator:
     return []
 
 
+prop_cache = {}
+def get_prop_name(locale: Locale, prop):
+    if prop not in prop_cache:
+        repo = site.data_repository()
+        page = pywikibot.Page(repo, prop)
+        item = pywikibot.PropertyPage(repo, prop)
 
-def yield_image_descriptions(entry: WDEntry, caption: str) -> Iterator[ImageResult]:
-    for (prop, name) in IMAGE_PROPS:
+        if locale.language in item.labels:
+            prop_cache[prop] = item.labels[locale.language]
+        elif 'en' in item.labels:
+            prop_cache[prop] = item.labels['en']
+
+    return prop_cache[prop]
+
+
+
+def yield_image_descriptions(locale: Locale, entry: WDEntry, caption: str) -> Iterator[ImageResult]:
+    for prop in entry.claims:
         if prop not in entry.claims:
             continue
-
         for image_entry in entry.claims[prop]:
             commons_media = image_entry.target
 
             if isinstance(commons_media, pywikibot.page.FilePage):
+                prop_name = get_prop_name(locale, prop)
                 info = commons_media.latest_file_info
+                if not info['mime'].startswith('image'):
+                    continue
                 yield ImageResult(
                     name = commons_media.title().removeprefix('File:'),
                     url = commons_media.full_url(),
                     thumb = commons_media.get_file_url(url_width=320),
                     caption = caption,
-                    facet = name,
+                    facet = prop_name,
                     size = (info['width'], info['height'])
                 )
 
@@ -65,7 +82,7 @@ def yield_image_pages(generator: Iterator, searched: StrInLanguage, locale: Loca
         entry_info = get_entry_description(entry, searched, locale)
 
         count = 0
-        for image_info in yield_image_descriptions(entry, searched.text.capitalize()):
+        for image_info in yield_image_descriptions(locale, entry, searched.text.capitalize()):
             yield image_info, entry_info
             count += 1
 
