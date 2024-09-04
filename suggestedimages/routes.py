@@ -123,6 +123,18 @@ def more_images():
                            get_color_class = search.GetColorClass())
 
 
+def add_info_card(results_with_info):
+    results_with_info_card = []
+    seen = set()
+    for image_info, entry_info in results_with_info:
+        if entry_info['id'] not in seen:
+            results_with_info_card.append(({ "type": "info" }, entry_info))
+            seen.add(entry_info['id'])
+        results_with_info_card.append((image_info, entry_info))
+
+    return results_with_info_card
+
+
 @bp.route('/api/item-results', methods=('GET',))
 def api_item_results():
     title = request.args.get('title')
@@ -138,7 +150,7 @@ def api_item_results():
     get_color_class = search.GetColorClass()
 
     results = search.get_images_for_word_ranked(title_with_language, locale)
-    results_json = [
+    results_with_info = [
         (
             vars(image),
             {
@@ -150,7 +162,9 @@ def api_item_results():
         ) for image, entry in results
     ]
 
-    return jsonify(results_json)
+    results_with_info = add_info_card(results_with_info)
+
+    return jsonify(results_with_info)
 
 
 @bp.route('/api/structured-data', methods=('GET',))
