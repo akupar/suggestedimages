@@ -139,6 +139,27 @@ function createNoImagesBox(entry) {
     return box;
 }
 
+function createInfoBox(entry) {
+
+    const box = createBox(null, entry);
+    box.classList.add('result-info');
+
+    const img = document.createElement('img');
+    const div = document.createElement('div');
+    div.setAttribute('class', 'box-content');
+    img.setAttribute('src', '/static/Information_Noun_176431.svg');
+    img.setAttribute('width', 100);
+    img.setAttribute('height', 100);
+    const label = document.createElement('label');
+    label.textContent = entry.text;
+    div.appendChild(img);
+    div.appendChild(label);
+
+    box.appendChild(div);
+
+    return box;
+}
+
 function createResultBox(item, entry) {
     if ( item.type === 'image' ) {
         return createImageBox(item, entry);
@@ -146,6 +167,8 @@ function createResultBox(item, entry) {
         return createLinkBox(item, entry);
     } else if ( item.type === 'no-images' ) {
         return createNoImagesBox(entry);
+    } else if ( item.type === 'info' ) {
+        return createInfoBox(entry);
     } else {
         throw new Error(`Unknown type: ${item.type}`);
     }

@@ -258,6 +258,14 @@ input[type=submit] {
     opacity: 50%;
 }
 
+.result-info .box-content > img {
+    opacity: 50%;
+}
+
+.result-info .box-content > label {
+    opacity: 50%;
+}
+
 .box-header {
     display: flex;
 }
